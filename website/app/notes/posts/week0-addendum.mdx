@@ -1,0 +1,78 @@
+---
+title: 'Addendum: Linear Algebra Basics'
+publishedAt: '2025-09-01'
+week: 0
+summary: 'This page contains the addendum for week 0 of BU Quantum.'
+---
+<KatexSpan>
+This is an extra page to help explain some of the basics of linear algebra to those who are unfamiliar with it. I highly recommend watching 3blue1brown's <a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank">Essence of Linear Algebra</a> series, as it does a great job providing a visual intuition for all of the concepts it covers.
+
+A **matrix** is simply a 2D list of numbers. We can write a size $m \times n$ matrix as
+{String.raw`$$
+A = \begin{bmatrix}
+a_{11} & a_{12} & \cdots & a_{1n} \\
+a_{21} & a_{22} & \cdots & a_{2n} \\
+a_{31} & a_{32} & \cdots & a_{3n} \\
+\vdots & \vdots & \vdots & \vdots \\
+a_{m1} & a_{m2} & \cdots & a_{mn}
+\end{bmatrix}
+$$`}
+When we say a matrix is size $m \times n$, we are saying that it has $m$ rows and $n$ columns. We write the position in the subscript, with the row coming first and then the column, so $A_\{ij\}$ represents the element at row $i$ and column $j$. A matrix with only 1 column is known as a **column vector**, or just a vector. A matrix with only one row is known as a **row vector**.
+
+The **transpose** of a matrix, denoted with the subscript $T$, is an operation which switches the row and column indices of the matrix, so $A_\{ij\}=A^T_\{ji\}$. For example,
+{String.raw`$$
+A = \begin{bmatrix}
+a & b \\
+c & d \\
+e & f
+\end{bmatrix}, \quad A^T = \begin{bmatrix}
+a & c & e \\
+b & d & f
+\end{bmatrix}
+$$`}
+In quantum computing, we will generally use the <a href="https://en.wikipedia.org/wiki/Conjugate_transpose" target="_blank">conjugate transpose</a>, denoted with the subscript $\dag$, which also flips the sign of the imaginary part of every value in the matrix. 
+
+If $A$ is a $m \times n$ matrix, and $B$ is a $n \times p$ matrix, the values of the matrix product $C=AB$, which is a $m \times p$ matrix, are defined as {String.raw`$C_{ij}=\sum_{k=1}^{n} A_{ik}B_{kj}$`}. The number of columns in $A$ must match the number of rows in $B$ for a matrix product to exist. For example,
+{String.raw`$$
+\begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6
+\end{bmatrix}\begin{bmatrix}
+7 & 8 \\
+9 & 10 \\
+11 & 12
+\end{bmatrix} = \begin{bmatrix}
+58 & 64 \\
+139 & 154
+\end{bmatrix}
+$$`}
+The **inner product** of two vectors $a$ and $b$ of size $n$ is the sum of the product of the corresponding entries in each vector.
+{String.raw`$$
+a^\dag b = a \cdot b = a_1b_1+\cdots+a_nb_n
+$$`}
+As you can see, there are a few different ways to write the inner product. In quantum computing, we generally use <a href="https://en.wikipedia.org/wiki/Bra%E2%80%93ket_notation" target="_blank">bra-ket notation</a>, where we would write this operation as $\langle a | b \rangle$. For more on bra-ket notation, see the week 1 addendum.
+
+The **outer product** of two vectors $a$ and $b$ is the opposite operation, the product of all possible corresponding terms in each vector.
+{String.raw`$$
+ab^\dag = \begin{bmatrix}
+a_1b_1 & a_1b_2 & a_1b_3 \\
+a_2b_1 & a_2b_2 & a_2b_3 \\
+a_3b_1 & a_3b_2 & a_3b_3
+\end{bmatrix}
+$$`}
+In bra-ket notation, we would write this operation as $|a\rangle\langle b|$.
+
+A set of vectors {String.raw`$\{v_1,\dots,v_n\}$`} is a **basis** if every possible vector in the space we're in can be written as a linear combination of the vectors in the basis. In other words,
+$$
+a = c_1v_1+\cdots+c_nv_n
+$$
+where $a$ is any vector in the space we're in and $c_1,\dots,c_n$ are some constant values. The elements of a basis must be linearly independent, i.e. it cannot be possible to write one vector in the basis as a linear combination of the other vectors. Consequently, if we are working with vectors in $n$ dimensions, any basis must be of size $n$.
+
+An **eigenvalue** and **eigenvector** are some value $\lambda$ and vector $v$ such that
+$$
+Av = \lambda v
+$$
+for a matrix $A$. In a linear algebra class, the process of <a href="https://en.wikipedia.org/wiki/Diagonalizable_matrix#Diagonalization" target="_blank">diagonalization</a> is usually covered as a way to find eigenvalues and eigenvectors of a matrix. However, we will be looking at a quantum algorithm to estimate the eigenvalues of a matrix later on in the semester.
+
+Ultimately, the best way to become more familiar with linear algebra is just to practice it. There are plenty of videos and resources online to help you master the topics. A very strong understanding of linear algebra will make a lot of quantum computing concepts easier to understand.
+</KatexSpan>
