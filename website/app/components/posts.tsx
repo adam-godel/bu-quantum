@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { formatDate, getBlogPosts } from 'app/notes/utils'
+import { getBlogPosts } from 'app/notes/utils'
 
 export function BlogPosts() {
   let allBlogs = getBlogPosts()
@@ -9,7 +9,7 @@ export function BlogPosts() {
       {allBlogs
         .sort((a, b) => {
           if (
-            new Date(a.metadata.publishedAt) > new Date(b.metadata.publishedAt)
+            a.metadata.week > b.metadata.week
           ) {
             return -1
           }
@@ -22,8 +22,8 @@ export function BlogPosts() {
             href={`/notes/${post.slug}`}
           >
             <div className="w-full flex flex-col md:flex-row space-x-0 md:space-x-2">
-              <p className="text-neutral-600 dark:text-neutral-400 w-[150px] tabular-nums">
-                {formatDate(post.metadata.publishedAt, false)}
+              <p className="text-neutral-600 dark:text-neutral-400 w-[80px] tabular-nums">
+                {"Week "+post.metadata.week}
               </p>
               <p className="text-neutral-900 dark:text-neutral-100 tracking-tight">
                 {post.metadata.title}

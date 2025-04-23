@@ -77,7 +77,7 @@ export default async function Blog({ params }) {
             url: `${baseUrl}/blog/${post.slug}`,
             author: {
               '@type': 'Person',
-              name: 'My Portfolio',
+              name: 'BU Quantum',
             },
           }),
         }}
@@ -87,7 +87,7 @@ export default async function Blog({ params }) {
       </h1>
       <div className="flex justify-between items-center mt-2 mb-8 text-sm">
         <p className="text-sm text-neutral-600 dark:text-neutral-400">
-          {formatDate(post.metadata.publishedAt)}
+          {'Week '+post.metadata.week+' • '+formatDate(post.metadata.publishedAt)}
         </p>
       </div>
       <article className="prose">

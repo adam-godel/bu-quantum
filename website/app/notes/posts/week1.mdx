@@ -1,0 +1,96 @@
+---
+title: 'Motivation, Qubits, Bloch Sphere'
+publishedAt: '2025-09-01'
+week: 1
+---
+<KatexSpan>
+## Table of Contents
+1. [Introduction](#introduction)
+2. [Qubits](#qubits)
+3. [Bloch Sphere](#bloch-sphere)
+
+## Introduction
+
+The year is 1937. <a href="https://en.wikipedia.org/wiki/George_Stibitz" target="_blank">George Stibitz</a>, a "mathematical engineer" at Bell Labs, decides to experiment with telephone <a href="https://en.wikipedia.org/wiki/Relay" target="_blank">relays</a>, which he observes as similar to binary notation. After strapping together two scrapped relays, some plywood, strips from a tobacco can, and some batteries and bulbs, he created a one-digit binary adder. Three years later, Stibitz began construction on a general purpose automatic computational device.
+
+In many ways, the world before the advent of the digital computer would be completely unrecognizable to us. Even disregarding the internet, the number of difficult problems that can be easily solved computationally is immense. Yet in many ways, we are going through a similar period in the field of quantum computing.
+
+Now, I am not saying that in a few decades, quantum computing will change the world as much as classical computing will—<a href="https://scottaaronson.blog/?p=8329" target="_blank">quantum hype</a> is a very real problem! However, quantum computing let us create new types of computers that throw out our prior assumptions about what algorithms can be run efficiently.
+
+For example, I'm sure most of you know that if you have an unsorted list, searching it is $O(n)$ in the best case since there is no better approach than just going through each item of the list in linear order. However, a quantum computer *can* do better! Using <a href="https://en.wikipedia.org/wiki/Grover%27s_algorithm" target="_blank">Grover's algorithm</a>, which we will cover in a few weeks, we can perform unsorted search in just {String.raw`$O(\sqrt{n})$`} time.
+
+Most pressingly, quantum computers are known to be able to break encryption due to <a href="https://en.wikipedia.org/wiki/Shor%27s_algorithm" target="_blank">Shor's algorithm</a>, an efficient algorithm that can find the prime factors of an integer, the security measure most of encryption is built on. However, quantum computers are not physically good enough yet to perform Shor's algorithm to an extent where encryption can be broken.
+
+Beyond being important for computational or security reasons, quantum computing can be really useful in simulating physical and chemical systems efficiently. As an inherently quantum system, it does a good job simulating quantum mechanics accurately.
+
+I hope this short introduction has begun to convince you that quantum computing is worth pursuing. It is by no means an easy field to get into, but I am really excited to be your guide into understanding the basics this semester. To start, we need to understand the fundamental unit of information a quantum computer uses—this won't just take a bit.
+
+## Qubits
+As you probably already know, a **bit** is the most basic unit of information for a classical computer. A bit is a binary state—it can be either 0 or 1. A **qubit** is the most basic unit of information for a quantum computer. It can be exclusively 0 or 1, but it can also be a combination—known as a *superposition*—of these two states.
+
+We will look at a more formal definition of superposition next week. For now, the important thing to understand is that a quantum state in superposition has some probability of being 0 and some probability of being 1 when measured. A *measurement* is an observation of the state, which causes it to collapse into either 0 or 1 in accordance with the rules of superposition. Let's say we have a quantum state $|\psi\rangle$.<sup><a href="#foot1">1</a></sup> If we measure it and it collapses to $|0\rangle$, the state has physically changed; any subsequent time we measure it, it will remain as $|0\rangle$.
+
+Instead of a binary number, we can represent a quantum state $|\psi\rangle$ as a vector, where the first term represents the "part" of $|0\rangle$ that it has and the second term represents the "part" of $|1\rangle$ it has.
+{String.raw`$$
+|\psi\rangle = \begin{bmatrix}
+\alpha \\
+\beta
+\end{bmatrix} = \alpha\begin{bmatrix}
+1 \\
+0
+\end{bmatrix} + \beta\begin{bmatrix}
+0 \\
+1
+\end{bmatrix}
+$$`}
+A defining feature of any quantum state $|\psi\rangle$ is it must be a unit vector, i.e. $|\alpha|^2+|\beta|^2=1$. This restriction is more commonly written in bra-ket notation as $\langle \psi | \psi \rangle = 1$.<sup><a href="#foot2">2</a></sup> $|\alpha|^2$ is the probability of the state being $|0\rangle$ and $|\beta|^2$ is the probability of the state being $|1\rangle$. Another defining feature is that $\alpha$ is a non-negative real number and $\beta$ is a complex number.<sup><a href="#foot3">3</a></sup> Under this definition, we call $\alpha$ and $\beta$ *amplitudes*. We can also define our fundamental states $|0\rangle$ and $|1\rangle$ as vectors.
+{String.raw`$$
+|0\rangle = \begin{bmatrix}
+1 \\
+0
+\end{bmatrix} \qquad \: |1\rangle = \begin{bmatrix}
+0 \\
+1
+\end{bmatrix}
+$$`}
+This is essentially saying that $|0\rangle$ is 100% '0' and 0% '1', and vice versa for $|1\rangle$. Hence, we can write $|\psi\rangle$ as
+$$
+|\psi\rangle = \alpha|0\rangle + \beta|1\rangle
+$$
+This is how we usually write a state in quantum computing. Since any quantum state can be written as a linear combination of $|0\rangle$ and $|1\rangle$, {String.raw`$\{|0\rangle, |1\rangle\}$`} forms a basis. In fact, this basis has a special name: the computational basis.
+
+Now, let's try to write a state in equal superposition. We cannot just use $1/2$ for $\alpha$ and $\beta$, as their squares must sum to 1. Instead, a state in equal superposition can be written as
+{String.raw`$$
+|+\rangle = \frac{1}{\sqrt{2}}|0\rangle+\frac{1}{\sqrt{2}}|1\rangle = \frac{|0\rangle+|1\rangle}{\sqrt{2}}
+$$`}
+As I've written, this state has a special name, $|+\rangle$. The keen-eyed among you may notice three more equal superposition states.
+{String.raw`$$
+|-\rangle = \frac{|0\rangle-|1\rangle}{\sqrt{2}} \qquad |i+\rangle = \frac{|0\rangle+i|1\rangle}{\sqrt{2}} \qquad |i-\rangle = \frac{|0\rangle-i|1\rangle}{\sqrt{2}}
+$$`}
+There is no standard notation for the latter two states, but we won't be using them as much. Make sure to convince yourself that these are in fact equal superposition states! Taking the square of the absolute value of each amplitude will result in $1/2$, which means that the state has equal probability of collapsing into $|0\rangle$ and $|1\rangle$ when measured.
+
+So how can we make sense of the fact that there are four states that seem to be saying the same thing? We need some sort of model that can help explain exactly what a qubit is. It turns out to be a sphere!
+
+## Bloch Sphere
+We model the state of a qubit geometrically using the **Bloch sphere**. This is just like any sphere you may be familiar with, but the axes are a little different. $|0\rangle$ sits at the top of the z-axis, at point $(0,0,1)$, and $|1\rangle$ sits at the bottom, at point $(0,0,-1)$. Our four equal superposition states sit at the other four axes: $|+\rangle$ is at point $(1,0,0)$, $|-\rangle$ is at point $(-1,0,0)$, $|i+\rangle$ is at point $(0,1,0)$, and $|i-\rangle$ is at point $(0,-1,0)$. Here is a visualization of the Bloch sphere:
+<img src="/bloch_sphere.png" style={{margin: "auto", width: "60%"}}/>
+In this image, the quantum state $|\psi\rangle$ is marked by angles $0 \leq \theta \leq \pi$ and $0 \leq \varphi \leq 2\pi$. We can write the quantum state like this, but it's a little complicated.
+{String.raw`$$
+|\psi\rangle = \cos\left(\frac{\theta}{2}\right)|0\rangle + e^{i\varphi} \sin\left(\frac{\theta}{2}\right)|1\rangle
+$$`}
+In quantum mechanics, $e^\{i\varphi\}$ is called the relative phase. More intuitively, for those who are familiar with <a href="https://en.wikipedia.org/wiki/Spherical_coordinate_system" target="_blank">spherical coordinates</a>, the state $|\psi\rangle$ is simply mapped onto the point $(1,\theta,\varphi)$. More specifically, we draw $|\psi\rangle$ as a unit vector from the origin to that point on the Bloch sphere.
+
+If you're not comfortable with spherical coordinates, don't worry! We won't really be using them to represent our quantum states. But they are another way to think about what exactly a qubit is. The more important thing that the Bloch sphere exposes is that there are actually *infinite* different equal superposition states; in fact, there are infinitely many instances of any superposition state! We will explore the implications of this fact in the coming weeks.
+
+The Bloch sphere makes it clear that we can write quantum states in other bases, not just {String.raw`$\{|0\rangle, |1\rangle\}$`}. For example, we could (and sometimes do) use {String.raw`$\{|+\rangle, |-\rangle\}$`} or {String.raw`$\{|i+\rangle, |i-\rangle\}$`} as a basis instead. These are called the X basis and Y basis respectively, while the computational basis is also known as the Z basis. These names come from the axis they lay on the Bloch sphere.
+
+The final thing I want to mention is that the Bloch sphere allows us to think of gates as rotations. It doesn't really make sense for classical gates to have any parameters other than bits, but quantum gates can have specific angular (phase) rotations. Most of the quantum gates we will use have a set angle, e.g. $\pi/2$, but the option is always there.
+<br/>
+<hr style={{width: "40%"}}/>
+
+<a name="foot1">1</a>. This state is written in <a href="https://en.wikipedia.org/wiki/Bra%E2%80%93ket_notation" target="_blank">bra-ket notation</a>, which is widely used in quantum physics and computing. Bra-ket notation can be pretty confusing to understand at first, so I recommend checking out this week's <a>addendum</a> to learn more about it.
+
+<a name="foot2">2</a>. In the expression $\langle \psi | \psi \rangle$, each term of $|\psi\rangle$ will be squared and summed up. There is some subtlety going on here with complex numbers, as the bra $\langle \psi |$ is actually the <a href="https://en.wikipedia.org/wiki/Conjugate_transpose" target="_blank">conjugate transpose</a> of the ket $|\psi\rangle$. See this week's <a>addendum</a> for more about this point.
+
+<a name="foot3">3</a>. You may be wondering why only one of the amplitudes is a complex number, or why we are even using complex numbers at all. The answer to the latter question is that complex numbers help us model <a href="https://en.wikipedia.org/wiki/Phase_factor" target="_blank">phase</a> in quantum mechanics. The answer to the former question is due to our restriction that $|\alpha|^2+|\beta|^2=1$. In more general sources discussing quantum mechanics, both $\alpha$ and $\beta$ are complex. But there is no reason for us to have four variables when the fourth is essentially locked in by our restriction. Hence, in quantum computing, we use the convention that $\alpha$ has no imaginary part and non-negative.
+</KatexSpan>
