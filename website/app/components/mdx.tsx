@@ -5,7 +5,7 @@ import { MDXRemote } from 'next-mdx-remote/rsc'
 import { highlight } from 'sugar-high'
 import React from 'react'
 import KatexSpan from 'app/components/latex'
-import { Mafs, Coordinates, Plot } from 'mafs'
+import * as m from 'mafs'
 
 function Table({ data }) {
   let headers = data.headers.map((header, index) => (
@@ -56,13 +56,6 @@ function Code({ children, ...props }) {
   return <code dangerouslySetInnerHTML={{ __html: codeHTML }} {...props} />
 }
 
-function Coords() {
-  return <Mafs pan={false}>
-    <Coordinates.Cartesian subdivisions={4} />
-    <Plot.OfX y={(x) => Math.sin(5*x)} />
-  </Mafs>
-}
-
 function slugify(str) {
   return str
     .toString()
@@ -108,8 +101,7 @@ let components = {
   code: Code,
   Table,
   KatexSpan,
-  Mafs,
-  Coords,
+  m,
 }
 
 export function CustomMDX(props) {

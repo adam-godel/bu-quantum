@@ -3,11 +3,18 @@ title: 'LaTeX and Mafs Playground'
 publishedAt: '2025-04-22'
 summary: 'A place to do MDX testing for LaTeX and Mafs.'
 ---
+
 ## Test
+
 <KatexSpan>
-test $$
+test 
+$$
 x = y
 $$
 Hmm.
 </KatexSpan>
-<Coords/>
+
+<m.Mafs pan={true} zoom={true}>
+    <m.Coordinates.Cartesian subdivisions={4} />
+    <m.Plot.OfX y={(x) => 2*Math.sin(2*x)} />
+</m.Mafs>
