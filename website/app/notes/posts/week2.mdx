@@ -104,7 +104,7 @@ $$
 $$
 Cool! So we've created our first quantum circuit. But how do we convince ourselves that we have indeed put $|q\rangle$ in equal superposition? 
 
-This is what the Qiskit Aer library is for. It allows us to create a local quantum simulator where we can measure the state, go back in time, and remeasure as many times as we want.<sup><a href="#foot2">2</a></sup> Qiskit calls this local simulator a `Sampler`.
+This is what the Qiskit Aer library is for. It allows us to create a local quantum simulator where we can measure the state, go back in time, and remeasure as many times as we want.<sup><a href="#foot2">2</a></sup> Qiskit calls this local simulator a sampler, and each instance we measure our circuit using the sampler is known as a shot.
 ```
 from qiskit_aer.primitives import SamplerV2
 
