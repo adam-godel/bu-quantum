@@ -24,7 +24,7 @@ We won't be dealing too much with formal definitions throughout the semester, bu
 ## Single-Qubit Gates
 We have now built up enough theory about what quantum states and qubits are that we can start looking at how we can use a qubit in practice. To build quantum circuits, we need a systematic way to change quantum states. 
 
-A **single-qubit quantum gate** is a $2 \times 2$ <a href="https://en.wikipedia.org/wiki/Unitary_matrix" target="_blank">unitary matrix</a>. All of the quantum gates we will be looking at this semester are also **Hermitian**, which means that they are equal to their conjugate transpose. This means that for a quantum gate $U$, $U^2=I$, so applying the gate a second time will reverse it.
+A **single-qubit quantum gate** is a $2 \times 2$ [unitary matrix](https://en.wikipedia.org/wiki/Unitary_matrix). All of the quantum gates we will be looking at this semester are also **Hermitian**, which means that they are equal to their conjugate transpose. This means that for a quantum gate $U$, $U^2=I$, so applying the gate a second time will reverse it.
 
 Quantum gates are really easy to read. The first column tells you where the $|0\rangle$ state goes to and the second column tells you where the $|1\rangle$ state goes to. For example, the identity gate
 {String.raw`$$

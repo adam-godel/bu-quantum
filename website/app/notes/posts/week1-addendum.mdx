@@ -13,7 +13,7 @@ A **ket** is simply a column vector, i.e. a list of amplitudes in the form of a 
 
 A **bra** is simply a row vector, i.e. a list of amplitudes in the form of a $1 \times n$ matrix. Similarly to a ket, we write a bra as $\langle \psi|$. Importantly, $\langle \psi| = |\psi\rangle^\dag$ and $|\psi\rangle = \langle\psi|^\dag$. 
 
-Here, the $\dag$ symbol denotes the **conjugate transpose** of the vector. You may be familiar with the <a href="https://en.wikipedia.org/wiki/Transpose" target="_blank">transpose</a> of a matrix already; the conjugate transpose simply also flips the sign of the imaginary part of each element. For example,
+Here, the $\dag$ symbol denotes the **conjugate transpose** of the vector. You may be familiar with the [transpose](https://en.wikipedia.org/wiki/Transpose) of a matrix already; the conjugate transpose simply also flips the sign of the imaginary part of each element. For example,
 {String.raw`$$
 |\psi\rangle = \begin{bmatrix}
 a \\
@@ -24,7 +24,7 @@ a & b-ci
 $$`}
 There is nothing special about vectors here; you can find the conjugate transpose of any matrix in a similar way.
 
-In bra-ket notation, $\langle \psi | \psi \rangle$ represents the <a href="https://en.wikipedia.org/wiki/Dot_product" target="_blank">inner product</a> (dot product) and $|\psi\rangle \langle \psi |$ represents the <a href="https://en.wikipedia.org/wiki/Outer_product" target="_blank">outer product</a>. For the example above, we find that
+In bra-ket notation, $\langle \psi | \psi \rangle$ represents the [inner product](https://en.wikipedia.org/wiki/Dot_product) (dot product) and $|\psi\rangle \langle \psi |$ represents the [outer product](https://en.wikipedia.org/wiki/Outer_product). For the example above, we find that
 {String.raw`$$
 \langle \psi | \psi \rangle = \begin{bmatrix}
 a & b-ci
@@ -97,7 +97,7 @@ H|0\rangle = \begin{bmatrix}
 $$`}
 This is an interesting result! This matrix seems to convert the $|0\rangle$ state, i.e. 100% '0', into the $|+\rangle$ state, i.e. 50% '0' and 50% '1'. 
 
-There is a more subtle fact about this matrix $H$. We can observe that $HH^\dag=H^\dag H=I$, where $I$ is the <a href="https://en.wikipedia.org/wiki/Identity_matrix" target="_blank">identity matrix</a>. If this property is true for some matrix $U$, then $U$ is a <a href="https://en.wikipedia.org/wiki/Unitary_matrix" target="_blank">unitary matrix</a>, which means that it will preserve the property that $\langle \psi | \psi \rangle=1$ for any quantum state $|\psi\rangle$ when applied. More formally, we would write
+There is a more subtle fact about this matrix $H$. We can observe that $HH^\dag=H^\dag H=I$, where $I$ is the [identity matrix](https://en.wikipedia.org/wiki/Identity_matrix). If this property is true for some matrix $U$, then $U$ is a [unitary matrix](https://en.wikipedia.org/wiki/Unitary_matrix), which means that it will preserve the property that $\langle \psi | \psi \rangle=1$ for any quantum state $|\psi\rangle$ when applied. More formally, we would write
 $$
 \langle\psi|U^\dag U|\psi\rangle = \langle\psi|\psi\rangle = 1
 $$

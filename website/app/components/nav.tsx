@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 
 const navItems = {
   '/': {
@@ -14,13 +15,17 @@ export function Navbar() {
     <aside className="-ml-[8px] mb-16 tracking-tight">
       <div className="lg:sticky lg:top-20">
         <nav
-          className="flex flex-row items-start relative px-0 pb-0 fade md:overflow-auto scroll-pr-6 md:relative"
+          className="flex flex-row items-center relative px-0 pb-0 fade md:overflow-auto scroll-pr-6 md:relative"
           id="nav"
         >
           <div className="flex flex-row space-x-0 pr-10">
-            <b className="text-xl flex align-middle relative py-1 px-2 m-1">
-              BU Quantum
-            </b>
+            <Image 
+              src="/logo.png"
+              alt="BU Quantum"
+              width={78}
+              height={24}
+              className="flex align-middle relative px-2"
+            />
             {Object.entries(navItems).map(([path, { name }]) => {
               return (
                 <Link
