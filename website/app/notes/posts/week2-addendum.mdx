@@ -28,7 +28,7 @@ from qiskit import QuantumCircuit
 
 qc = QuantumCircuit(2)
 qc.h(0)
-qc.cx(0,1)
+qc.cx(0, 1)
 qc.measure_all()
 qc.draw()
 ```
@@ -54,7 +54,7 @@ backend = service.least_busy(
  
 pm = generate_preset_pass_manager(
     optimization_level=1, 
-    backend
+    backend=backend,
 )
 isa_circuit = pm.run(qc)
 

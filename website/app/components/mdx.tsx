@@ -9,18 +9,18 @@ import * as m from 'mafs'
 
 function Table({ data }) {
   let headers = data.headers.map((header, index) => (
-    <th key={index}>{header}</th>
+    <th className="font-normal px-6 py-3 border-0.5 border-solid border-white" key={index}>{header}</th>
   ))
   let rows = data.rows.map((row, index) => (
     <tr key={index}>
       {row.map((cell, cellIndex) => (
-        <td key={cellIndex}>{cell}</td>
+        <td className="px-6 py-3 border-0.5 border-solid border-white" key={cellIndex}>{cell}</td>
       ))}
     </tr>
   ))
 
   return (
-    <table>
+    <table className="text-center mx-auto border-collapse border-0.5 border-solid border-white">
       <thead>
         <tr>{headers}</tr>
       </thead>
