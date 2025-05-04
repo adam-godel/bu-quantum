@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 @import url("https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css");
 @import 'mafs/core.css';
+@import 'mafs/font.css';
 
 ::selection {
   background-color: #47a3f3;

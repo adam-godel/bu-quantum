@@ -60,6 +60,30 @@ $$
 $$
 This is how we usually write a state in quantum computing. Since any quantum state can be written as a linear combination of $|0\rangle$ and $|1\rangle$, {String.raw`$\{|0\rangle, |1\rangle\}$`} forms a basis. In fact, this basis has a special name: the computational basis.
 
+Below is an example of possible quantum state if we restrained them to be only real numbers, so we can represent it in a 2D grid. Feel free to play around with it to get a good feel for the different possible states.
+{(() => { pt0 = m.useMovablePoint([1/Math.sqrt(2),1/Math.sqrt(2)], {
+    color: "#ff0000",
+    constrain: (position) => m.vec.withMag(position, 1),
+}) })()}
+<m.Mafs viewBox={{x: [-1, 1], y: [-1, 1], padding: 0.25}} pan={false}>
+    <m.Coordinates.Cartesian 
+        xAxis={{lines: 0.5, labels: (n) => Math.abs(n) == 1 ? (n == -1 ? "−" : "")+"|1〉" : ""}} 
+        yAxis={{lines: 0.5, labels: (n) => Math.abs(n) == 1 ? (n == -1 ? "−" : "")+"|0〉" : ""}} 
+        subdivisions={4}
+    />
+    <m.Circle
+        center={[0, 0]}
+        radius={1}
+        strokeStyle="dashed"
+        strokeOpacity={0.3}
+        fillOpacity={0}
+    />
+    {Math.abs(pt0.x) > 0.05 && <m.Vector tip={[pt0.x, 0]} color="#8b0000"/>}
+    {Math.abs(pt0.y) > 0.05 && <m.Vector tip={[0, pt0.y]} color="#8b0000"/>}
+    <m.Vector tip={pt0.point}/>
+    {pt0.element}
+</m.Mafs>
+
 Now, let's try to write a state in equal superposition. We cannot just use $1/2$ for $\alpha$ and $\beta$, as their squares must sum to 1. Instead, a state in equal superposition can be written as
 {String.raw`$$
 |+\rangle = \frac{1}{\sqrt{2}}|0\rangle+\frac{1}{\sqrt{2}}|1\rangle = \frac{|0\rangle+|1\rangle}{\sqrt{2}}

@@ -109,6 +109,7 @@ export function CustomMDX(props) {
     <MDXRemote
       {...props}
       components={{ ...components, ...(props.components || {}) }}
+      options={{scope: {pt0: m.useMovablePoint([1/Math.sqrt(2),1/Math.sqrt(2)])}}}
     />
   )
 }
