@@ -60,15 +60,15 @@ $$
 $$
 This is how we usually write a state in quantum computing. Since any quantum state can be written as a linear combination of $|0\rangle$ and $|1\rangle$, {String.raw`$\{|0\rangle, |1\rangle\}$`} forms a basis. In fact, this basis has a special name: the computational basis.
 
-Below is an example of possible quantum state if we restrained them to be only real numbers, so we can represent it in a 2D grid. Feel free to play around with it to get a good feel for the different possible states.
+Below is an example of possible quantum states if we constrained $\alpha$ and $\beta$ to only be real numbers, so we can represent them in a 2D grid. Note that this isn't exactly what a qubit is, but it's a good sample for the different possible linear combinations of the computational basis.
 {(() => { pt0 = m.useMovablePoint([1/Math.sqrt(2),1/Math.sqrt(2)], {
     color: "#ff0000",
     constrain: (position) => m.vec.withMag(position, 1),
 }) })()}
 <m.Mafs viewBox={{x: [-1, 1], y: [-1, 1], padding: 0.25}} pan={false}>
     <m.Coordinates.Cartesian 
-        xAxis={{lines: 0.5, labels: (n) => Math.abs(n) == 1 ? (n == -1 ? "−" : "")+"|1〉" : ""}} 
-        yAxis={{lines: 0.5, labels: (n) => Math.abs(n) == 1 ? (n == -1 ? "−" : "")+"|0〉" : ""}} 
+        xAxis={{lines: 0.5, labels: (n) => Math.abs(n) == 1 ? (n == -1 ? "−" : "")+"|0〉" : ""}} 
+        yAxis={{lines: 0.5, labels: (n) => Math.abs(n) == 1 ? (n == -1 ? "−" : "")+"|1〉" : ""}} 
         subdivisions={4}
     />
     <m.Circle
