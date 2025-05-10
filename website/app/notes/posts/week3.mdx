@@ -79,7 +79,7 @@ We now have two possibilities: if $|q_0\rangle$ measures to $|0\rangle$, then th
 
 Mathematically, we would write this quantum state as
 {String.raw`$$
-|q_0 q_1\rangle = CX|+\rangle|0\rangle = \frac{|00\rangle+|11\rangle}{\sqrt{2}} = |\Phi^{+}\rangle
+|q_1 q_0\rangle = CX|+\rangle|0\rangle = \frac{|00\rangle+|11\rangle}{\sqrt{2}} = |\Phi^{+}\rangle
 $$`}
 As I have indicated, this quantum state is so important that it has a special symbol, $|\Phi^\{+\}\rangle$. Formally, it is called the "first maximally entangled two-qubit Bell state." For the rest of today's lesson, we will talk about what this fancy name actually means.
 
@@ -102,7 +102,24 @@ Anyway, my output looks like this:
 ```
 {'00': 1022, '11': 1026}
 ```
-As we can see, there are no instances of '01' or '10' showing up. The property of two independent qubits being related in this way is known as **entanglement**, and it's one of the most fundamental properties that a quantum computer has and a classical computer doesn't. 
+As we can see, there are no instances of '01' or '10' showing up. The property of two independent qubits being related in this way is known as **entanglement**, and it's one of the most fundamental properties that a quantum computer has and a classical computer doesn't.
+
+<Quiz 
+    question={<span>Suppose your friend prepares the {String.raw`$|\Phi^{+}\rangle$`} state and measures <i>only qubit 0</i> with 2048 shots. What will be the (approximate) output in Qiskit?</span>}
+    answers={[
+        <code>{String.raw`{'00': 1024, '11': 1024}`}</code>,
+        <code>{String.raw`{'00': 1024, '01': 1024}`}</code>,
+        <code>{String.raw`{'00': 1024, '10': 1024}`}</code>,
+        <code>{String.raw`{'01': 1024, '10': 1024}`}</code>,
+    ]}
+    correct={1}
+    explanation={[
+        <span>This would be the result if we measured both qubits, but we're only measuring qubit 0 here.</span>, 
+        <span>Both qubits must be measured to observe entanglement. With only the first qubit measured, it is just in the <InlineMath>|+\rangle</InlineMath> state while the other classical register is always 0.</span>,
+        <span>This is really close, but remember that qubit 0 is written as the least significant bit in Qiskit.</span>,
+        <span>This is an entangled state, but not the one we set up here.</span>,
+    ]}
+/>
 
 We'll be looking at our first quantum algorithm next week, which performs better than the best possible classical algorithm due to the principle of entanglement.
 
