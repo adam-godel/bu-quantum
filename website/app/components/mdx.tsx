@@ -6,6 +6,8 @@ import { highlight } from 'sugar-high'
 import React from 'react'
 import KatexSpan from 'app/components/latex'
 import * as m from 'mafs'
+import { Radio, RadioGroup, FormControlLabel, FormControl, FormLabel } from '@mui/material'
+import { InlineMath } from 'react-katex'
 
 function Table({ data }) {
   let headers = data.headers.map((header, index) => (
@@ -56,6 +58,31 @@ function Code({ children, ...props }) {
   return <code dangerouslySetInnerHTML={{ __html: codeHTML }} {...props} />
 }
 
+function Quiz(props) {
+  const [value, setValue] = React.useState('')
+  const [color, setColor] = React.useState('white')
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = (event.target as HTMLInputElement).value
+    setValue(newValue)
+    setColor(newValue == props.correct ? '#A1DD70' : '#FB4141')
+  }
+  return (
+    <FormControl>
+      <FormLabel sx={{color: color, '&.Mui-focused': {color: color}, fontWeight: "bold", fontStyle: "italic", cursor: 'text'}}>Test your understanding!</FormLabel>
+      <FormLabel sx={{color: color, '&.Mui-focused': {color: color}, fontSize: "1.1rem", cursor: 'text'}}>{props.question}</FormLabel>
+      <RadioGroup value={value} onChange={handleChange}>
+        {props.answers.map((item: string, index: number) => (
+          <FormControlLabel key={index} value={index} control={<Radio sx={{color: "white", '&.Mui-checked': {color: color}}} />} label={<KatexSpan>{item}</KatexSpan>} sx={{color: "white"}} />
+        ))}
+      </RadioGroup>
+      {color != 'white' && (
+          <FormLabel sx={{color: color, '&.Mui-focused': {color: color}, cursor: 'text'}}><b>{value == props.correct ? "Right!" : "Not quite."}</b> {props.explanation[Number(value)]}</FormLabel>
+        )
+      }
+    </FormControl>
+  )
+}
+
 function slugify(str) {
   return str
     .toString()
@@ -101,7 +128,9 @@ let components = {
   code: Code,
   Table,
   KatexSpan,
+  InlineMath,
   m,
+  Quiz,
 }
 
 export function CustomMDX(props) {

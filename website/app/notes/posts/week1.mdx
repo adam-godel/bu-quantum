@@ -109,6 +109,13 @@ If you're not comfortable with spherical coordinates, don't worry! We won't real
 
 The Bloch sphere makes it clear that we can write quantum states in other bases, not just {String.raw`$\{|0\rangle, |1\rangle\}$`}. For example, we could (and sometimes do) use {String.raw`$\{|+\rangle, |-\rangle\}$`} or {String.raw`$\{|i+\rangle, |i-\rangle\}$`} as a basis instead. These are called the X basis and Y basis respectively, while the computational basis is also known as the Z basis. These names come from the axis they lay on the Bloch sphere.
 
+<Quiz 
+    question={"Which of the following equivalences is correct?"}
+    answers={[String.raw`$|+\rangle = \frac{1}{\sqrt{2}}|0\rangle-\frac{1}{\sqrt{2}}|1\rangle$`, String.raw`$|i+\rangle = \frac{i}{\sqrt{2}}|0\rangle+\frac{i}{\sqrt{2}}|1\rangle$`, String.raw`$|1\rangle = \frac{1}{\sqrt{2}}|+\rangle-\frac{1}{\sqrt{2}}|-\rangle$`, String.raw`$|-\rangle = \frac{1}{\sqrt{2}}|0\rangle-\frac{1}{\sqrt{2}}|+\rangle$`]}
+    correct={2}
+    explanation={[<span>This is <InlineMath>|-\rangle</InlineMath> by definition.</span>, <span>Remember that <InlineMath>\alpha</InlineMath> should be a real number. Both of the coefficients shouldn't be imaginary.</span>, <span>Subtracting the <InlineMath>|-\rangle</InlineMath> term cancels out the <InlineMath>|0\rangle</InlineMath> term, leaving only the <InlineMath>|1\rangle</InlineMath>.</span>, <span>This cancels out the <InlineMath>|0\rangle</InlineMath> term, so it can't be <InlineMath>|+\rangle</InlineMath>.</span>]}
+/>
+
 The final thing I want to mention is that the Bloch sphere allows us to think of gates as rotations. It doesn't really make sense for classical gates to have any parameters other than bits, but quantum gates can have specific angular (phase) rotations. Most of the quantum gates we will use have a set angle, e.g. $\pi/2$, but the option is always there.
 <br/>
 <hr style={{width: "40%"}}/>
