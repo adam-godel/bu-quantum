@@ -2,12 +2,16 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { MDXRemote } from 'next-mdx-remote/rsc'
-import { highlight } from 'sugar-high'
+import hljs from 'highlight.js/lib/core'
+import 'highlight.js/styles/gml.css'
+import python from 'highlight.js/lib/languages/python'
 import React from 'react'
 import KatexSpan from 'app/components/latex'
 import * as m from 'mafs'
 import { Radio, RadioGroup, FormControlLabel, FormControl, FormLabel } from '@mui/material'
 import { InlineMath } from 'react-katex'
+
+hljs.registerLanguage('python', python)
 
 function Table({ data }) {
   let headers = data.headers.map((header, index) => (
@@ -54,7 +58,7 @@ function RoundedImage(props) {
 }
 
 function Code({ children, ...props }) {
-  let codeHTML = highlight(children)
+  let codeHTML = hljs.highlight(children, {language: 'python'}).value
   return <code dangerouslySetInnerHTML={{ __html: codeHTML }} {...props} />
 }
 
