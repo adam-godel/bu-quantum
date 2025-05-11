@@ -83,6 +83,35 @@ function Quiz(props) {
   )
 }
 
+function GHZInteractive() {
+  const [assignment, setAssignment] = React.useState([['+', '+'], ['+', '+'], ['+', '+']])
+  const [status, setStatus] = React.useState([true, false, false, false])
+  const handleChange = (i: number, j: number) => {
+    let newAssignment = assignment.map(arr => [...arr])
+    newAssignment[i][j] = assignment[i][j] == '+' ? '-' : '+'
+    setAssignment(newAssignment)
+  }
+  const symToNum = (sym: string) => (sym == '+' ? 1 : 0)
+  React.useEffect(() => {
+    setStatus([
+      (symToNum(assignment[0][0])+symToNum(assignment[1][0])+symToNum(assignment[2][0])) % 2 == 1,
+      (symToNum(assignment[0][1])+symToNum(assignment[1][1])+symToNum(assignment[2][0])) % 2 == 0,
+      (symToNum(assignment[0][1])+symToNum(assignment[1][0])+symToNum(assignment[2][1])) % 2 == 0,
+      (symToNum(assignment[0][0])+symToNum(assignment[1][1])+symToNum(assignment[2][1])) % 2 == 0,
+    ])
+  }, [assignment])
+  return (
+    <center>
+      <p style={{fontSize: "1.1rem"}}><i>Click on the left table entries to change the assignment of symbols.</i></p>
+      <div style={{display: "flex", justifyContent: "center", alignItems: "center", gap: "5rem"}}>
+        <div><Table data={{headers: ["Player", "$X$", "$Y$"], rows: [["$A$", <div style={{cursor: "pointer", userSelect: "none"}} onClick={() => {handleChange(0,0)}}><InlineMath>{assignment[0][0]}</InlineMath></div>, <div style={{cursor: "pointer", userSelect: "none"}} onClick={() => {handleChange(0,1)}}><InlineMath>{assignment[0][1]}</InlineMath></div>], ["$B$", <div style={{cursor: "pointer", userSelect: "none"}} onClick={() => {handleChange(1,0)}}><InlineMath>{assignment[1][0]}</InlineMath></div>, <div style={{cursor: "pointer", userSelect: "none"}} onClick={() => {handleChange(1,1)}}><InlineMath>{assignment[1][1]}</InlineMath></div>], ["$C$", <div style={{cursor: "pointer", userSelect: "none"}} onClick={() => {handleChange(2,0)}}><InlineMath>{assignment[2][0]}</InlineMath></div>, <div style={{cursor: "pointer", userSelect: "none"}} onClick={() => {handleChange(2,1)}}><InlineMath>{assignment[2][1]}</InlineMath></div>]]}}/></div>
+        <div><Table data={{headers: ["Input", "Output"], rows: [["$\\textit{XXX}$", <div style={{color: status[0] ? "#A1DD70" : "#FB4141"}}><InlineMath>{assignment[0][0]+assignment[1][0]+assignment[2][0]}</InlineMath></div>], ["$\\textit{YYX}$", <div style={{color: status[1] ? "#A1DD70" : "#FB4141"}}><InlineMath>{assignment[0][1]+assignment[1][1]+assignment[2][0]}</InlineMath></div>], ["$\\textit{YXY}$", <div style={{color: status[2] ? "#A1DD70" : "#FB4141"}}><InlineMath>{assignment[0][1]+assignment[1][0]+assignment[2][1]}</InlineMath></div>], ["$\\textit{XYY}$", <div style={{color: status[3] ? "#A1DD70" : "#FB4141"}}><InlineMath>{assignment[0][0]+assignment[1][1]+assignment[2][1]}</InlineMath></div>]]}}/></div>
+      </div>
+      <p style={{fontSize: "1.1rem"}}>This strategy only works {status.reduce((partial, a) => partial + +a, 0)/0.04}% of the time. Not ideal!</p>
+    </center>
+  )
+}
+
 function slugify(str) {
   return str
     .toString()
@@ -131,6 +160,7 @@ let components = {
   InlineMath,
   m,
   Quiz,
+  GHZInteractive,
 }
 
 export function CustomMDX(props) {

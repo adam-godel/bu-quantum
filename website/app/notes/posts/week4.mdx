@@ -1,0 +1,173 @@
+---
+title: 'Pseudo-Telepathy, Superdense Coding, Teleportation'
+publishedAt: '2025-09-01'
+week: 4
+summary: 'This page contains the notes for week 3 of BU Quantum.'
+---
+<KatexSpan>
+## Table of Contents
+1. [Pseudo-Telepathy](#pseudo-telepathy)
+2. [Superdense Coding](#superdense-coding)
+3. [Teleportation](#teleportation)
+
+## Pseudo-Telepathy
+This week's lesson is one of my favorites, since we are starting to look at some actual quantum algorithms, in particular ones that leverage entanglement to achieve some really cool results. 
+
+The first one is called the **Greenberger–Horne–Zeilinger (GHZ) game**, and it is an example of something called **quantum pseudo-telepathy**. I think that name sounds a little superlative, but what it essentially identifies is a group of games that use entanglement to allow the players to win with certainty when that would be impossible using a classical computer.
+
+You'll notice that a lot of quantum algorithms are framed as games. For people who aren't computer scientists, this may seem a bit odd, but this is a pretty classic way to look at problems in computer science.<sup><a href="#foot1">1</a></sup>
+
+Suppose we have three players: $A$, $B$, and $C$, who are cooperating to try to win the game against the referee. Once the game starts, the three players cannot communicate, but they can come up with a strategy beforehand. 
+
+The referee has three letters, each of which is either an $X$ or a $Y$. We don't know how many they have, but we do know that the number of $X$s is odd, so they either have one or three of them. 
+
+The referee gives each player one of the letters. Each player must then choose to give either a $+$ or a $-$ to the referee.
+
+If the referee had three $X$s, the players must give back an odd number of $+$s. If the referee had one $X$, the players must give back an even number of $+$s. If they do so, the players win. Otherwise, the referee wins.
+
+Can we come up with a classical algorithm that guarantees victory for the players?
+
+It turns out that we can't, and there is a pretty simple and very elegant mathematical proof to show that it's impossible.
+
+Let's say that there is a classical algorithm that guarantees that the players win. This algorithm will be non-random, since it must make the players win in all cases. This means that this algorithm is essentially a table telling each player what symbol to give back based on what letter they receive.
+
+In other words, it will look something like this table with the letters replaced with either a $+$ or $-$.
+<Table data={{headers: ["Player", "$X$", "$Y$"], rows: [["$A$", "$a$", "$d$"], ["$B$", "$b$", "$e$"], ["$C$", "$c$", "$f$"]]}}/>
+
+Now, let's consider each possible set of letters and what the players should return in each case.
+<Table data={{headers: ["Input", "Output"], rows: [["$\\textit{XXX}$", "$abc$"], ["$\\textit{YYX}$", "$dec$"], ["$\\textit{YXY}$", "$dbf$"], ["$\\textit{XYY}$", "$aef$"]]}}/>
+
+Take a moment to examine these two tables and convince yourself that this setup is right.
+
+From the rules of the game, we know that an odd number of $+$s should be returned in one of the four cases (where there are three $X$s), and an even number of $+$s should be returned in the other three cases. 
+
+This means that the total number of $+$s in the table should be odd, since three even numbers plus an odd number is always odd.
+
+However, each letter in the table appears twice, so the total number of $+$s must always be even, regardless of how the letters are assigned.
+
+This means that it is **impossible** to create a classical algorithm that guarantees victory for the players. Regardless of how you assign the $+$s, you can never get a solution that always works.
+<GHZInteractive/>
+
+How can quantum computing help us win this game? It's actually super simple. We prepare the following three qubit entangled state:
+{String.raw`$$
+|GHZ\rangle = \frac{|000\rangle+|111\rangle}{\sqrt{2}}
+$$`}
+We then give one qubit to each player. If a player gets an $X$, they measure in the X basis, $\\\{|+\rangle, |-\rangle\\\}$. If a player gets an $Y$, they measure in the Y basis, $\\\{|i+\rangle, |i-\rangle\\\}$. Then, if they get a $|+\rangle$ or $|i+\rangle$, they give a $+$, and if they get a $|-\rangle$ or $|i-\rangle$, they give a $-$.
+
+When one qubit collapses in a certain way, this setup ensures that the other qubits collapse in the right way to win the game. Therefore, the players have achieved a sort of telepathy—they can sort of "know" what the other players are doing based on the output of their qubit!<sup><a href="#foot2">2</a></sup>
+
+As long as the players share an entangled state, this approach guarantees victory.
+
+I don't want to go into great detail about how to implement this solution in code, but I have placed my implementation below for those who are interested.
+```
+from qiskit import QuantumCircuit
+
+letters = ['X', 'Y', 'Y']
+
+qc = QuantumCircuit(3)
+qc.h(0)
+qc.cx(0, 1)
+qc.cx(0, 2)
+
+for i in range(3):
+    if letters[i] == 'Y':
+        qc.sdg(i)
+    qc.h(i)
+
+qc.measure_all()
+```
+We haven't talked about the $S^\{\dag\}$ gate yet, but it performs a 270 degree rotation about the z-axis.<sup><a href="#foot3">3</a></sup> Applying it with an $H$ gate converts the Y basis to the computational basis, and just applying the $H$ gate converts the X basis to the computational basis. We can only measure in the computational basis in Qiskit.
+
+If a player gets a 0 after measuring their qubit in this circuit, that corresponds with giving a $+$, and a 1 corresponds with giving a $-$.
+
+## Superdense Coding
+Let's take a look at another type of operation we can do using entanglement that is impossible on a classical computer. This one concerns a very fundamental fact of computing that you probably haven't even thought about before: to send two bits of information, you need two bits of information.
+
+Quantum computing can allow us to send two bits of information using a single qubit *as long as both the sender and receiver share an entangled state*. 
+
+In these types of problems, it's a classic convention to call the sender and receiver Alice and Bob. The superdense coding setup means that if both Alice and Bob have one qubit in $|\Phi^\{+\}\rangle$, Alice can encode two bits of information into her one qubit, send it to Bob, and then he can decode those two bits using both qubits, even though the information was only encoded onto Alice's qubit.
+
+I should clarify that this result is a bit less useful than it may seem at first glance; this setup does *not* allow us to generate two bits from just a single qubit (which is how it's sometimes described in less technical sources), but rather encode two bits of information into a single qubit and then decode it using two qubits. 
+
+What it does allow us to do, though, is communicate securely using a quantum computer. If an eavesdropper (often called Eve) obtains Alice's qubit as she's sending it to Bob, there's nothing she can do with it to extract the information without Bob's qubit.
+
+So let's go over the procedure. It's actually super simple. Alice simply applies one Pauli gate to her qubit depending on the bitstring she wants to encode:
+<Table data={{headers: ["Bitstring", "Pauli Gate"], rows: [['$00$', '$I$'], ['$01$', '$X$'], ['$10$', '$Z$'], ['$11$', '$Y$']]}}/>
+Once Bob then receives Alice's qubit, he simply undos the entanglement by performing an $H$ gate on Alice's qubit and then a $CX$ gate with Alice's qubit as the control and his qubit as the target. This will collapse the two qubits into the bitstring Alice encoded with certainty.
+
+<Quiz 
+    question={"Instead of applying a $Y$ gate to encode $11$, we could also apply $ZX$."}
+    answers={[
+        "True",
+        "False",
+    ]}
+    correct={0}
+    explanation={[
+        <span>If you perform the calculation, you'll find that <InlineMath>ZX=iY</InlineMath>, which is a global phase, so applying these two gates will always have the same effect as just applying the <InlineMath>Y</InlineMath> gate.</span>, 
+        <span>If you perform the calculation, you'll find that <InlineMath>ZX=iY</InlineMath>, which is a global phase, so applying these two gates will always have the same effect as just applying the <InlineMath>Y</InlineMath> gate.</span>,
+    ]}
+/>
+
+I don't want to do the calculations here since they're a bit tedious, but I encourage you to do them by just applying the gate operations to the qubits and seeing that the state must collapse into the correct bitstring with certainty.
+
+For those who are curious, here's how I would implement this procedure in Qiskit.
+```
+from qiskit import QuantumCircuit
+
+qc = QuantumCircuit(2)
+qc.h(1)
+qc.cx(1, 0)
+
+qc.barrier() # Alice gets qubit 1, Bob gets qubit 0
+
+qc.id(1) # or qc.x(1), qc.z(1), qc.y(1)
+
+qc.barrier() # Alice sends her qubit to Bob
+
+qc.cx(1, 0)
+qc.h(1)
+qc.measure_all()
+```
+With the identity applied to Alice's qubit, we get the following output, which is what we expect with certainty.
+```
+{'00': 2048}
+```
+
+## Teleportation
+There is perhaps an even more interesting application of the superdense coding procedure, which we can get if we think of reversing what we just did. Instead of trying to get two bits of information from a qubit, let's suppose that Alice has some qubit $|\psi\rangle=\alpha|0\rangle+\beta|1\rangle$ as well as one qubit from $|\Phi^\{+\}\rangle$ and Bob has the other qubit. 
+
+It turns out that we can pretty easily generate the following state:
+{String.raw`$$
+\begin{align*}
+|\Psi\rangle = \frac{1}{2} \big[&|00\rangle(\alpha|0\rangle+\beta|1\rangle)+|01\rangle(\alpha|1\rangle+\beta|0\rangle) \\
++&|10\rangle(\alpha|0\rangle-\beta|1\rangle)+|11\rangle(\alpha|1\rangle-\beta|0\rangle)\big]
+\end{align*}
+$$`}
+Alice can create this state by applying a $CX$ gate with $|\psi\rangle$ as the control and her entangled qubit as the target and then applying an $H$ gate onto $|\psi\rangle$.
+
+If Alice measures her two qubits after this state is created, she will get two classical bits that she can then send to Bob. Using his entangled qubit as well as the two classical bits of information, Bob can know to apply a certain gate to reproduce $|\psi\rangle$ exactly, essentially "teleporting" the qubit without needing to know what specific state it is. 
+
+This procedure is known as **quantum teleportation**.
+
+The specific gate that Bob needs to apply is exactly the same one Alice would apply in the superdense coding procedure based on the bitstring she wants to encode. Take a moment to think through the expression above for $|\Psi\rangle$ and convince yourself that this makes sense.
+
+Superdense coding and quantum teleportation are quite different in their presentation, but the key thing I want you to take away from learning about them is that they are essentially mirrors of each other.
+
+While I gave Qiskit implementations for the GHZ game and superdense coding, I'll leave an implementation of quantum teleportation as an exercise for you.
+
+<br/>
+<hr style={{width: "40%"}}/>
+
+<a name="foot1">1</a>. The specific framing for the GHZ game can somewhat vary, but mine is taken almost exactly from MIT professor Peter Shor's [lecture notes](https://math.mit.edu/~shor/435-LN/Lecture_14.pdf) on the topic, which is the most elegant description of the game that I've seen online.
+
+<a name="foot2">2</a>. Recall that the probability of measuring $\xi$ given a quantum state $|\psi\rangle$ is $|\langle \xi | \psi\rangle|^2$. We can use this fact to confirm that the procedure we have set up guarantees victory for the players. For example, if all players get $X$s, the probability of returning three $+$s is $\langle +| \langle +| \langle +| GHZ\rangle$. This turns out to be $1/4$, and so does the probability of measuring each combination with one $+$. We can perform a similar calculation in the case where two players get $Y$s to show that the procedure works with certainty for every case.
+
+<a name="foot3">3</a>. We can define the $S^\{\dag\}$ gate as
+{String.raw`$$
+S^{\dag} = \begin{bmatrix}
+1 & 0 \\
+0 & -i
+\end{bmatrix}
+$$`}
+It kind of makes sense that the $S^\{\dag\}$ gate induces half the rotation that the $Z$ gate does, since $S^\{\dag\} = \sqrt\{Z\}$.
+</KatexSpan>
