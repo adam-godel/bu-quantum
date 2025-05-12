@@ -58,10 +58,10 @@ Try to play with the demo below and see if you can find the configuration that a
         yAxis={{lines: 0.5, labels: (n) => Math.abs(n) == 1 ? (n == -1 ? "|1⟩" : "|0⟩") : ""}} 
         subdivisions={4}
     />
-    <m.Text x={pt0.x} y={pt0.y} attach="w" attachDistance={15} size={20}>⟨0|β₀⟩={pt0.x.toFixed(3)}</m.Text>
-    <m.Text x={pt0.x} y={pt0.y} attach="e" attachDistance={15} size={20}>⟨+|β₀⟩={pt0.y.toFixed(3)}</m.Text>
-    <m.Text x={pt1.x} y={pt1.y} attach="w" attachDistance={15} size={20}>⟨0|β₁⟩={pt1.x.toFixed(3)}</m.Text>
-    <m.Text x={pt1.x} y={pt1.y} attach="e" attachDistance={15} size={20}>⟨+|β₁⟩={pt1.y.toFixed(3)}</m.Text>
+    <m.Text x={pt0.x} y={pt0.y} attach="w" attachDistance={15} size={20}>⟨0|β₀⟩={pt0.y.toFixed(3)}</m.Text>
+    <m.Text x={pt0.x} y={pt0.y} attach="e" attachDistance={15} size={20}>⟨+|β₀⟩={pt0.x.toFixed(3)}</m.Text>
+    <m.Text x={pt1.x} y={pt1.y} attach="w" attachDistance={15} size={20}>⟨0|β₁⟩={pt1.y.toFixed(3)}</m.Text>
+    <m.Text x={pt1.x} y={pt1.y} attach="e" attachDistance={15} size={20}>⟨+|β₁⟩={pt1.x.toFixed(3)}</m.Text>
     <m.Circle
         center={[0, 0]}
         radius={1}
