@@ -71,7 +71,7 @@ This will output the following circuit:
 meas: 2/══════════════╩══╩═
                       0  1 
 ```
-I should probably mention that if we measure multiple qubits to one register, the result will be treated as a bitstring (or a superposition of bitstrings) with the first qubit being the most significant digit.
+I should probably mention that if we measure multiple qubits to one register, the result will be treated as a bitstring (or a superposition of bitstrings) with the first qubit being the least significant bit.
 
 Let's think about what would happen here. We know that applying the $H$ gate on $|q_0\rangle$ puts it in equal superposition between $|0\rangle$ and $|1\rangle$.
 
