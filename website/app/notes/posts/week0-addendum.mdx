@@ -5,7 +5,22 @@ week: 0
 summary: 'This page contains the addendum for week 0 of BU Quantum.'
 ---
 <KatexSpan>
-This is an extra page to help explain some of the basics of linear algebra to those who are unfamiliar with it. I highly recommend watching 3blue1brown's <a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank">Essence of Linear Algebra</a> series, as it does a great job providing a visual intuition for all of the concepts it covers.
+## Table of Contents
+1. [Matrix Basics](#matrix-basics)
+2. [Matrix Operations](#matrix-operations)
+3. [Inner and Outer Products](#inner-and-outer-products)
+4. [Basis](#basis)
+5. [Eigenvalues and Eigenvectors](#eigenvalues-and-eigenvectors)
+6. [Normalization](#normalization)
+
+
+## Matrix Basics
+This is an extra page to help explain some of the basics of linear algebra to those who are unfamiliar with it. 
+I highly recommend watching 3blue1brown's <a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank">Essence of Linear Algebra</a> series, 
+as it does a great job providing a visual intuition for all of the concepts it covers.
+If you want a course to utilize for a greater understanding of linear algebra, 
+I recommend MIT's <a href="https://ocw.mit.edu/courses/mathematics/18-06-linear-algebra-spring-2010/" target="_blank">Linear Algebra</a> course. 
+The course is provided for free via MIT's OpenCourseWare.
 
 A **matrix** is simply a 2D list of numbers. We can write a size $m \times n$ matrix as
 {String.raw`$$
@@ -17,39 +32,68 @@ a_{31} & a_{32} & \cdots & a_{3n} \\
 a_{m1} & a_{m2} & \cdots & a_{mn}
 \end{bmatrix}
 $$`}
-When we say a matrix is size $m \times n$, we are saying that it has $m$ rows and $n$ columns. We write the position in the subscript, with the row coming first and then the column, so $A_\{ij\}$ represents the element at row $i$ and column $j$. A matrix with only 1 column is known as a **column vector**, or just a vector. A matrix with only one row is known as a **row vector**.
+When we say a matrix is size $m \times n$, we are saying that it has $m$ rows and $n$ columns. 
+We write the position in the subscript, with the row coming first and then the column, so $A_\{ij\}$ represents the element at row $i$ and column $j$. 
+A matrix with only 1 column is known as a **column vector**, or just a vector. A matrix with only one row is known as a **row vector**.
 
-The **transpose** of a matrix, denoted with the subscript $T$, is an operation which switches the row and column indices of the matrix, so $A_\{ij\}=A^T_\{ji\}$. For example,
+{String.raw`$$
+\vec{v} = \begin{bmatrix}
+a_{11} \\
+a_{21} \\
+\vdots \\
+a_{m1}
+\end{bmatrix}
+\quad \text{(column vector)}
+$$`}
+
+{String.raw`$$
+\vec{r} = \begin{bmatrix}
+a_{11} & a_{12} & \cdots & a_{1n}
+\end{bmatrix} \quad \text{(row vector)}
+$$`}
+
+## Matrix Operations
+The **transpose** of a matrix, denoted with the subscript $\\top$, is an operation which switches the row and column indices of the matrix, so $A_\{ij\}=A^\\top_\{ji\}$. 
+For example,
 {String.raw`$$
 A = \begin{bmatrix}
 a & b \\
 c & d \\
 e & f
-\end{bmatrix}, \quad A^T = \begin{bmatrix}
+\end{bmatrix}, \quad A^\top = \begin{bmatrix}
 a & c & e \\
 b & d & f
 \end{bmatrix}
 $$`}
-In quantum computing, we will generally use the <a href="https://en.wikipedia.org/wiki/Conjugate_transpose" target="_blank">conjugate transpose</a>, denoted with the subscript $\dag$, which also flips the sign of the imaginary part of every value in the matrix. 
+In quantum computing, we will generally use the <a href="https://en.wikipedia.org/wiki/Conjugate_transpose" target="_blank">conjugate transpose</a>, 
+denoted with the subscript $\dag$, which also flips the sign of the imaginary part of every value in the matrix.
+You will see its use as we progress, but for now, just know that it is the same as the transpose, but with the imaginary part of each value flipped.
 
-If $A$ is a $m \times n$ matrix, and $B$ is a $n \times p$ matrix, the values of the matrix product $C=AB$, which is a $m \times p$ matrix, are defined as {String.raw`$C_{ij}=\sum_{k=1}^{n} A_{ik}B_{kj}$`}. The number of columns in $A$ must match the number of rows in $B$ for a matrix product to exist. For example,
+If $A$ is a $m \times n$ matrix, and $B$ is a $n \times p$ matrix, the values of the matrix product $C=AB$, which is a $m \times p$ matrix, are defined as {String.raw`$C_{ij}=\sum_{k=1}^{n} A_{ik}B_{kj}$`}. 
+The number of columns in $A$ must match the number of rows in $B$ for a matrix product to exist. For example,
 {String.raw`$$
 \begin{bmatrix}
 1 & 2 & 3 \\
 4 & 5 & 6
-\end{bmatrix}\begin{bmatrix}
+\end{bmatrix}
+
+\begin{bmatrix}
 7 & 8 \\
 9 & 10 \\
 11 & 12
-\end{bmatrix} = \begin{bmatrix}
+\end{bmatrix} = 
+
+\begin{bmatrix}
 58 & 64 \\
 139 & 154
 \end{bmatrix}
 $$`}
+
 The **inner product** of two vectors $a$ and $b$ of size $n$ is the sum of the product of the corresponding entries in each vector.
 {String.raw`$$
 a^\dag b = a \cdot b = a_1b_1+\cdots+a_nb_n
 $$`}
+
 As you can see, there are a few different ways to write the inner product. In quantum computing, we generally use <a href="https://en.wikipedia.org/wiki/Bra%E2%80%93ket_notation" target="_blank">bra-ket notation</a>, where we would write this operation as $\langle a | b \rangle$. For more on bra-ket notation, see the week 1 addendum.
 
 The **outer product** of two vectors $a$ and $b$ is the opposite operation, the product of all possible corresponding terms in each vector.
@@ -62,17 +106,171 @@ a_3b_1 & a_3b_2 & a_3b_3
 $$`}
 In bra-ket notation, we would write this operation as $|a\rangle\langle b|$.
 
-A set of vectors {String.raw`$\{v_1,\dots,v_n\}$`} is a **basis** if every possible vector in the space we're in can be written as a linear combination of the vectors in the basis. In other words,
+## Basis
+A set of vectors {String.raw`$\{v_1,\dots,v_n\}$`} is a **basis** if every possible vector in the 
+**space**<sup><a href="#foot1">1</a></sup> we're in (everywhere we can reach by scaling the vectors) can be written as a linear combination of the vectors in the basis. 
+The elements of a basis must be linearly independent, i.e. it cannot be possible to write one vector in the basis as a linear combination of the other vectors In other words,
+
 $$
 a = c_1v_1+\cdots+c_nv_n
 $$
-where $a$ is any vector in the space we're in and $c_1,\dots,c_n$ are some constant values. The elements of a basis must be linearly independent, i.e. it cannot be possible to write one vector in the basis as a linear combination of the other vectors. Consequently, if we are working with vectors in $n$ dimensions, any basis must be of size $n$.
 
-An **eigenvalue** and **eigenvector** are some value $\lambda$ and vector $v$ such that
-$$
-Av = \lambda v
-$$
-for a matrix $A$. In a linear algebra class, the process of <a href="https://en.wikipedia.org/wiki/Diagonalizable_matrix#Diagonalization" target="_blank">diagonalization</a> is usually covered as a way to find eigenvalues and eigenvectors of a matrix. However, we will be looking at a quantum algorithm to estimate the eigenvalues of a matrix later on in the semester.
+where $a$ is any vector in the space we're in and $c_1,\dots,c_n$ are some constant values. 
+Consequently, if we are working with vectors in $n$ dimensions, any basis must be of size $n$.
 
-Ultimately, the best way to become more familiar with linear algebra is just to practice it. There are plenty of videos and resources online to help you master the topics. A very strong understanding of linear algebra will make a lot of quantum computing concepts easier to understand.
+## Eigenvalues and Eigenvectors
+An **eigenvalue** and **eigenvector** are some value $\lambda$ and vector {String.raw`$\vec{v}$`} such that
+
+{String.raw`$$A\vec{v} = \lambda \vec{v}$$`}
+
+Conceptually, eigenvectors are vectors that don't change in its direction in space when multiplied by a transformation matrix. 
+In order to find these eigenvectors, we can find its associated eigenvalue using the **characteristic polynomial** of a matrix, which is given by the equation:
+
+{String.raw`$$
+\text{det}(A - \lambda I) = 0$$`}
+
+ Where det is the <a href="https://en.wikipedia.org/wiki/Determinant" target="_blank">determinant</a> of the matrix.
+
+
+
+Below is an example of how to find the eigenvalues and eigenvectors of the matrix
+
+{String.raw`$$
+A = \begin{pmatrix}4 & 2\\ 1 & 3\end{pmatrix}
+$$`}
+
+
+The characteristic polynomial is:
+
+{String.raw`$$
+\det(A - \lambda I) = 
+\det\begin{pmatrix}4-\lambda & 2\\ 1 & 3-\lambda\end{pmatrix} 
+= (4-\lambda)(3-\lambda) - 2 \cdot 1 
+= \lambda^2 - 7\lambda + 10.
+$$`}
+
+Solving:
+
+{String.raw`$$
+\lambda^2 - 7\lambda + 10 = 0
+$$`}
+
+gives the integer roots:
+
+{String.raw`$$
+\lambda = 5, \quad \lambda = 2.
+$$`}
+
+
+{String.raw`$\text{Solve } (A - 5I) \vec{v} = 0$`}
+
+{String.raw`$$
+(A - 5I) = \begin{pmatrix}-1 & 2\\ 1 & -2\end{pmatrix}, 
+\begin{pmatrix}-1 & 2\\ 1 & -2\end{pmatrix} 
+\begin{pmatrix}x\\ y\end{pmatrix} = 
+\begin{pmatrix}0\\ 0\end{pmatrix} 
+\implies -x + 2y = 0 \implies x = 2y.
+$$`}
+
+Choosing y = 1 gives:
+
+{String.raw`$$
+\mathbf v_5 = \begin{pmatrix}2\\1\end{pmatrix}.
+$$`}
+
+
+{String.raw`$\text{Solve } (A - 2I) \vec{v} = 0$`}
+
+{String.raw`$$
+(A - 2I) = \begin{pmatrix}2 & 2\\ 1 & 1\end{pmatrix}, 
+\begin{pmatrix}2 & 2\\ 1 & 1\end{pmatrix} 
+\begin{pmatrix}x\\ y\end{pmatrix} = 
+\begin{pmatrix}0\\ 0\end{pmatrix} 
+\implies x + y = 0 \implies y = -x.
+$$`}
+
+Choosing x = 1 gives:
+
+{String.raw`$$
+\mathbf v_2 = \begin{pmatrix}1\\-1\end{pmatrix}.
+$$`}
+
+The matrix
+
+{String.raw`$$
+A = \begin{pmatrix}4 & 2\\ 1 & 3\end{pmatrix}
+$$`}
+
+has integer eigenvalues 5 and 2, with corresponding integer eigenvectors
+
+{String.raw`$$
+\begin{pmatrix}2\\1\end{pmatrix} \text{ and }
+\begin{pmatrix}1\\-1\end{pmatrix}
+$$`}
+
+
+This is arguably the most important concept in linear algebra, both inside and outside of quantum computing.
+Some examples of their applications include 
+<a href="https://en.wikipedia.org/wiki/Eigenvalues_and_eigenvectors#Schr%C3%B6dinger_equation" target="_blank">Schrödinger's equation</a> and 
+<a href="https://en.wikipedia.org/wiki/Eigenvalues_and_eigenvectors#Molecular_orbitals" target="_blank">Molecular orbitals</a>.
+
+As we progress in the semester, we will be looking at a quantum algorithm to estimate the eigenvalues of a matrix later on in the semester.
+
+
+## Normalization
+Another important concept is **Normalization**. A vector is normalized if its ratio of magnatude (also called its norm, denoted as $\|\|v\|\|$) is based on 1. 
+In the world of linear algebra, we call this the unit vector (like a unit circle, where the max value is 1!). 
+For a vector {String.raw`$\vec{v}$`} with components $v_1, v_2, \dots, v_n$, the norm is given by
+
+{String.raw`$$
+\|v\| = \sqrt{|v_1|^2 + |v_2|^2 + \cdots + |v_n|^2}
+$$`}
+
+To normalize a vector, divide each component by its norm:
+{String.raw`$$
+\hat{v} = \frac{\vec{v}}{\|v\|};\ \text{Where: }  \hat{v} = \text{the normalized vector}
+$$`}
+
+Below is an example of a normalized vector calculation:
+{String.raw`$$
+\vec{v} = \begin{bmatrix}
+3 \\ 4
+\end{bmatrix}, 
+
+\quad \|v\| = \sqrt{3^2 + 4^2} = \sqrt{25} = 5
+$$`}
+
+{String.raw`$$
+\hat{v} = \frac{1}{5}\begin{bmatrix}
+3 \\
+4
+\end{bmatrix} 
+
+= 
+
+\begin{bmatrix}
+\frac{3}{5} \\\\
+\frac{4}{5}
+\end{bmatrix}
+$$`}
+
+In quantum computing, all state vectors must be normalized, since the sum of the probabilities of all possible outcomes must be equal to 1, representing 100%.
+
+As we progress throughout the semester, you will see equations have been normalized for use in quantum computing. An example is $|+\rangle$ where: 
+{String.raw`$$
+|+\rangle = \frac{|0\rangle+|1\rangle}{\sqrt{2}}
+$$`}
+
+Don't worry what $|+\rangle$ or other related symbols mean just yet; it will be covered as we progress, 
+but notice the denominator. Since there is a $\sqrt{2}$ in the denominator, 
+this means that the probability of measuring $|+\rangle$ as $|0\rangle$ or $|1\rangle$ has been normalized to 1.
+
+Ultimately, the best way to become more familiar with linear algebra is just to practice it. 
+There are plenty of videos and resources online to help you master the topics. 
+A very strong understanding of linear algebra will make a lot of quantum computing concepts easier to understand.
+
+<br/>
+<hr style={{width: "40%"}}/>
+
+<a name="foot1">1</a>. In the world of linear algebra, a space is a set of vectors that can be reached by scaling the vectors in the basis.
 </KatexSpan>
