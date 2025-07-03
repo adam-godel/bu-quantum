@@ -1,0 +1,152 @@
+---
+title: "Deutsch-Jozsa, Simon's Algorithms"
+publishedAt: '2025-09-01'
+week: 5
+summary: 'This page contains the notes for week 5 of BU Quantum.'
+---
+<KatexSpan>
+## Table of Contents
+1. [Deutsch-Jozsa Algorithm](#deutsch-jozsa-algorithm)
+2. [Simon's Algorithm](#simons-algorithm)
+
+## Deutsch-Jozsa Algorithm
+The **Deutsch-Jozsa algorithm** is different than the other algorithms we talked about in the last lesson. It has an *exponential* advantage over the best known classical algorithm.<sup><a href="#foot1">1</a></sup> Specifically, the best classical algorithm to solve the problem is $O(2^n)$, while our formulation of the Deutsch-Jozsa algorithm runs in $O(1)$. A huge difference!
+
+The problem is formulated as follows: suppose we have some boolean function $f(x)$ that takes in some bitstring $x$ and returns either a $0$ or a $1$. This function will be either *constant* or *balanced*. A function is *constant* if $f(x)=f(y)$ for all $x,y$. A function is *balanced* if an equal number of inputs produce $0$ and $1$ as their outputs. The problem states that given a black-box function $f$ (i.e. a function that we don't have access to the inner workings of) that is either constant or balanced, figure out whether it is constant or balanced.
+
+How do we figure out the best algorithm that this problem classically? Well, it turns out to be pretty intuitive. We know that either half of the $2^n$ inputs will output the same result or all of them will. So we need to check one more than half, or $2^\{n-1\}+1$, in the worst case to conclusively figure out which it is. There is no better approach to solve this; it runs in $O(2^n)$.
+
+The key to coming up with our quantum algorithm is figuring out what form to express $f(x)$ in. What we really want is a function that takes in a quantum state and returns the same state but with some distinguishable marking based on whether $f(x)=0$ or $1$.
+
+This is a situation where a phase change becomes really useful! We will use a really common tool in quantum computing known as an *oracle*, in particular a *phase oracle*, which we define as follows:
+{String.raw`$$
+O_f|x\rangle = \begin{cases}
+\phantom{-}|x\rangle & \text{if } f(x)=0 \\
+-|x\rangle & \text{if } f(x)=1
+\end{cases} = (-1)^{f(x)} |x\rangle
+$$`}
+
+The other tool we will use is the Hadamard transform (usually notated as $H^\{\otimes n\}$), which is simply the application of a Hadamard gate on each qubit, placing a quantum state $|\psi\rangle$ into equal superposition from $|0\rangle$ to $|2^n-1\rangle$. 
+
+In formal notation, we can write the Hadamard transform as
+{String.raw`$$
+H^{\otimes n}|0\rangle = \frac{1}{2^{n/2}} \sum_{j=0}^{2^n-1} |j\rangle.
+$$`}
+
+Once we have these tools, assembling the algorithm is simple. We simply start at $|0^n\rangle$ and append a Hadamard transform to each side of the oracle:
+{String.raw`$$
+|0\rangle \mapsto H^{\otimes n} O_f H^{\otimes n} |0\rangle = \frac{1}{2^n} \sum_{j=0}^{2^n-1} \sum_{k=0}^{2^n-1} (-1)^{f(j)} (-1)^{j \cdot k} |k\rangle
+$$`}
+where $j \cdot k$ can be thought of as the bitwise inner product mod 2, or the parity of the bitwise AND of $j$ and $k$.
+
+Now let's say that $|k\rangle = |0\rangle$. This leaves us with the amplitude
+{String.raw`$$
+\frac{1}{2^n} \sum_{j=0}^{2^n-1} (-1)^{f(j)},
+$$`}
+and recall that the probability of measuring a quantum state is the square of its amplitude. The key observation is that we can guarantee whether $f(x)$ is constant or balanced based on the amplitude of $|0\rangle$!
+
+<Quiz 
+    question={"Assume that $f(x)$ is balanced. Which statement is true?"}
+    answers={[
+        String.raw`$$
+        \frac{1}{2^n} \sum_{j=0}^{2^n-1} (-1)^{f(j)} = 0
+        $$`,
+        String.raw`$$
+        \frac{1}{2^n} \sum_{j=0}^{2^n-1} (-1)^{f(j)} = 1
+        $$`,
+    ]}
+    correct={0}
+    explanation={[
+        <span>If we know that <InlineMath>f(j)</InlineMath> will be <InlineMath>0</InlineMath> and <InlineMath>1</InlineMath> an equal number of times throughout the sum, then we know that every positive term will cancel out with a negative term.</span>, 
+        <span>If we know that <InlineMath>f(j)</InlineMath> will be <InlineMath>0</InlineMath> and <InlineMath>1</InlineMath> an equal number of times throughout the sum, then we know that every positive term will cancel out with a negative term.</span>,
+    ]}
+/>
+
+Think through what will happen if $f(x)$ is constant as well. You should be able to realize that looking at the amplitude of $|0\rangle$, and therefore the probability of measuring it, will tell us with certainty whether $f(x)$ is constant or balanced.
+
+It may not seem obvious how to measure the time complexity of an algorithm like this. In this algorithm, we call the oracle once, and we use a linear number of gates due to the Hadamard transform. This is somewhat analogous to the computer science concepts of time complexity and space complexity, but more often in quantum computing, we categorize algorithms based on how they compare to classical algorithms. For the Deutsch-Jozsa algorithm, it would be more useful to just say that it has an exponential speedup over its classical counterpart.
+
+Now, let's try implementing this in Qiskit together, because I think it teaches an important lesson.
+
+Qiskit has a great built-in object called `PhaseOracle` that takes in a boolean expression as a string. Note that the number of inputs to the boolean should be equal to the number of qubits the oracle is applied to.
+
+I have written two example boolean expressions, one corresponding to a constant function (always 0) and the other corresponding to a balanced function (simply returns the parity of the input).
+
+```py
+ex_constant = '(a & ~a) | (b & ~b) | (c & ~c) | (d & ~d)'
+ex_balanced = '(a ^ b) ^ (c ^ d)'
+```
+
+Let's test out the balanced function. The code for our circuit is as follows:
+
+```py
+from qiskit import QuantumCircuit
+from qiskit.circuit.library import PhaseOracle
+
+n = 4
+qc = QuantumCircuit(n)
+for i in range(n):
+    qc.h(i)
+oracle = PhaseOracle(ex_balanced)
+qc.append(oracle, qc.qubits)
+for i in range(n):
+    qc.h(i)
+qc.measure_all()
+qc.draw()
+```
+
+Note the difference between the `PhaseOracle` and the other gates we apply. The oracle is not a function of `qc`, but rather another object that we need to import from Qiskit's circuit library. This means that we apply it with the general `append` function. We also need to select which qubits to apply it to; `qc.qubits` will simply select all of them, which is what we want here.
+
+I have arbitrarily chosen to test our circuit on 4 qubits, but you can set `n` to whatever you want. The code block above results in the following output:
+```
+        ┌───┐┌───────────────┐┌───┐ ░ ┌─┐         
+   q_0: ┤ H ├┤0              ├┤ H ├─░─┤M├─────────
+        ├───┤│               │├───┤ ░ └╥┘┌─┐      
+   q_1: ┤ H ├┤1              ├┤ H ├─░──╫─┤M├──────
+        ├───┤│  Phase Oracle │├───┤ ░  ║ └╥┘┌─┐   
+   q_2: ┤ H ├┤2              ├┤ H ├─░──╫──╫─┤M├───
+        ├───┤│               │├───┤ ░  ║  ║ └╥┘┌─┐
+   q_3: ┤ H ├┤3              ├┤ H ├─░──╫──╫──╫─┤M├
+        └───┘└───────────────┘└───┘ ░  ║  ║  ║ └╥┘
+meas: 4/═══════════════════════════════╩══╩══╩══╩═
+                                       0  1  2  3 
+```
+This looks different from anything we've seen before! The `PhaseOracle` is looks like a gate, but it spans all of the qubits instead of just one of two. In truth, it makes more sense to think of the oracle as an *operator*, more akin to a black-box function with a bunch of gates inside it.
+
+I will not go into detail about how the oracle is implemented in this lesson, but check out the addendum if you are interested in learning more.
+
+The important thing you need to know is that the `PhaseOracle` object is a "composed" wrapper for all of these gates, which would really clutter up the circuit. But when we want to simulate the circuit, we need to *decompose* it first.
+
+There are two ways to do this. The first is adding a pretty self-explanatory line of code before simulating:
+```py
+qc = qc.decompose()
+```
+However, I don't recommend this because this `decompose` function may not fully decompose the circuit. If other abstract gates are used within the abstract gate you're decomposing, it doesn't necessarily decompose those with one function call. You can fix this by calling the `decompose` method several times, but that's pretty clunky.
+
+The way I prefer, if you know the backend you'll be simulating on, is to use the `transpile` function:
+```py
+from qiskit_aer import AerSimulator
+
+qc = transpile(qc, backend=AerSimulator())
+```
+This will decompose the circuit into specifically the gates that your backend can handle.<sup><a href="#foot2">2</a></sup> You don't have to worry about how this works in detail too much for the purposes of this course. You can always use the `AerSimulator` as your backend in all of the algorithms we will work on, and transpile to it accordingly.
+
+With our transpilation complete, we can finally get the output of our simulation.
+```
+{'1111': 2048}
+```
+Since $|0\rangle$ never appears, we know that its amplitude is $0$ and our input function is balanced.
+
+The Deutsch-Jozsa algorithm is really cool, but think about how *you* would actually solve this problem. You would probably test out a handful of different input values of the function $f(x)$. The moment you get a second unique value, you know the function is balanced. If that doesn't happen after, say, 20 or 30 queries, you can be pretty confident that the function is constant.
+
+Even though the classical approach above does not work with certainty, it doesn't really *feel* like the Deutsch-Jozsa algorithm is all that powerful, even if it is $O(1)$. 
+
+## Simon's Algorithm
+
+<br/>
+<hr style={{width: "40%"}}/>
+
+<a name="foot1">1</a>. The exponential speedup of the Deutsch-Jozsa algorithm only exists if we insist that the algorithm be deterministic. It turns out that the best classical probabilistic algorithm can run in $O(k)$ with $1-1/2^k$ probability of success, a pretty major difference. However, it is not a deterministic, constant approach like the quantum algorithm.
+
+<a name="foot2">2</a>. Different models of IBM quantum hardware may use different sets of gates, which correspond to physical circuitry on the quantum chip. This concern is relatively unique for quantum computing, due to how many different possible ways there are to construct quantum computers. Qiskit tries to make it easy to transpile your circuit to whatever backend you are using as long as you know which one you want to use.
+</KatexSpan>
