@@ -105,7 +105,7 @@ qprog = synthesize(qmod)
 ```
 The parameter `SECRET_INT` defines $a$, `STRING_LENGTH` defines the number of qubits we will use, and `NUM_SHOTS` defines the number of shots for our circuit. Note that since the result is guaranteed, we really only need one shot—having many shots just shows that the algorithm is working as intended.
 
-In Classiq, we define the parameter we want to measure by putting `Output` in its type. Here, we ultimtaely want to measure the input $x$, so we pass it into our `main` function with the `Output` type. The `allocate` function simply grants the appropriate number of qubits to the quantum variable.
+In Classiq, we define the parameter we want to measure by putting `Output` in its type. Here, we ultimately want to measure the input $x$, so we pass it into our `main` function with the `Output` type. The `allocate` function simply grants the appropriate number of qubits to the quantum variable.
 
 Just like many programming languages, Classiq will always look for a `main` function to decide where to start executing your code. You can call other functions, but you need to have at least one parameter as an `Output` if you want to measure something as a result of your quantum circuit.
 
