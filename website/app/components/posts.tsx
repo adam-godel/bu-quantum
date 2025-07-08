@@ -9,7 +9,7 @@ export function BlogPosts() {
       {allBlogs
         .sort((a, b) => {
           if (
-            a.metadata.week > b.metadata.week
+            parseInt(a.metadata.week) > parseInt(b.metadata.week)
           ) {
             return -1
           }

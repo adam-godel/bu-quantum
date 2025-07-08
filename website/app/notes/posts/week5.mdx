@@ -113,8 +113,6 @@ meas: 4/════════════════════════
 ```
 This looks different from anything we've seen before! The `PhaseOracle` looks like a gate, but it spans all of the qubits instead of just one of two. In truth, it makes more sense to think of the oracle as an *operator*, more akin to a black-box function with a bunch of gates inside it.
 
-I will not go into detail about how the oracle is implemented in this lesson, but check out the addendum if you are interested in learning more.
-
 The important thing you need to know is that the `PhaseOracle` object is a "composed" wrapper for all of these gates, which would really clutter up the circuit. But when we want to simulate the circuit, we need to *decompose* it first.
 
 There are two ways to do this. The first is adding a pretty self-explanatory line of code before simulating:
@@ -144,7 +142,7 @@ Even though the classical approach above does not work with certainty, it doesn'
 ## Simon's Algorithm
 **Simon's algorithm** is a really important algorithm because it provides the most compelling case so far that quantum computers can be more powerful than classical computers.
 
-The best classical approach to solve Simon's problem is $O(2^\{n/2\})$, while the best quantum approach offers an exponential speedup. While this speedup is more humble than the Deutch-Jozsa algorithm, the difference is that you cannot solve the algorithm probabilistically with much confidence until you reach exponential time either. 
+The best classical approach to solve Simon's problem is $O(2^\{n/2\})$, while the best quantum approach offers an exponential speedup. While this speedup is more humble than the Deutsch-Jozsa algorithm, the difference is that you cannot solve the algorithm probabilistically with much confidence until you reach exponential time either. 
 
 The other factor to note about the runtime before we begin is that the algorithm has both quantum and classical elements: the quantum element is only $O(n)$, but a polynomial classical post-processing is required to actually get the answer.
 
@@ -272,7 +270,7 @@ I'm not going to code Simon's problem on Qiskit, as I want to leave it as an exe
 
 <a name="foot3">3</a>. I didn't really focus on it for the phase oracle, but when you just need a "marker" or boolean indicator, that's why flipping the phase works so well. Go back to the phase oracle and make sure to convince yourself that it really is always reversible.
 
-<a name="foot4">4</a>. It turns out that phase oracles and bit oracles are equivalent. It just makes more sense to present one over the other in different scenarios. I wanted to make sure that you have a good taste of both in this lesson. If you want to learn more about actually constructing oracles, see the addendum.
+<a name="foot4">4</a>. It turns out that phase oracles and bit oracles are equivalent. It just makes more sense to present one over the other in different scenarios. I wanted to make sure that you have a good taste of both in this lesson.
 
 <a name="foot5">5</a>. Although his notes are a source I draw from a lot throughout these lessons, I want to particularly highlight Peter Shor's [lecture notes](https://math.mit.edu/~shor/435-LN/Lecture_18.pdf) on Simon's algorithm. Reading these for the first time actually made me understand back action occurs in quantum computing, which had been extremely confusing for me in the past.
 </KatexSpan>

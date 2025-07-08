@@ -1,0 +1,139 @@
+---
+title: 'Addendum: Bernstein-Vazirani Algorithm, Intro to Classiq'
+publishedAt: '2025-09-01'
+week: 5
+summary: 'This page contains the addendum for week 5 of BU Quantum.'
+---
+<KatexSpan>
+Another basic quantum algorithm involving an oracle that is taught a lot is the **Bernstein-Vazirani algorithm**. The speedup offered by the algorithm is a lot more humble, but I think it's pretty easy to understand. The best classical algorithm can solve the problem in a linear number of queries, while the quantum algorithm can do it in only one.
+
+What I want to do differently in this addendum is present the problem and algorithm a little more formally, closer to what you would see in a graduate-level course or a research paper. Try to use what you know so far to figure out exactly what the algorithm is doing. I recommend looking up any terms or notation that you don't understand!
+
+The other thing I want to do in this addendum is to present [Classiq](https://classiq.io), another popular quantum software development kit built on Python. Most algorithms can be made on either Qiskit or Classiq, but the big difference between them to me is that Qiskit employs a low, gate-level approach and emphasizes control over transpilation methods, while Classiq is better used to create abstract quantum functions, with more of the lower-level elements performed behind the scenes.
+
+Let me begin by presenting the problem. Suppose we have a boolean function {String.raw`$f: \{0, 1\}^n \to \{0,1\}$`}, with
+{String.raw`$$
+f(x) \equiv (x \cdot a) \bmod 2,
+$$`}
+where $x \cdot a$ refers to the bitwise AND of $x$ and $a$. Using as few queries of the function as possible, find the secret string $a$.
+
+Take a moment to think about how you would solve this classically. The way I would do it would be to plug in values of all $0$ with a single $1$ at different positions. If the $1$ is on position $i$, then I know that the result will be $a_i$. This allows us to solve the problem using $n$ classical queries. Not bad!
+
+But a quantum computer can do better. By applying $H^\{\otimes n\} O_f H^\{\otimes n\}$—exactly like we did for Deutsch-Jozsa—we get the state
+{String.raw`$$
+H^{\otimes n} O_f H^{\otimes n}|0\rangle = \frac{1}{2^n} \sum_{k=0}^{2^n-1} \sum_{j=0}^{2^n-1} (-1)^{j \cdot (k \oplus a)} |k\rangle.
+$$`}
+In the case that $|k\rangle = |a\rangle$, we know that $a \oplus a = 0$, and therefore we find that
+{String.raw`$$
+\frac{1}{2^n} \sum_{j=0}^{2^n-1} |a\rangle = |a\rangle.
+$$`}
+Therefore, the quantum state after applying the algorithm will be secret string $a$ with certainty.
+
+I think this algorithm is simple enough to understand. It is very reminiscent of the others we have looked at, but unlike Simon's algorithm, it's particularly cool that there's no postprocessing required to find the secret string.
+
+Now, let's implement it using Classiq. The Classiq SDK is built on *quantum functions* (defined with `@qfunc` above the function header), which are special strongly typed functions that fit into a quantum circuit. You could think about them like quantum operators, such as our `PhaseOracle` object from Qiskit, but with Classiq, I think it's much easier to abstract away the circuit level and just think about them as functions in the same way you would when programming.
+
+Just as a side note, all of the code that I will be using in this addendum comes from [this documentation page](https://docs.classiq.io/latest/explore/algorithms/bernstein_vazirani/bernstein_vazirani) on Classiq.
+
+Let's start by implementing our function $f(x)$, which we'll have to do using quantum gates. To distinguish it from the function defining our quantum circuit, we will call it a *predicate*.
+```py
+from classiq import *
+from classiq.qmod.symbolic import floor
+
+@qfunc
+def bv_predicate(a: CInt, x: Const[QArray], res: Permutable[QBit]):
+    repeat(
+        x.len,
+        lambda i: if_(
+            floor(a / 2**i) % 2 == 1, 
+            lambda: CX(x[i], res)
+        ),
+    )
+```
+All this code is doing is going through every bit in $x$ and applying an $X$ gate on `res` if both $a_i$ and $x_i$ are 1, i.e. if $(a \cdot x)_i = 1$. This implementation shows off the versatility you can achieve with Classiq; checking that $a_i=1$ is done with the `if_` function, while checking that $x_i=1$ is done with a $CX$ gate.
+
+I will explain why applying $CX$ gates makes sense, as well as the purpose of our auxiliary qubit `res`, in a moment.
+
+Before we continue, though, I want to make a quick note about types. We are encoding $a$, the secret string, as a `CInt`, or classical integer. We are encoding $x$, the input, as a `Const[QArray]`, or a constant quantum array, and we are encoding `res`, the auxiliary qubit, as a `Permutable[QBit]`.
+
+Hopefully all of this makes sense—remember that $a$ is just a bitstring, so it can easily be thought of as an integer, which makes it easier to work with than a string—except the `Permutable` attribute. This attribute means that `res` can undergo changes relative to the computational basis as well as phase shifts, but it cannot have superposition introduced or destroyed within the `bv_predicate` quantum function. This is not required, but it's good practice for variables that won't be changing superposition in that specific function.
+
+Now, let's define the actual quantum function that implements the algorithm.
+```py
+@qfunc
+def bv_function(a: CInt, x: QArray):
+    aux = QBit()
+    within_apply(
+        lambda: hadamard_transform(x),
+        lambda: within_apply(
+            lambda: (allocate(aux), X(aux), H(aux)),
+            lambda: bv_predicate(a, x, aux)
+        ),
+    )
+```
+Quantum functions in Classiq are often built on this `within_apply` structure, where the first parameter defines a "compute" function and the second parameter defines an "action" function. The "compute" function will be applied twice, both before and after the execution of the "action" function.
+
+We can see that the bit encoding the result of the predicate, `aux`, is initialized to the $|-\rangle$ state. Remember that $X|-\rangle=-|-\rangle$, so the $X$ has the effect of flipping the phase of the state. However, as we talked about with back action, the control qubit $|x_i\rangle$ is also a part of this state, so in reality,
+{String.raw`$$
+CX|x_i\rangle|-\rangle = |x_i\rangle((-1)^{f(x)}|-\rangle) = (-1)^{f(x)} |x_i\rangle |-\rangle,
+$$`}
+and the phase shift is observed as applying to the control qubit. This is back action in practice—in particular, this specific type of back action is known as *phase kickback*. This has the effect of applying our oracle $O_f$ without directly changing $|x_i\rangle$! We are basically doing what the `PhaseOracle` object was doing for us under the hood.
+
+Now that we have our Bernstein-Vazirani quantum function, let's actually run it. This is really quite simple in Classiq.
+```py
+import numpy as np
+from classiq.execution import ExecutionPreferences
+
+SECRET_INT = 13
+STRING_LENGTH = 5
+NUM_SHOTS = 1000
+assert (
+    np.floor(np.log2(SECRET_INT) + 1) <= STRING_LENGTH
+), "The STRING_LENGTH cannot be smaller than secret string length"
+
+@qfunc
+def main(x: Output[QNum[STRING_LENGTH]]):
+    allocate(x)
+    bv_function(SECRET_INT, x)
+
+qmod = create_model(
+    main,
+    execution_preferences=ExecutionPreferences(num_shots=NUM_SHOTS),
+    out_file="bernstein_vazirani_example",
+)
+qprog = synthesize(qmod)
+```
+The parameter `SECRET_INT` defines $a$, `STRING_LENGTH` defines the number of qubits we will use, and `NUM_SHOTS` defines the number of shots for our circuit. Note that since the result is guaranteed, we really only need one shot—having many shots just shows that the algorithm is working as intended.
+
+In Classiq, we define the parameter we want to measure by putting `Output` in its type. Here, we ultimtaely want to measure the input $x$, so we pass it into our `main` function with the `Output` type. The `allocate` function simply grants the appropriate number of qubits to the quantum variable.
+
+Just like many programming languages, Classiq will always look for a `main` function to decide where to start executing your code. You can call other functions, but you need to have at least one parameter as an `Output` if you want to measure something as a result of your quantum circuit.
+
+Note that before you can run this code, you will need to make an account on Classiq and authenticate using this function:
+```py
+authenticate()
+```
+
+You can visualize the circuit with the following command, which will send you to the Classiq platform:
+```py
+show(qprog)
+```
+You could execute straight from the Classiq GUI, but I will show you how to do it programatically.
+```py
+result = execute(qprog).result_value()
+secret_integer_q = result.parsed_counts[0].state["x"]
+
+print("The secret integer is:", secret_integer_q)
+print(
+    "The probability for measuring the secret integer is:",
+    result.parsed_counts[0].shots / NUM_SHOTS,
+)
+
+assert int(secret_integer_q) == SECRET_INT
+```
+The expected output is that the secret integer is `13` and the probability of measuring it is `1.0`.
+
+Note that we are referencing the exact state we measured, $x$, when finding the result. Classiq deals with setting up any classical registers we need under the hood. We can look at the quantum variables directly for results.
+
+Classiq is a really cool tool, and I will use it again for the lesson on the glued trees algorithm. I think both Qiskit and Classiq have their strengths, and since Qiskit is a little simpler and lower-level, I wanted to focus on it first. However, I highly recommend you try making some of the algorithms we've covered using both tools to get a better sense of what they excel at.
+</KatexSpan>
