@@ -1,5 +1,5 @@
 ---
-title: "Addendum: Rotation Operators, Amplitude Amplification"
+title: "Addendum: Rotation Matrices, Amplitude Amplification"
 publishedAt: '2025-09-01'
 week: 6
 summary: 'This page contains the addendum for week 6 of BU Quantum.'
@@ -71,7 +71,7 @@ It's clear that there is some sort of symmetry going on here between the two res
 \sqrt{|A_1|} & \sqrt{|A_0|}
 \end{pmatrix}^2
 $$`}
-I have pulled out the $1/N$ term and highlighted the square root of this matrix to make the pattern here a little bit more clear. For those who have encountered **rotation operators** before, this may look familiar, as we can observe that
+I have pulled out the $1/N$ term and highlighted the square root of this matrix to make the pattern here a little bit more clear. For those who have encountered **rotation matrices** before, this may look familiar, as we can observe that
 {String.raw`$$
 \frac{1}{\sqrt{N}}\begin{pmatrix}
 \sqrt{|A_0|} & -\sqrt{|A_1|} \\
@@ -105,7 +105,7 @@ G^t|\psi_0\rangle = \cos((2t+1)\theta)|A_0\rangle + \sin((2t+1)\theta)|A_1\rangl
 $$`}
 We have therefore shown analytically that our operator $G$ corresponds to this rotation towards $|A_1\rangle$, the superposition state of just the terms we want, and away from $|A_0\rangle$, the superposition state of just the terms we don't want.
 
-I want to stress that this "trick" of partitioning the "good" and "bad" elements we want into different sets and then using a rotation operator in the plane of a superposition of each set is extremely powerful and can be used beyond search.
+I want to stress that this "trick" of partitioning the "good" and "bad" elements we want into different sets and then using a rotation matrix in the plane of a superposition of each set is extremely powerful and can be used beyond search.
 
 Specifically, this process is known as **amplitude amplification**, and it is one of the more powerful and well-researched quantum paradigms. I won't go too much into the generalization, since using the technique in general is very similar to using it for the specific purpose of Grover's algorithm, but you can check out the [Wikipedia page](https://en.wikipedia.org/wiki/Amplitude_amplification) if you're interested for a more formal description.
 
