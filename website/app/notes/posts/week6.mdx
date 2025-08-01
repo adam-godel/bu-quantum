@@ -120,9 +120,9 @@ since an inner product of $|A_1\rangle$ and our quantum state $|\psi\rangle = G^
 
 Recalling that {String.raw`$\theta = \arcsin(\sqrt{M/N})$`}, solving for $t$ shows that
 {String.raw`$$
-t = \left\lfloor \frac{\pi}{4\theta} \right\rfloor = \left\lfloor \frac{\pi}{4\arcsin(\sqrt{M/N})} \right\rfloor \approx \left\lfloor \frac{\pi}{4}\sqrt{\frac{N}{M}} \right\rfloor
+t = \left\lfloor \frac{\pi}{4\theta} \right\rfloor = \left\lfloor \frac{\pi}{4\arcsin(\sqrt{M/N})} \right\rfloor \approx \left\lfloor \frac{\pi}{4\sqrt{M/N}} \right\rfloor = \left\lfloor \frac{\pi}{4}\sqrt{\frac{N}{M}} \right\rfloor
 $$`}
-and since each Grover operator takes $O(1)$ time to apply, we are left with a total time complexity of $O(\sqrt\{N/M\})$ = $O(\sqrt\{N\})$.
+since $\arcsin(x) \approx x$ for small values of $x$, and since each Grover operator takes $O(1)$ time to apply, we are left with a total time complexity of $O(\sqrt\{N/M\})$ = $O(\sqrt\{N\})$.
 
 To recap, the square root time complexity comes from the number of times we are able to apply this quantum operator which is able to push our quantum state (which starts at an angle $\theta$ off of a superposition of just the states we are not looking for) an angle of $2\theta$ towards a superposition of just the states we are looking for.
 
