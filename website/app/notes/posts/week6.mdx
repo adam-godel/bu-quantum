@@ -1,0 +1,152 @@
+---
+title: "Grover's Algorithm"
+publishedAt: '2025-09-01'
+week: 6
+summary: 'This page contains the notes for week 6 of BU Quantum.'
+---
+<KatexSpan>
+Today, we will discuss the most complicated algorithm so far, and a much more compelling case that quantum computers can prove to be useful. Specifically, we will be talking about search algorithms, one of the most fundamental types of algorithms in computer science.
+
+Suppose that we have a list and a specific item in that list we want to find. We know that if we have a list that is sorted in some way, we can use binary search to efficiently find it in $O(\\log\{n\})$ time. If that list is unsorted though, then tough luck; we must use linear search to find it in $O(n)$ time.
+
+It's kind of bizarre to imagine that there would be a better approach to finding an item in an unsorted list than linear search. If you think about it closely, the bottleneck comes from the fact that we can only check one item at a time. If we had a computer that could check every item at the same time, this would obviously make our search substantially faster. Unfortunately, we do not, and **a quantum computer cannot do this**.
+
+Hopefully, by now, you have a pretty good understanding of some of the strengths and limitations of a quantum computer, which is why I waited this long to present this fundamental quantum algorithm. But even to people a bit in the know, the fact that the best quantum algorithm for unsorted search, **Grover's algorithm**, runs in $O(\\sqrt\{n\})$ is very odd. What is the connection between search and the square root?
+
+We will get to that, but let's start with a bit of history and a formulation of the problem. Grover's algorithm was discovered by computer scientist [Lov Grover](https://en.wikipedia.org/wiki/Lov_Grover) in 1996. His algorithm came after a landmark proof that the best quantum search algorithm must run in $\\Omega(\\sqrt\{n\})$ time.<sup><a href="#foot1">1</a></sup>
+
+You should have an intuitive sense of how this problem is structured, but let's word it in a way that a quantum computer would understand. Specifically, the key intuition is to formulate it similarly to the oracular problems we talked about last week.
+
+Specifically, suppose we have a function {String.raw`$f: \{0,1\}^n \to \{0,1\}$`} that maps bitstrings of length $n$ (that could encode any sort of information) to a boolean. $f(x)$ outputs $1$ if the input $x$ is the item we want and $0$ otherwise. 
+
+Now, let's define a phase oracle
+{String.raw`$$
+O_f|x\rangle = (-1)^{f(x)}|x\rangle
+$$`}
+just like the one we used in the Deutsch-Jozsa algorithm. Unlike that algorithm, though, that's not the only thing we'll need. We'll need *another* phase oracle defined for the bitwise OR function
+{String.raw`$$
+\text{OR}(x) = \begin{cases}
+0 & x=0^n \\
+1 & x \neq 0^n
+\end{cases}
+$$`}
+We will then just define a phase oracle $O_\\text\{OR\}|x\\rangle$ that leaves the input state unchanged if it is all $0$s and flips its phase otherwise. I want to mention that there is a notably different way to represent $O_\\text\{OR\}|x\\rangle$:
+{String.raw`$$
+O_\text{OR}|x\rangle = (2|0\rangle\langle 0| - \mathbb{I})|x\rangle
+$$`}
+Convince yourself that these two expressions are equivalent by testing on some standard basis states.
+
+Now, let's describe the algorithm. We start with the state $H^\{\otimes n\}|0\rangle$ and then apply the following operation $t$ times:
+{String.raw`$$
+G = H^{\otimes n}(2|0\rangle\langle 0|-\mathbb{I})H^{\otimes n} O_f
+$$`}
+where $t$ is some number we will determine later.
+
+There are two transformations, specifically *reflections*, going on here. The first is performed by $O_f$, which flips the input $x$ that outputs $f(x)=1$. The second is performed by {String.raw`$H^{\otimes n}(2|0\rangle\langle 0|-\mathbb{I})H^{\otimes n}$`}, and can be thought of as reflecting all amplitudes by their average value.
+
+In geometry, you may recall that a reflection of a vector $v$ across a vector $u$ can be written as
+{String.raw`$$
+\text{Ref}_u|v\rangle = 2\text{Proj}_u|v\rangle-|v\rangle
+$$`}
+where
+{String.raw`$$
+\text{Proj}_u|v\rangle = \frac{\langle u | v \rangle}{\langle u | u \rangle}|u\rangle = \langle u | v \rangle |u\rangle
+$$`}
+by the quantum state restriction. But notice that $\langle u | v \rangle$ is just a scalar, and we can rewrite our expression above as
+{String.raw`$$
+\text{Ref}_u|v\rangle = 2|u\rangle\langle u | v \rangle-|v\rangle = (2|u\rangle\langle u|-\mathbb{I})|v\rangle
+$$`}
+which is in fact exactly the value of {String.raw`$H^{\otimes n}(2|0\rangle\langle 0|-\mathbb{I})H^{\otimes n}$`}, but where $|u\rangle$ is the uniform superposition state of all $2^n$ bitstrings.
+
+These two reflections are the essence of Grover's algorithm. I want to make the argument that applying them over and over again will push our quantum state to converge to a uniform superposition of terms that output $1$. This can either be one or multiple states we're looking for; the quantum algorithm doesn't care either way.
+
+To do so, let's analyze the Grover operator $G$ more formally. Let $A_0$ be the set of all bitstrings in {String.raw`$\{0,1\}^n$`} that output $0$, and let $A_1$ be the set of bitstrings that output $1$. We will also define quantum states $|A_0\rangle$ and $|A_1\rangle$ representing uniform superpositions of bitstrings in each set. 
+
+Starting at {String.raw`$|\psi_0\rangle=H^{\otimes n}|0\rangle$`}, we want our quantum state to reach as close as possible to $|A_1\rangle$ after $t$ applications of the Grover operator.
+
+Let's suppose we have $N$ items in our list with $M$ target items. Our initial state will therefore be
+{String.raw`$$
+|\psi_0\rangle = \sqrt{\frac{N-M}{N}}|A_0\rangle + \sqrt{\frac{M}{N}}|A_1\rangle
+$$`}
+and the angle between $H^\{\otimes n\}|0\rangle$ and $|A_0\rangle$ will be
+{String.raw`$$
+\theta = \arcsin\left(\sqrt{\frac{M}{N}}\right).
+$$`}
+If we plot our initial state in a grid where one axis is $|A_0\rangle$ and the other is $|A_1\rangle$, we can think of the application to $O_f$ to be a reflection across the $|A_0\rangle$-axis and the application of the rest of the Grover operator $G$ to be a reflection across our starting vector (uniform superposition).
+
+The diagram below shows exactly this setup, where the application of $O_f$ is denoted as $O|\psi\rangle$. If you drag the movable vector $|\psi\rangle$ to the location of $G|\psi\rangle$, you can mimic the application of Grover's algorithm. In this case, it turns out that it takes 3 applications of the Grover operator to reach $|A_1\rangle$. 
+
+{(() => { 
+    pt0 = m.useMovablePoint([Math.cos(Math.PI/14), Math.sin(Math.PI/14)], {
+        color: "#ff0000",
+        constrain: ([x, y]) => x < Math.cos(5*Math.PI/14) || y > Math.sin(5*Math.PI/14) ? m.vec.withMag([Math.cos(5*Math.PI/14), Math.sin(5*Math.PI/14)], 1) : (x > Math.cos(Math.PI/14) || y < Math.sin(Math.PI/14) ? m.vec.withMag([Math.cos(Math.PI/14), Math.sin(Math.PI/14)], 1) : m.vec.withMag([x, y], 1)),
+    })
+})()}
+<m.Mafs viewBox={{x: [-0.25, 1], y: [-1, 1], padding: 0.3}} pan={false}>
+    <m.Coordinates.Cartesian 
+        xAxis={{lines: 0.5, labels: (n) => Math.abs(n) == 1 ? (n == -1 ? "" : "|A₀⟩") : ""}} 
+        yAxis={{lines: 0.5, labels: (n) => Math.abs(n) == 1 ? (n == -1 ? "" : "|A₁⟩") : ""}} 
+        subdivisions={4}
+    />
+    <m.Line.Segment point1={[-2 * Math.cos(Math.PI / 14), -2 * Math.sin(Math.PI / 14)]} point2={[2 * Math.cos(Math.PI / 14), 2 * Math.sin(Math.PI / 14)]} color="gray" opacity={0.3} />
+    <m.Text x={pt0.x} y={pt0.y} attach="e" attachDistance={15} size={20}>|ψ⟩</m.Text>
+    <m.Text x={pt0.x} y={-pt0.y} attach="e" attachDistance={5} size={20}>𝑂|ψ⟩</m.Text>
+    <m.Text x={Math.cos(Math.atan2(pt0.y, pt0.x) + 2*Math.asin(0.25))} y={Math.sin(Math.atan2(pt0.y, pt0.x) + 2*Math.asin(0.25))} attach="e" attachDistance={5} size={20}>𝐺|ψ⟩</m.Text>
+    <m.Plot.Parametric
+        xy={(t) => [Math.cos(t), Math.sin(t)]}
+        t={[Math.PI/14, 5*Math.PI/14]}
+        color="gray"
+        opacity={0.3}
+        style="dashed"
+    />
+    <m.Vector tip={pt0.point}/>
+    <m.Vector tip={[pt0.x, -pt0.y]} color="gray" />
+    <m.Vector tip={[
+        Math.cos(Math.atan2(pt0.y, pt0.x) + Math.PI/7),
+        Math.sin(Math.atan2(pt0.y, pt0.x) + Math.PI/7)
+    ]} color="gold" />
+    {pt0.element}
+</m.Mafs>
+
+Great! This means we have a working algorithm as long as we always know what $t$ should be.
+
+We know that the initial state will be $\theta$ away from $|A_0\rangle$, and each Grover iteration will push the vector a further $2\theta$. Make sure you convince yourself that this is really the case as a result of these two reflections.<sup><a href="#foot2">2</a></sup>
+
+This means that we want to choose a value of $t$ such that
+{String.raw`$$
+\langle A_1 | G^t | \psi_0 \rangle = \sin((2t+1)\theta) \approx 1
+$$`}
+since an inner product of $|A_1\rangle$ and our quantum state $|\psi\rangle = G^t | \psi_0 \rangle$ being close to $1$ means that they are close to each other.
+
+Recalling that {String.raw`$\theta = \arcsin(\sqrt{M/N})$`}, solving for $t$ shows that
+{String.raw`$$
+t = \left\lfloor \frac{\pi}{4\theta} \right\rfloor = \left\lfloor \frac{\pi}{4\arcsin(\sqrt{M/N})} \right\rfloor \approx \left\lfloor \frac{\pi}{4}\sqrt{\frac{N}{M}} \right\rfloor
+$$`}
+and since each Grover operator takes $O(1)$ time to apply, we are left with a total time complexity of $O(\sqrt\{N/M\})$ = $O(\sqrt\{N\})$.
+
+To recap, the square root time complexity comes from the number of times we are able to apply this quantum operator which is able to push our quantum state (which starts at an angle $\theta$ off of a superposition of just the states we are not looking for) an angle of $2\theta$ towards a superposition of just the states we are looking for.
+
+This is not "searching all of the items in parallel," which is often a mischaracterization of what the quantum computer actually does in Grover's algorithm, even if there is some sort of "parallel" operation going on as a result of the superposition. Rather, it plays to the advantage of what we *can* apply in a single quantum operator and how that operation can be repeated.
+
+Something that gets asked a lot in regards to Grover's algorithm is its actual applicability, since it seems like we would have to build the oracle using the item we already want to find. What's the point if that's going to be our expected output anyway?
+
+I think we usually think of a search operation as asking "is this specific item in the list?" While this is a valid search problem, Grover's algorithm really shines when we ask a slightly different question: "what complicated items in a very large list satisfy this (relatively) simple-to-describe property?" If the oracle is a lot simpler to apply than a list of all items that fulfill the property it's testing for, then the setup is a good candidate for Grover's algorithm, where the quadratic speedup may actually be quite useful.
+
+Quantum computers are nowhere near the point at which they can actually evaluate Grover's algorithm at scale. But in the future, they indicate a pretty solid and fundamental application for certain specialized search problems.
+
+Since Grover's algorithm is just the repeated application of phase oracles, you should have all the tools you need to actually apply it already. As a fun challenge, try applying Grover's algorithm for this oracle:
+{String.raw`$$
+f(x) = \begin{cases}
+1 & x[0,\dots,3] + x[4,\dots,7] = 1010 \\
+0 & \text{otherwise}
+\end{cases}
+$$`}
+both with and without using the built-in Grover operator functions in Qiskit or Classiq (for those who have read the [addendum](/notes/week5-addendum) from last lesson). An oracle like this (but at a much larger scale) is a bit more "practical" since the oracle's test is far less obvious from just looking at each bitstring.
+
+<br/>
+<hr style={{width: "40%"}}/>
+
+<a name="foot1">1</a>. Big Omega notation indicates an algorithm's lower bound. Here, this just means that there cannot be a quantum search algorithm that runs in under $O(\sqrt\{n\})$ time.
+
+<a name="foot2">2</a>. I feel like this is much easier to "see" and understand visually than it is to compute. If you're interested in computing this rotation rigorously and a discussion of rotation operators, see the [addendum](/notes/week6-addendum).
+</KatexSpan>
