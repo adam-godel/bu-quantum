@@ -148,4 +148,13 @@ There are two more points I want to make.
 Firstly, I want to note how remarkable it is that this algorithm can find eigenvalues without diagonalizing a matrix. This can allow for much more efficient calculations, especially for large matrices. If you weren't convinced by last week, this is a clear example of the utility of quantum computing. However, quantum hardware isn't quite there yet to compute cases that would be out of reach for classical computers. As time passes and quantum hardware becomes better, though, this will almost certainly change.
 
 Secondly, a limiting factor of this algorithm you may not have thought of is the fact that you need an eigenvector to run the algorithm. It turns out that you can apply the algorithm even when you don't have a specific eigenvector, using a certain initial state that will then return a random eigenvector with its corresponding eigenvalue. This is exactly the insight that powers Shor's algorithm—breaking classical encryption as we know it.
+
+<br/>
+<hr style={{width: "40%"}}/>
+
+<a name="foot1">1</a>. As we will see, the QFT on one qubit is simply a Hadamard gate.
+
+<a name="foot2">2</a>. We can perform the QFT for a superposition of terms that isn't a power of 2, but for simplicity, the circuit we will be covering is for $2^n$ terms using $n$ qubits.
+
+<a name="foot3">3</a>. You may notice that the contributions from qubits farther down the circuit become smaller and smaller. While the circuit requires $O(n^2)$ gates, it can be approximated more efficiently by cutting off the number of phase gates on each qubit at a certain point.
 </KatexSpan>
