@@ -127,7 +127,7 @@ U^k |v_\theta\rangle = (e^{i\phi})^k |v_\theta\rangle = e^{2\pi i \theta k}|v_\t
 $$`}
 This is exactly what we want! We could just assume that we can construct $U^k$ for $k$ up to $2^n$ and apply each operator onto $|k\rangle$, but it turns out that this isn't a great assumption to make.
 
-It turns out it's far more reasonable to assume that we can implement $U^\{2^\ell\}$ for $\ell$ up to $n$, since squaring a unitary is a far easier operation to implement than applying an arbitrary power.
+It's far more reasonable to assume that we can implement $U^\{2^\ell\}$ for $\ell$ up to $n$, since squaring a unitary is a far easier operation to implement than applying an arbitrary power.
 
 This is where the logic of the QFT circuit comes in! Let's try to express $\theta$ as a binary decimal, like we did in the QFT circuit. We can do this by setting up a controlled unitary with qubit $s$ as the control and $|v_\theta\rangle$ as the target. The unitary applied will then just be $U^\{2^s\}$. Therefore, if qubit $s$ is measured as $1$, it will apply the unitary $2^s$ times, leading to its corresponding binary contribution.
 
