@@ -4,3 +4,231 @@ publishedAt: '2025-09-01'
 week: 8
 summary: 'This page contains the notes for week 8 of BU Quantum.'
 ---
+<KatexSpan>
+In this lesson, we will be discussing **Shor's factoring algorithm**, perhaps the most important quantum algorithm that has been discovered to date. Shor's algorithm allows us to perform prime factorization. That is, given a large integer $N=PQ$, where $P$ and $Q$ are prime, find $P$ and $Q$.
+
+The importance of this algorithm is that certain forms of encryption depend on factoring being a hard problem. In other words, most encrypted data stays secure because it is easy to see that $PQ=N$ given $P$ and $Q$, but hard to extract $P$ and $Q$ just given $N$. In this setup, $N$ is the public key, accessible to anyone, and $P$ and $Q$ are the private keys between the parties encrypting information.
+
+A good place to start is to recognize that if we have two numbers such that $A^2 \equiv B^2 \\, (\bmod \\, N)$ but where $A \not\equiv \pm B \\, (\bmod \\, N)$. This means that $(A-B)(A+B) \equiv 0 \\, (\bmod \\, N)$, indicating that $(A-B)(A+B)$ is a multiple of $N$.
+
+Since $N$ doesn't divide $(A-B)$ or $(A+B)$, one factor must divide $A-B$ and the other must divide $A+B$. Let's figure out how to find $A$ and $B$. We'll do this by always letting $B=1$ and employing a scheme to find $A$.
+
+If we consider the function $f(n) \equiv a^n \\, (\bmod \\, N)$, we can notice that this function must eventually repeat with some period $r$ such that $a^k \equiv a^\{k+r\} \\, (\bmod \\, N)$. If $a$ and $N$ are coprime (their greatest common divisor is 1), then $a^r \equiv 1 \\, (\bmod \\, N)$. 
+
+If $a$ and $N$ are not coprime, we've gotten super lucky and guessed a value of $a$ that is divisible by one of our factors: $P=\text\{gcd\}(a, N)$ and $Q=N/P$ and we're done.
+
+Otherwise, there are a two conditions that need to be true for us to be able to actually find the factor now. First, $r$ needs to be even; second, $a^\{r/2\} \not\equiv \pm 1 \\, (\bmod \\, N)$. If either of these conditions are not met, we need to start over with a different factor of $a$. These conditions ensure that $A=a^\{r/2\}$.
+
+Once we have $a^\{r/2\}$, the factors of $N$ are just $P=\text\{gcd\}(a^\{r/2\}-1, N)$ and $Q=\text\{gcd\}(a^\{r/2\}+1,N)$.
+
+Only one piece of Shor's algorithm actually uses a quantum circuit rather than a classical process. Can you guess which one it is?
+
+<Quiz 
+    question={"Which step of Shor's algorithm involves a quantum circuit?"}
+    answers={[
+        String.raw`Selecting $a$`,
+        String.raw`Finding the period $r$ of $f(n) \equiv a^n \, (\bmod \, N)$`, 
+        String.raw`Verifying that $a^{r/2} \not\equiv \pm 1 \, (\bmod \, N)$`, 
+        String.raw`Calculating the greatest common divisors to get $P$ and $Q$`,
+    ]}
+    correct={1}
+    explanation={[
+        <span>Unfortunately, you just have to guess here!</span>, 
+        <span>Period finding is generally superpolynomial classically. Quantum computation can help here!</span>, 
+        <span>You can do this using a simple arithmetic calculation.</span>,
+        <span>You can do this using the <a href="https://en.wikipedia.org/wiki/Euclidean_algorithm">Euclidean algorithm</a>, a famous classical algorithm to find the GCD.</span>,
+    ]}
+/>
+
+We've now covered how to implement all of the classical pieces of the algorithm. Let's start coding the classical helper functions for our implementation.
+
+We need four functions:
+- `gcd(a, b)` will return the greatest common divisor of `a` and `b`.
+- `is_coprime(a, N)` will return `True` if `a` and `N` are coprime and `False` otherwise.
+- `is_odd(r)` will return `True` if `r` is odd and `False` otherwise.
+- `is_one(x, N)` will return `True` if $x \equiv \pm 1 \\, (\bmod \\, N)$ and `False` otherwise.
+
+Let's start with our GCD function. We can implement this easily using the [Euclidean algorithm](https://en.wikipedia.org/wiki/Euclidean_algorithm). A GCD function is actually already in Python's math library, but here is the implementation for completeness:
+```py
+def gcd(a, b):
+    while b:
+        a, b = b, a % b
+    return a
+```
+Two numbers are coprime if their GCD is one, making the next function implementation simple:
+```py
+def is_coprime(a, N):
+    return gcd(a, N) == 1
+```
+A number is odd if its most significant bit is one, meaning we can just perform a bitwise AND with 1:
+```py
+def is_odd(r):
+    return r & 1
+```
+For the last function, we just need to recognize that if $x \equiv -1 \\, (\bmod \\, N)$, then $x \bmod N = N-1$:
+```py
+def is_one(x, N):
+    return x % N in (1, N-1)
+```
+
+Now all we need to do is figure out how to find the period $r$ and put everything all together. This is where quantum computation comes in.
+
+We want to construct a unitary operator $U_\{a,N\}$ where
+{String.raw`$$
+U_{a,N}|y \bmod N)\rangle = |ay \bmod N)\rangle.
+$$`}
+Let's assume for now that we can implement it. We can use it as the unitary for phase estimation. This is because we can implement $U_\{a,N\}^\{2^k\}$ easily by setting $a^\{2^k\} \bmod N$ as the input to the unitary instead.
+
+To see how phase estimation would help us find $r$, let's consider the following quantum state:
+{String.raw`$$
+|\zeta_0\rangle = \frac{1}{\sqrt{r}} \sum_{k=0}^{r-1} |a^k \bmod N\rangle.
+$$`}
+We can pretty easily find that $U_\{a,N\}|\zeta_0\rangle=|\zeta_0\rangle$, since $|a^r\rangle=|1\rangle$, meaning that this state is an eigenstate of $U_\{a,N\}$ with an eigenvalue of 1.
+
+This doesn't really help us. But it will help us if we add a phase proportional to $k$ to each summand:
+{String.raw`$$
+|\zeta_1\rangle = \frac{1}{\sqrt{r}} \sum_{k=0}^{r-1} e^{-\frac{2\pi ik}{r}} |a^k \bmod N\rangle.
+$$`}
+Applying the unitary again, we find that $U_\{a,N\}|\zeta_1\rangle=e^\{\frac\{2\pi i\}\{r\}\}|\zeta_1\rangle$. This is far more interesting to us since $r$ actually appears in the eigenvalue. If we had the eigenstate $|\zeta_1\rangle$, we would be able to find the period $r$.
+
+Unfortunately, we don't have $|\zeta_1\rangle$, and can't construct it easily, since it relies on $r$. What do we do?
+
+The answer is to run the phase estimation algorithm anyway with a clever superposition of eigenvectors as our initial state.
+
+If we consider adding an integer multiple $j$ to our phase, we get the state
+{String.raw`$$
+|\zeta_j\rangle = \frac{1}{\sqrt{r}} \sum_{k=0}^{r-1} e^{-\frac{2\pi ijk}{r}} |a^k \bmod N\rangle.
+$$`}
+which has eigenvalue $e^\{\frac\{2\pi ij\}\{r\}\}$. If we compute the superposition of all terms $|\zeta_j\rangle$ where $0 \leq j \leq r-1$, we find that
+{String.raw`$$
+\begin{align*}
+\frac{1}{\sqrt{r}} \sum_{j=0}^{r-1} |\zeta_j\rangle &= \frac{1}{\sqrt{r}} \sum_{j=0}^{r-1} \left( \frac{1}{\sqrt{r}} \sum_{k=0}^{r-1} e^{-\frac{2\pi ijk}{r}} |a^k \bmod N\rangle \right) \\
+&= \frac{1}{r} \sum_{k=0}^{r-1} \left(\sum_{j=0}^{r-1} e^{-\frac{2\pi ijk}{r}}\right) |a^k \bmod N\rangle.
+\end{align*}
+$$`}
+Let's now compute the sum in parentheses. In the case where $k=0$, the entire exponent collapses to 0, meaning the summand is 1 and the total sum is $r$. This would also be the case if $k \equiv 0 \\, (\bmod \\, r)$, but there is no other value of $k$ where this is the case given our bounds.
+
+Now, let's consider the case where $k \not\equiv 0 \\, (\bmod \\, r)$. In this case, we have the geometric series
+{String.raw`$$
+\sum_{j=0}^{r-1} \left(e^{-\frac{2\pi ik}{r}}\right)^j = \frac{1-(e^{-\frac{2\pi ik}{r}})^r}{1-e^{-\frac{2\pi ik}{r}}} = \frac{1-e^{-2\pi ik}}{1-e^{-\frac{2\pi ik}{r}}} = \frac{1-1}{1-e^{-\frac{2\pi ik}{r}}} = 0.
+$$`}
+Therefore, the only contribution to the sum comes from $k=0$, in which case it is equal to $r$. We can now finish our calculations, eliminating both sums:
+{String.raw`$$
+\begin{align*}
+\frac{1}{\sqrt{r}} \sum_{j=0}^{r-1} |\zeta_j\rangle &= \frac{1}{r} r |a^0 \bmod N\rangle = |1\rangle.
+\end{align*}
+$$`}
+This is exactly what we need! We can apply the phase estimation algorithm onto the $|1\rangle$ state to get a superposition of eigenvectors and their eigenvalues, which will give us a phase of $j/r$. We can then use the denominator as our guess, but note that this will only work if $j$ and $r$ are coprime. If we get a bad value of $r$, though, we will be able to verify it and we can just use one of the other phases in our output instead.
+
+The last thing we need to discuss before we fully implement Shor's algorithm is how to implement the unitary operator $U_\{a,N\}$. Unfortunately, it's very difficult. There are general methods to computing the unitary, but they have constraints (e.g. high circuit depth) and I don't really want to detail about it here.
+
+For our implementation, we will instead use a hard-coded implementation of $U_\{a,15\}$ as a proof of concept. This implementation is based on one from the now-archived [Qiskit textbook](https://github.com/Qiskit/textbook/blob/main/notebooks/ch-algorithms/shor.ipynb):
+```py
+from qiskit import QuantumCircuit
+
+def U_a_15(a):
+    if a not in [2, 4, 7, 8, 11, 13]:
+        raise ValueError("'a' must be 2, 4, 7, 8, 11 or 13")
+    U = QuantumCircuit(4)
+    if a in [2, 13]:
+        U.swap(2, 3)
+        U.swap(1, 2)
+        U.swap(0, 1)
+    if a in [7, 8]:
+        U.swap(0, 1)
+        U.swap(1, 2)
+        U.swap(2, 3)
+    if a in [4, 11]:
+        U.swap(1, 3)
+        U.swap(0, 2)
+    if a in [7, 11, 13]:
+        for q in range(4):
+            U.x(q)
+    U = U.to_gate()
+    U.name = f"U_{a,15}"
+    return U
+```
+We can now implement phase estimation, introducing a precision parameter `n_count` which will be the number of qubits for the estimation register. We can then initialize our input state into the $|1\rangle$ state using an $X$ gate.
+
+Note that since Qiskit bitstrings generally appear in little-endian ordering, we will have to reverse the bitstrings output from our circuit to get the correct phases.
+
+We will use Python's `fractions` module to convert our phase into a fraction with a denominator of at most $N$. 
+
+If we pick a bad value of $a$ as our input to $U_\{a,15\}$, we will return $r=-1$ (or some other odd number) to trigger the selection of a different value of $a$, as $r$ must be even.
+
+Putting it all together, we get the following function:
+```py
+from qiskit import QuantumCircuit, transpile
+from qiskit.circuit.library import phase_estimation
+from qiskit_aer import AerSimulator
+from qiskit_aer.primitives import SamplerV2
+from fractions import Fraction
+
+def find_period(a, N, n_count):
+    if N == 15:
+        try:
+            unitary = U_a_15(a)
+        except ValueError:
+            return -1
+    else:
+        raise NotImplementedError("Only U_(a,15) is implemented")
+    
+    pe = phase_estimation(n_count, unitary)
+
+    qc = QuantumCircuit(n_count+N.bit_count(), n_count)
+    qc.x(n_count)
+    qc = qc.compose(pe)
+    qc.measure(range(n_count), range(n_count))
+
+    simulator, sampler = AerSimulator(), SamplerV2()
+    qc = transpile(qc, backend=simulator)
+    job = sampler.run([qc], shots=2048)
+    result = job.result()
+    counts = result[0].data.c.get_counts()
+
+    phases = [int(k[::-1], 2)/2**n_count for k in counts.keys()]
+    fractions = [Fraction(p).limit_denominator(N) for p in phases]
+    r_guesses = [f.denominator for f in fractions]
+
+    return max(r_guesses)
+```
+We can now put everything together:
+
+**Shor's Algorithm**
+- First, we select a random {String.raw`$a \in \{2, \dots, N-2\}$`}. 
+- We check if $a$ and $N$ are coprime. 
+    - If not, we return $P=\text\{gcd\}(a, N)$ and $Q=N/P$. 
+    - Otherwise, we construct $U_\{a,N\}$ and find the period $r$ using phase estimation with the unitary operator $U_\{a,N\}$ and the initial state $|1\rangle$. 
+- We check that $r$ is even and that $a^\{r/2\} \not\equiv \pm 1 \\, (\bmod \\, N)$. 
+    - If either of those are not true, we start over with a different $a$. 
+    - If both of those are true, we return $P=\text\{gcd\}(a^\{r/2\}-1, N)$ and $Q=\text\{gcd\}(a^\{r/2\}+1,N)$.
+
+The full implementation in Python using the functions above is as follows:
+```py
+from random import sample
+
+def shor(N, n_count):
+    for a in sample(range(2, N-1), k=N-3):
+        if not is_coprime(a, N):
+            P = gcd(a, N)
+            return P, N/P
+        r = find_period(a, N, n_count)
+        x = a ** (r/2)
+        if is_odd(r) or is_one(x, N):
+            continue
+        return gcd(x-1, N), gcd(x+1, N)
+```
+Since $N=15$ is so small, we can get away with a `n_count` of as little as 2. If you try to execute `shor(15, 2)`, you should get an output of $P=5$ and $Q=3$ (or vice versa). Try running it multiple times to confirm that you didn't just get lucky with your choice of $a$, and that bad values of $a$ or $r$ are properly handled.
+
+Ultimately, Shor's algorithm is a really cool and extremely powerful application of phase estimation. However, the current bottleneck is not the phase estimation algorithm, but the implementation of the unitary operator. There are a lot of different approaches, including some that are made on the deeper hardware level, but they all require either way more qubits or a quantum error correction scheme (which can be implemented using way more qubits).<sup><a href="#foot1">1</a></sup> That's why classical encryption is not broken just yet.
+
+But it will almost certainly be broken eventually using Shor's algorithm. That's why researchers are very interested in [post-quantum cryptography](https://en.wikipedia.org/wiki/Post-quantum_cryptography)—we'll most likely be using it in the near future! And quantum hardware technology is improving at an exponential rate.
+
+Quantum computing enthusiasts call the date at which Shor's algorithm will be usable at scale **Y2Q** (a reference to Y2K). Many analysts predict that Y2Q will be sometime in the 2030s, but we ultimately don't know for sure.
+
+A big concern even before Y2Q arrives is the surveillance strategy of [harvest now, decrypt later](https://en.wikipedia.org/wiki/Harvest_now,_decrypt_later), where attackers gather large amounts of encrypted data that they will be able to then efficiently decrypt using Shor's algorithm when Y2Q arrives.
+
+On January 16, 2025, President Biden issued an [executive order](https://bidenwhitehouse.archives.gov/briefing-room/presidential-actions/2025/01/16/executive-order-on-strengthening-and-promoting-innovation-in-the-nations-cybersecurity/) formally ordering US government agencies to begin to transition to post-quantum cryptographic systems. While this was [somewhat laxed](https://www.whitehouse.gov/presidential-actions/2025/06/sustaining-select-efforts-to-strengthen-the-nations-cybersecurity-and-amending-executive-order-13694-and-executive-order-14144/) by President Trump in June, government agencies are still actively planning for Y2Q and working to research and implement PQC schemes.
+
+All of that is to say, it's a really special and relevant time to get into the field of quantum cryptography! So next lesson, we'll talk about how to quantum computers can be used to help us securely communicate.
+</KatexSpan>
