@@ -24,7 +24,7 @@ export default function Footer() {
             className="flex items-center transition-all hover:text-neutral-100"
             rel="noopener noreferrer"
             target="_blank"
-            href="https://www.instagram.com/"
+            href="https://www.instagram.com/bostonuquantum"
           >
             <ArrowIcon />
             <p className="ml-2 h-7">instagram</p>
@@ -35,7 +35,7 @@ export default function Footer() {
             className="flex items-center transition-all hover:text-neutral-100"
             rel="noopener noreferrer"
             target="_blank"
-            href="https://github.com/"
+            href="https://github.com/adam-godel/bu-quantum"
           >
             <ArrowIcon />
             <p className="ml-2 h-7">github</p>
