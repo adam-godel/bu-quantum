@@ -1,6 +1,6 @@
 export default function Page() {
   return (
-    <section className="min-h-[calc(100vh-270px)] flex items-center">
+    <section className="min-h-[calc(100vh-288px)] flex items-center">
       <div className="w-full flex flex-col lg:flex-row lg:items-center lg:justify-between">
         {/* text content */}
         <div className="lg:w-1/2 lg:pr-16">
