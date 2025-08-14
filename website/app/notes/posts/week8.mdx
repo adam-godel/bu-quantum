@@ -188,9 +188,9 @@ def find_period(a, N, n_count):
 
     phases = [int(k[::-1], 2)/2**n_count for k in counts.keys()]
     fractions = [Fraction(p).limit_denominator(N) for p in phases]
-    r_guess = max(fractions).denominator
+    r_guesses = [f.denominator for f in fractions]
 
-    return r_guess
+    return max(r_guesses)
 ```
 We can now put everything together:
 
