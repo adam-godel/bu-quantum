@@ -1,15 +1,13 @@
 export default function Page() {
   return (
-    <section className="pt-16 lg:pt-32">
+    <section className="min-h-[calc(100vh-270px)] flex items-center">
       <div className="w-full flex flex-col lg:flex-row lg:items-center lg:justify-between">
         {/* text content */}
         <div className="lg:w-1/2 lg:pr-16">
-          <div className="mb-12">
+          <div className="mb-6">
+            <h1 className="text-3xl lg:text-4xl leading-relaxed font-bold mb-3">This is BU Quantum.</h1>
             <p className="text-2xl lg:text-3xl leading-relaxed font-light">
-              We're a community of students at Boston University
-              passionate about quantum physics, computing,
-              and communication. We host talks, share resources,
-              and collaborate on projects at the cutting edge of science.
+              We're a community of students at Boston University passionate about quantum computing, from both a theory and computational perspective. We host lessons, share resources, and collaborate on projects at the cutting edge of the field.
             </p>
           </div>
           
@@ -18,21 +16,21 @@ export default function Page() {
             <a href="/about" className="transition-opacity hover:opacity-70">
               <img
                 className="w-12 h-12"
-                src="/information (2).png"
+                src="/information.png"
                 alt="About"
               />
             </a>
             <a href="/notes" className="transition-opacity hover:opacity-70">
               <img
                 className="w-12 h-12"
-                src="/writing (1).png"
+                src="/writing.png"
                 alt="Notes"
               />
             </a>
             <a href="/contact" className="transition-opacity hover:opacity-70">
               <img
                 className="w-12 h-12"
-                src="/email (1).png"
+                src="/email.png"
                 alt="Contact"
               />
             </a>
