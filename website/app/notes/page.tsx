@@ -2,7 +2,7 @@ import { BlogPosts } from 'app/components/posts'
 
 export const metadata = {
   title: 'Meeting Notes',
-  description: 'Read my notes.',
+  description: 'Read all past meeting notes and addendums.',
 }
 
 export default function Page() {

@@ -5,9 +5,9 @@ export default function Page() {
         {/* text content */}
         <div className="lg:w-1/2 lg:pr-16">
           <div className="mb-6">
-            <h1 className="text-3xl lg:text-4xl leading-relaxed font-bold mb-3">This is BU Quantum.</h1>
+            <h1 className="text-3xl lg:text-4xl leading-relaxed font-bold mb-3">this is bu quantum.</h1>
             <p className="text-2xl lg:text-3xl leading-relaxed font-light">
-              We're a community of students at Boston University passionate about quantum computing, from both a theory and computational perspective. We host lessons, share resources, and collaborate on projects at the cutting edge of the field.
+              we're a community of students at boston university passionate about quantum computing, from both a theory and computational perspective. we host lessons, share resources, and collaborate on projects at the cutting edge of the field.
             </p>
           </div>
           
