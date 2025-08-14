@@ -197,7 +197,7 @@ We can now put everything together:
 **Shor's Algorithm**
 - First, we select a random {String.raw`$a \in \{2, \dots, N-2\}$`}. 
 - We check if $a$ and $N$ are coprime. 
-    - If so, we return $P=\text\{gcd\}(a, N)$ and $Q=N/P$. 
+    - If not, we return $P=\text\{gcd\}(a, N)$ and $Q=N/P$. 
     - Otherwise, we construct $U_\{a,N\}$ and find the period $r$ using phase estimation with the unitary operator $U_\{a,N\}$ and the initial state $|1\rangle$. 
 - We check that $r$ is even and that $a^\{r/2\} \not\equiv \pm 1 \\, (\bmod \\, N)$. 
     - If either of those are not true, we start over with a different $a$. 
