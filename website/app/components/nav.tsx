@@ -28,8 +28,8 @@ export function Navbar() {
             <Image 
               src="/logo.png"
               alt="BU Quantum"
-              width={78}
-              height={24}
+              width={94}
+              height={29}
               className="flex align-middle relative px-2"
             />
           </div>
@@ -40,7 +40,7 @@ export function Navbar() {
                   key={path}
                   href={path}
                   // blur hover effect still too subtle, will come back to it later
-                  className="text-xl transition-all hover:text-neutral-200 hover:drop-shadow-[0_0_8px_rgba(239,68,68,0.8)] flex align-middle relative py-1 px-2 m-1"
+                  className="text-2xl transition-all hover:text-neutral-200 hover:drop-shadow-[0_0_8px_rgba(239,68,68,0.8)] flex align-middle relative py-1 px-2 m-1"
                 >
                   {name}
                 </Link>
