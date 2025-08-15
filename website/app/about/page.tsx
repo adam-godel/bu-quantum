@@ -14,10 +14,10 @@ export default function About() {
             <div 
                 className="bg-gradient-to-br from-black via-neutral-900 to-black rounded-lg p-6 mt-16 mb-8 border-2 border-red-400 transition-transform duration-200 ease-out"
             >
-                <h1 className="text-2xl text-center justify-center font-bold drop-shadow-[0_0_7px_rgba(224,92,92,0.8)]">our team</h1>
+                <h1 className="text-4xl text-center justify-center mb-4 font-bold drop-shadow-[0_0_7px_rgba(224,92,92,0.8)]">our team</h1>
                 <div className="flex flex-row justify-center flex-wrap">
-                    <MemberProfile name="John Doe" role="CEO" imageUrl="/snorlaxpfp.jpg" linkedin="https://www.linkedin.com/feed/" bio="John is the president of a small country." />
-                    <MemberProfile name="Jane Smith" role="Vice President" imageUrl="/pipluppfp.jpg" linkedin="https://www.linkedin.com/feed/" bio="Jane is the vice president of a small country." />
+                    <MemberProfile name="adam godel" role="director" imageUrl="/adam.png" linkedin="https://www.linkedin.com/in/adam-godel" bio="placeholder bio" />
+                    <MemberProfile name="nico jackson" role="vice director" imageUrl="/pipluppfp.jpg" linkedin="https://www.linkedin.com/feed/" bio="Jane is the vice president of a small country." />
                     <MemberProfile name="Alice Johnson" role="Cool Guy" imageUrl="/wooperpfp.jpg" linkedin="https://www.linkedin.com/feed/" bio="Alice is the treasurer of a small country." />
                 </div>
             </div>

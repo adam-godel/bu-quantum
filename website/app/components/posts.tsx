@@ -21,7 +21,7 @@ export function BlogPosts() {
             className="flex flex-col space-y-1 mb-4"
             href={`/notes/${post.slug}`}
           >
-            <div className="w-full flex flex-col md:flex-row space-x-0 md:space-x-2">
+            <div className="w-full flex flex-col md:flex-row space-x-0 md:space-x-2 text-lg">
               <p className="text-neutral-400 w-[80px] tabular-nums">
                 {"Week "+post.metadata.week}
               </p>

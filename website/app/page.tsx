@@ -39,7 +39,7 @@ export default function Page() {
         
         {/* logo and tagline */}
         <div className="lg:w-1/2 flex flex-col items-center lg:items-end mt-16 lg:mt-0">
-          <div className="text-center">
+          {/*<div className="text-center">
             <img
               src="/logo.png"
               alt="BU Quantum"
@@ -47,6 +47,15 @@ export default function Page() {
               height={400}
               className="mb-6 hover:scale-105 transition-transform duration-300"
             />
+          </div>*/}
+          <div className="[box-shadow:0_0.1vw_0.4vw_#fff7f7,0_0.4vw_0.6vw_#e97272,0_0_4vw_0.4vw_#cc0000,inset_0_0_1.5vw_0.4vw_#cc0000,inset_0_0_0.4vw_0.2vw_#e97272,inset_0_0_0.5vw_0.2vw_#fff7f7] rounded-3xl px-12 pt-12 pb-6" style={{ overflow: "visible" }}>
+              <img
+                src="/logo.png"
+                alt="BU Quantum"
+                width={400}
+                height={400}
+                className="mb-6 hover:scale-105 transition-transform duration-300"
+              />
           </div>
         </div>
       </div>
