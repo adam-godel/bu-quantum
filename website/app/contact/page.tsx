@@ -68,7 +68,7 @@ export default function Contact() {
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             className="w-full px-3 py-2 bg-zinc-900 border border-zinc-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent"
-                            placeholder="george stibitz"
+                            placeholder="david deutsch"
                         />
                     </div>
                     
