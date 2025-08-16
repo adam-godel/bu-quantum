@@ -1,0 +1,115 @@
+---
+title: "Addendum: Post-Quantum Cryptography, Kyber"
+publishedAt: '2025-09-01'
+week: 9
+summary: 'This page contains the notes for week 9 of BU Quantum.'
+---
+<KatexSpan>
+In this week's lesson, we discussed quantum key distribution, which I tried to stress was not a solution to the fact that Shor's algorithm breaks most classical encryption.
+
+In this addendum, I want to talk about post-quantum cryptography, which has a better shot at being reliable in the face of Shor's algorithm. A PQC algorithm is a classical or quantum algorithm that doesn't rely on the hardness of factoring or any other problem that is currently known to be breakable by quantum computation.
+
+When you think of encryption, you probably think of a scheme that generates a public key $pk$ and a secret key $sk$. A message $m$ can be encrypted with $pk$, producing a ciphertext string $c$, and $c$ can be decrypted using $sk$ to recover $m$.
+
+[RSA](https://en.wikipedia.org/wiki/RSA_cryptosystem), one of the oldest and most well-known public-key cryptosystems, follows this structure. While it has other forms, for example one more akin to key distribution, we'll focus on the format described above for simplicity.
+
+The problem with RSA is that it relies on the hardness of prime factorization, choosing two large prime integers $P$ and $Q$ as secrets and $N=PQ$ as public information. It's a little more complicated than that, but if you can extract $P$ and $Q$ from $N$, you can easily compute the private keys.
+
+The algorithm I want to cover, known officially as the **module-lattice-based key-encapsulation mechanism** (ML-KEM) but more widely as **Kyber**, is a fully classical encryption scheme that is believed to be resistant to Shor's algorithm. It relies on a problem known as [learning with errors](https://en.wikipedia.org/wiki/Learning_with_errors) that is believed to be hard to solve even with a Shor-capable quantum computer.
+
+Since Kyber is a fully classical scheme, it has to rely on the hardness of some problem. While a PQC scheme could in theory be quantum, it turns out that it's very difficult to create a quantum scheme without imposing difficult restrictions, such as the ones we talked about for QKD. It's more practical to try to create a classical scheme that relies on the hardness of a problem that can't be solved by a quantum computer.
+
+However, also note that the problem Kyber relies on is not provably unsolvable by a quantum computer. Some clever mathematician could figure out a way for either classical or quantum computers sometime in the future, breaking this form of encryption. This actually happened for a different PQC proposal known as [supersingular isogeny key exchange](https://en.wikipedia.org/wiki/Supersingular_isogeny_key_exchange) in 2022. For now, though, we believe that Kyber is resistant to both classical and quantum computation.
+
+Now, let's discuss Kyber. All of what follows comes from this really helpful [blog post](https://cryptopedia.dev/posts/kyber/) on Kyber from Cyptopedia.
+
+While Kyber keys are larger than RSA keys, they are the same order of magnitude, which is better than many PQC schemes. In actual Kyber, we have some pre-defined variables that are very large numbers. Here, we will scale them down significantly for understandability.
+
+We need both an integral and polynomial modulus. For this example, we will define the integral modulus to be $q=17$ and the polynomial modulus to be $f=x^4+1$. We need to make sure that our polynomial modulus will keep the degree of our polynomials under $4$, and for all calculations that follow, we will implicitly calculate them modulo $q$ for coefficients and $f$ for polynomials.
+
+Our private key will be a vector of small polynomials of size $k$. Here, we will use $k=2$. Suppose we have the private key
+{String.raw`$$
+\mathbf{s} = \begin{pmatrix}
+-x^3-x^2+x \\
+-x^3-x
+\end{pmatrix},
+$$`}
+which is generated randomly. Our public key will consist of a $k \times k$ matrix $\mathbf\{A\}$ and a vector of polynomials $\mathbf\{t\}$. The matrix is generated randomly; suppose we use
+{String.raw`$$
+\mathbf{A} = \begin{pmatrix}
+6x^3+16x^2+16x+11 & 9x^3+4x^2+6x+3 \\
+5x^3+3x^2+10x+1 & 6x^3+x^2+9x+15
+\end{pmatrix}.
+$$`}
+To calculate $\mathbf\{t\}$, we need an additional error vector $\mathbf\{e\}$, which is generated in the same way as the private key. Let's use
+{String.raw`$$
+\mathbf{e} = \begin{pmatrix}
+x^2 \\
+x^2-x
+\end{pmatrix}.
+$$`}
+We then calculate $\mathbf\{t\}$ as $\mathbf\{t\}=\mathbf\{A\}\mathbf\{s\}+\mathbf\{e\}$, giving us
+{String.raw`$$
+\mathbf{t} = \begin{pmatrix}
+16x^3+15x^2+7 \\
+10x^3+12x^2+11x+6
+\end{pmatrix}.
+$$`}
+This gives us a key pair with $\mathbf\{s\}$ as the private key and $(\mathbf\{A\}, \mathbf\{t\})$ as the public key. It is widely believed to be computationally hard to recover $\mathbf\{s\}$ from $(\mathbf\{A\}, \mathbf\{t\})$.
+
+To encrypt a message, we'll need an error and a randomizer polynomial vector $\mathbf\{e_1\}$ and $\mathbf\{r\}$ respectively, and an error polynomial $e_2$. All three of these are randomly generated each time we encrypt. Let's use
+{String.raw`$$
+\mathbf{r} = \begin{pmatrix}
+-x^3+x^2 \\
+x^3+x^2-1
+\end{pmatrix} \qquad \mathbf{e_1} = \begin{pmatrix}
+x^2+x \\
+x^2
+\end{pmatrix} \qquad e_2 = -x^3-x^2.
+$$`}
+Now, suppose the message we want to send is the binary string $1011$. Each bit will correspond to the coefficient of a polynomial, making the message
+{String.raw`$$
+m_b = 1x^3+0x^2+1x+1 = x^3+x+1.
+$$`}
+Before we encrypt, we need to scale this polynomial by multiplying it with $\lfloor q/2 \rceil$. If you haven't seen this notation before, it just indicates to round $q/2$. We do this since the polynomial coefficients need to be large. In our example, $q=17$ and thus $\lfloor q/2 \rceil = 9$. This leaves us with
+{String.raw`$$
+m = \left\lfloor \frac{q}{2} \right\rceil m_b = 9x^3+9x+9
+$$`}
+We encrypt $m$ using the public key $(\mathbf\{A\}, \mathbf\{t\})$, generating the ciphertext $(\mathbf\{u\}, v)$ according to the following formulas:
+{String.raw`$$
+\begin{align*}
+\mathbf{u} &= \mathbf{A}^T \mathbf{r} + \mathbf{e_1} \\
+v &= \mathbf{t}^T \mathbf{r} + e_2 + m
+\end{align*}
+$$`}
+In our example, we get
+{String.raw`$$
+\mathbf{u} = \begin{pmatrix}
+11x^3+11x^2+10x+3 \\
+4x^3+4x^2+13x+11
+\end{pmatrix} \qquad v=7x^3+6x^2+8x+15.
+$$`}
+This is the encrypted message we can now safely send to the receiver.
+
+To decrypt, we start by computing a noisy result $m_n$ using the formula
+{String.raw`$$
+m_n = v-\mathbf{s}^T \mathbf{u},
+$$`}
+which we can see encodes the original message $m$ as
+{String.raw`$$
+m_n = \mathbf{e}^T \mathbf{r} + e_2 + m + \mathbf{s}^T \mathbf{e_1}.
+$$`}
+The reason it's important for the scaled polynomial $m$ to have large coefficients is that every other term has small coefficients, and this will allow us to distinguish between bits that should be 1 and bits should be 0.
+
+In our example, we have $m_n = 7x^3+14x^2+7x+5$. We round this polynomial by changing all coefficients closer to $\lfloor q/2 \rceil$ to $\lfloor q/2 \rceil$ and all coefficients closer to $0$ or $q$ to $0$. This leaves us with
+{String.raw`$$
+m = 9x^3+0x^2+9x+9 = 9m_b \implies m_b = x^3+x+1,
+$$`}
+and thus the encrypted message is $1011$.
+
+The only difference between the actual Kyber and this toy model is the size. For example, in Kyber, the polynomials can be up to degree $256$ instead of just $4$, and $q=3329$. Additionally, ciphertexts in the actual Kyber model are compressed, but the underlying logic is the same.
+
+Kyber is one of three proposed PQC schemes that was standardized by NIST last year as a model to use for encryption once Y2Q arrives. It's pretty cool given its relative simplicity, but definitely more expensive than encryption schemes like RSA that are widely used today, and of course, it is not provably secure against quantum computation. 
+
+The only thing that's for certain is that it will take time and effort to transition and adjust to a post-quantum encrypted world.
+</KatexSpan>
