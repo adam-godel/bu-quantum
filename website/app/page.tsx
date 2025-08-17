@@ -11,28 +11,16 @@ export default function Page() {
             </p>
           </div>
           
-          {/* icons */}
+            {/* icons */}
           <div className="flex space-x-6">
             <a href="/about" className="transition-opacity hover:opacity-70">
-              <img
-                className="w-12 h-12"
-                src="/information.png"
-                alt="About"
-              />
+              <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-info-icon lucide-info"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
             </a>
             <a href="/notes" className="transition-opacity hover:opacity-70">
-              <img
-                className="w-12 h-12"
-                src="/writing.png"
-                alt="Notes"
-              />
+              <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-notebook-pen-icon lucide-notebook-pen"><path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4"/><path d="M2 6h4"/><path d="M2 10h4"/><path d="M2 14h4"/><path d="M2 18h4"/><path d="M21.378 5.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"/></svg>
             </a>
             <a href="/contact" className="transition-opacity hover:opacity-70">
-              <img
-                className="w-12 h-12"
-                src="/email.png"
-                alt="Contact"
-              />
+              <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-mail-icon lucide-mail"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg>
             </a>
           </div>
         </div>
