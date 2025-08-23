@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import Marquee from "react-fast-marquee"
 
 const navItems = {
   '/': {
@@ -16,10 +17,22 @@ const navItems = {
   },
 }
 
+const scrollingText = "week 1: sept 3, 2025 @ 6pm in cas 208"
+
 export function Navbar() {
   return (
-    <aside className="-mt-4 -ml-[8px] mb-16 tracking-tight">
-      <div className="lg:sticky lg:top-20">
+    <aside className="-mt-6 -ml-[8px] mb-12 tracking-tight">
+      <div className="absolute left-0 w-screen overflow-hidden">
+        <Marquee className="w-full">
+          {Array.from({ length: 30 }).map((_, i) => (
+            <span key={i} className="flex items-center font-stretch-expanded">
+              <span>{scrollingText}</span>
+              <span className="mx-2">•</span>
+            </span>
+          ))}
+        </Marquee>
+      </div>
+      <div className="mt-6 lg:sticky lg:top-20">
         <nav
           className="flex flex-row items-center justify-between relative px-0 pb-0 fade overflow-visible scroll-pr-6 md:relative"
           id="nav"
@@ -28,8 +41,8 @@ export function Navbar() {
             <Image 
               src="/logo.png"
               alt="BU Quantum"
-              width={94}
-              height={29}
+              width={100}
+              height={100}
               className="flex align-middle relative px-2 scale-150"
             />
           </div>

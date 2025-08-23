@@ -1,7 +1,11 @@
-"use client"
 import React from 'react'
 import MemberProfile from '../components/memberprofile'
 import InfoBox from '../components/infobox'
+
+export const metadata = {
+  title: 'About',
+  description: 'Learn more about BU Quantum.',
+}
 
 export default function About() {
     return (
@@ -16,9 +20,7 @@ export default function About() {
             >
                 <h1 className="text-4xl text-center justify-center mb-4 font-bold drop-shadow-[0_0_7px_rgba(224,92,92,0.8)]">our team</h1>
                 <div className="flex flex-row justify-center flex-wrap">
-                    <MemberProfile name="adam godel" role="director" imageUrl="/adam.png" linkedin="https://www.linkedin.com/in/adam-godel" bio="placeholder bio" />
-                    <MemberProfile name="nico jackson" role="vice director" imageUrl="/pipluppfp.jpg" linkedin="https://www.linkedin.com/feed/" bio="Jane is the vice president of a small country." />
-                    <MemberProfile name="Alice Johnson" role="Cool Guy" imageUrl="/wooperpfp.jpg" linkedin="https://www.linkedin.com/feed/" bio="Alice is the treasurer of a small country." />
+                    <MemberProfile name="adam godel" role="director" imageUrl="/adam.png" linkedin="https://www.linkedin.com/in/adam-godel" bio={<>passionate about quantum computing.<br/>qsl fellow @ wiser/nnl.<br/>winner @ iquhack & qrise.<br/>lecturer @ bu quantum.</>}/>
                 </div>
             </div>
         </div>
