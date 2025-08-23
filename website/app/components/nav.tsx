@@ -22,7 +22,7 @@ const scrollingText = "week 1: sept 3, 2025 @ 6pm in cas 208"
 export function Navbar() {
   return (
     <aside className="-mt-6 -ml-[8px] mb-12 tracking-tight">
-      <div className="absolute left-0 w-screen overflow-hidden">
+      <div className="absolute left-0 w-screen overflow-hidden hover:cursor-default">
         <Marquee className="w-full">
           {Array.from({ length: 30 }).map((_, i) => (
             <span key={i} className="flex items-center font-stretch-expanded">
