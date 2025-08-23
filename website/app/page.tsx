@@ -1,6 +1,6 @@
 export default function Page() {
   return (
-    <section className="min-h-[calc(100vh-288px)] flex items-center mb-8">
+    <section className="lg:h-[calc(100vh-288px)] flex items-center mb-8">
       <div className="w-full flex flex-col lg:flex-row lg:items-center lg:justify-between">
         {/* text content */}
         <div className="lg:w-1/2 lg:pr-16">
@@ -37,13 +37,13 @@ export default function Page() {
               background: 'radial-gradient(circle, rgba(0,0,0,0) 30%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0.9) 90%)',
             }}
           />
-          <div className="group [box-shadow:0_0.1vw_0.4vw_#fff7f7,0_0.4vw_0.6vw_#e97272,0_0_4vw_0.4vw_#cc0000,inset_0_0_1.5vw_0.4vw_#cc0000,inset_0_0_0.4vw_0.2vw_#e97272,inset_0_0_0.5vw_0.2vw_#fff7f7] rounded-3xl px-12 pt-12 pb-6 hover:animate-[flicker_9.66s_linear_infinite]">
+          <div className="group [box-shadow:0_0.1vw_0.4vw_#fff7f7,0_0.4vw_0.6vw_#e97272,0_0_4vw_0.4vw_#cc0000,inset_0_0_1.5vw_0.4vw_#cc0000,inset_0_0_0.4vw_0.2vw_#e97272,inset_0_0_0.5vw_0.2vw_#fff7f7] rounded-3xl px-12 pt-12 pb-6 animate-[flicker_13.8s_linear_infinite]">
               <img
                 src="/logo.png"
                 alt="BU Quantum"
                 width={400}
                 height={400}
-                className="mb-6 group-hover:animate-[flicker_3.51s_linear_infinite]"
+                className="-mt-2 mb-9 animate-[flicker_5.01s_linear_infinite] scale-150"
               />
           </div>
         </div>

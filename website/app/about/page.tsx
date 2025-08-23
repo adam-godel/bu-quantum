@@ -5,7 +5,7 @@ import InfoBox from '../components/infobox'
 
 export default function About() {
     return (
-        <div>
+        <div className="lg:min-h-[calc(100vh-288px)] mb-8 flex flex-col justify-center">
             <InfoBox title="about us" info="bu quantum is a student organization at boston university dedicated to promoting quantum computing and quantum information science. we aim to provide resources, workshops, and networking opportunities for students interested in the field." />
             <br />
             <InfoBox title="what we do" info="we organize talks, workshops, and hackathons to educate and engage students in quantum technologies. we also collaborate with industry professionals and researchers to provide insights into the latest advancements in the field." />
