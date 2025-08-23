@@ -1,1 +1,2 @@
-# bu-quantum
+# BU Quantum
+This repository contains the slides and website for BU Quantum, a quantum computing club at Boston University. The club is currently meeting for the Fall 2025 semester. For more information, see [our website](https://buquantum.org/).
