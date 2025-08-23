@@ -3,7 +3,7 @@ export default function Footer() {
     <footer className="mt-auto mb-2 text-center">
                   {/* icons */}
             <div className="flex flex-row justify-center space-x-6 my-4">
-                <a href="mailto:bosuquantum@gmail.com" className="hover:scale-105 transition-transform duration-300 hover:opacity-70">
+                <a href="mailto:bosuquantum@gmail.com" className="duration-300 hover:opacity-70">
                         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="50" viewBox="0 0 24 24" fill="none" stroke="#d4d4d4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-send-icon lucide-send"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg>
                 </a>
                 <a href="https://www.instagram.com/bostonuquantum/" target="_blank" className="duration-300 hover:opacity-70">
