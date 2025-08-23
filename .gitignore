@@ -1,2 +1,3 @@
-notes/*
+notes/*.mdx
+slides/*.key
 .DS_Store
