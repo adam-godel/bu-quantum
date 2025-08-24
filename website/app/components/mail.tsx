@@ -74,7 +74,7 @@ export default function Mail() {
                 </button>
                 
                 {status === 'success' && (
-                    <p className="text-blue-400 text-sm text-center">thanks for subscribing!</p>
+                    <p className="text-white text-sm text-center">thanks for subscribing!</p>
                 )}
                 {status === 'error' && (
                     <p className="text-red-400 text-sm text-center">something went wrong. please try again.</p>

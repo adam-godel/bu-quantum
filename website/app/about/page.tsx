@@ -20,8 +20,8 @@ export default function About() {
             >
                 <h1 className="text-4xl text-center justify-center mb-4 font-bold drop-shadow-[0_0_7px_rgba(224,92,92,0.8)]">our team</h1>
                 <div className="grid grid-cols-1 md:grid-cols-3 justify-center">
-                    <MemberProfile name="adam godel" role="director" imageUrl="/adam.png" linkedin="https://www.linkedin.com/in/adam-godel" bio={<>passionate about quantum computing.<br/>qsl fellow @ wiser/nnl.<br/>awards @ iquhack & qrise.<br/>lecturer @ bu quantum.</>}/>
-                    <MemberProfile name="nico jackson" role="vice director" imageUrl="/nico.png" linkedin="https://www.linkedin.com/in/nicola-jackson-64b22833b" bio={<></>}/>
+                    <MemberProfile name="adam godel" role="director" imageUrl="/adam.png" linkedin="https://www.linkedin.com/in/adam-godel" bio={<>passionate about quantum computing.<br/>qsl fellow @ wiser/nnl.<br/>awards @ iquhack & qrise.<br/>not fault-tolerant myself.</>}/>
+                    <MemberProfile name="nico jackson" role="vice director" imageUrl="/nico.png" linkedin="https://www.linkedin.com/in/nicola-jackson-64b22833b" bio={<>passionate about web dev and swe.<br/>big fan of gta v and bears.<br/>"6’2".</>}/>
                     <MemberProfile name="travis meyer" role="head of finance" imageUrl="/travis.png" linkedin="https://www.linkedin.com/in/travis-meyer-2b313a299" bio={<>passionate about something.<br/>swe & excel victim.<br/>5'8.</>}/>
                     <div className="flex-col md:flex-row md:col-span-3 flex justify-center gap-8">
                         <MemberProfile name="jacky lin" role="head of operations" imageUrl="/jacky.png" linkedin="https://www.linkedin.com/in/lin-jacky" bio={<>passionate about boba.<br/>badminton/tv enthusiast.<br/>always exploring new domains.<br/>i love birds.</>}/>
