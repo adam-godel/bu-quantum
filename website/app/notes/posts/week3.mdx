@@ -1,0 +1,159 @@
+---
+title: 'Controlled Gates, Entanglement, Bell States'
+publishedAt: '2025-09-17'
+week: 3
+summary: 'This page contains the notes for week 3 of BU Quantum.'
+---
+<KatexSpan>
+## Table of Contents
+1. [Controlled Gates](#controlled-gates)
+2. [Entanglement](#entanglement)
+3. [Bell States](#bell-states)
+
+## Controlled Gates
+Last lesson, we looked at single-qubit quantum gates. But to build up more advanced circuits, we really need two-qubit quantum gates. This should be intuitive from classical computing, as gates that take two bits as input (AND, OR, etc.) are a lot more powerful than the single bit NOT gate.
+
+We will be formulating our two-qubit gates a little differently, though. Instead of treating the two inputs equally, we will consider one to be the **control qubit** and the other to be the **target qubit**. If the control qubit is $|0\rangle$, then we will do nothing; if it is $|1\rangle$, though, we will apply some single-qubit gate on the target qubit.
+
+The most prevalent controlled gate is the $CX$ gate, sometimes called the CNOT gate, which can be written as the following $4 \times 4$ matrix:
+{String.raw`$$
+CX = \begin{bmatrix}
+1 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 \\
+0 & 0 & 0 & 1 \\
+0 & 0 & 1 & 0
+\end{bmatrix}
+$$`}
+It may not be clear exactly what this matrix is doing. Let's apply it on a 2-qubit quantum state, which we can write as a vector of size 4. Here, the first entry represents the $|00\rangle$ amplitude, the second entry represents the $|01\rangle$ amplitude, the third entry represents the $|10\rangle$ amplitude, and the fourth entry represents the $|11\rangle$ amplitude.
+{String.raw`$$
+CX|\psi\rangle = \begin{bmatrix}
+1 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 \\
+0 & 0 & 0 & 1 \\
+0 & 0 & 1 & 0
+\end{bmatrix} \begin{bmatrix}
+\alpha \\
+\beta \\
+\gamma \\
+\delta
+\end{bmatrix} = \begin{bmatrix}
+\alpha \\
+\beta \\
+\delta \\
+\gamma
+\end{bmatrix}
+$$`}
+Note that $|\alpha|^2+|\beta|^2+|\gamma|^2+|\delta|^2=1$. So it is apparent that the amplitudes for the $|00\rangle$ and $|01\rangle$ states don't change, while the amplitudes for the $|10\rangle$ and $|11\rangle$ states switch. This is behaving exactly as we described above: when the first qubit is 0, we do nothing; when it is 1, we apply a $X$ gate on the second qubit.
+
+One other thing I should note about the $CX$ gate is the peculiar way it's usually written in a quantum circuit diagram.
+<img src="/cnot.png" style={{margin: "auto", width: "30%"}}/>
+Here, the dot represents the control qubit and the XOR symbol represents the target qubit. This is because the $CX$ gate can also be thought of as performing a XOR between the two qubit inputs and assigning the result to the target qubit. Both ways of thinking are equivalent, but I personally prefer the first way of thinking.
+
+Cool! But what can we use this for? It turns out that we can do something really special if we combine the $H$ and $CX$ gates.
+
+Let's try creating this circuit in Qiskit.
+```py
+from qiskit import QuantumCircuit
+
+qc = QuantumCircuit(2)
+qc.h(0)
+qc.cx(0, 1)
+qc.measure_all()
+qc.draw()
+```
+This will output the following circuit:
+```
+        ┌───┐      ░ ┌─┐   
+   q_0: ┤ H ├──■───░─┤M├───
+        └───┘┌─┴─┐ ░ └╥┘┌─┐
+   q_1: ─────┤ X ├─░──╫─┤M├
+             └───┘ ░  ║ └╥┘
+meas: 2/══════════════╩══╩═
+                      0  1 
+```
+I should probably mention that if we measure multiple qubits to one register, the result will be treated as a bitstring (or a superposition of bitstrings) with the first qubit being the least significant bit.
+
+Let's think about what would happen here. We know that applying the $H$ gate on $|q_0\rangle$ puts it in equal superposition between $|0\rangle$ and $|1\rangle$.
+
+We now have two possibilities: if $|q_0\rangle$ measures to $|0\rangle$, then there will be no change to $|q_1\rangle$, so it will remain as $|0\rangle$; but if $|q_0\rangle$ measures to $|1\rangle$, then a $X$ gate will be applied to $|q_1\rangle$, and it will become $|1\rangle$. This means that $|q_0\rangle$ and $|q_1\rangle$ will always be the same, regardless of the measurement!
+
+Mathematically, we would write this quantum state as
+{String.raw`$$
+|q_1 q_0\rangle = CX|+\rangle|0\rangle = \frac{|00\rangle+|11\rangle}{\sqrt{2}} = |\Phi^{+}\rangle
+$$`}
+As I have indicated, this quantum state is so important that it has a special symbol, $|\Phi^\{+\}\rangle$. Formally, it is called the "first maximally entangled two-qubit Bell state." For the rest of today's lesson, we will talk about what this fancy name actually means.
+
+## Entanglement
+The result we got above is really striking. This isn't like setting a variable to some value and then copying that value to a second variable or anything like that. This result shows that at the fundamental gate level, totally separate qubits can be the same state.<sup><a href="#foot1">1</a></sup>
+
+Let's test it out! Let's reuse our code from last time to measure this quantum circuit.
+```
+from qiskit_aer.primitives import SamplerV2
+
+sampler = SamplerV2()
+job = sampler.run([qc], shots=2048)
+
+result = job.result()
+result[0].data.meas.get_counts()
+```
+As a side note, we are always going to use this block of code to execute the quantum circuits we made. I would recommend saving it somewhere easy to access, and I'm going to stop pasting it in future notes pages. The Qiskit Aer package has a lot of interesting options for noisy (error-prone) simulation, but this is outside the scope of what we'll be talking about this semester.
+
+Anyway, my output looks like this:
+```
+{'00': 1022, '11': 1026}
+```
+As we can see, there are no instances of '01' or '10' showing up. The property of two independent qubits being related in this way is known as **entanglement**, and it's one of the most fundamental properties that a quantum computer has and a classical computer doesn't.
+
+<Quiz 
+    question={<span>Suppose your friend prepares the {String.raw`$|\Phi^{+}\rangle$`} state and measures <i>only qubit 0</i> with 2048 shots. What will be the (approximate) output in Qiskit?</span>}
+    answers={[
+        <code>{String.raw`{'00': 1024, '11': 1024}`}</code>,
+        <code>{String.raw`{'00': 1024, '01': 1024}`}</code>,
+        <code>{String.raw`{'00': 1024, '10': 1024}`}</code>,
+        <code>{String.raw`{'01': 1024, '10': 1024}`}</code>,
+    ]}
+    correct={1}
+    explanation={[
+        <span>This would be the result if we measured both qubits, but we're only measuring qubit 0 here.</span>, 
+        <span>Both qubits must be measured to observe entanglement. With only the first qubit measured, it is just in the <InlineMath>|+\rangle</InlineMath> state while the other classical register is always 0.</span>,
+        <span>This is really close, but remember that qubit 0 is written as the least significant bit in Qiskit.</span>,
+        <span>This is an entangled state, but not the one we set up here.</span>,
+    ]}
+/>
+
+We'll be looking at our first quantum algorithm next week, which performs better than the best possible classical algorithm due to the principle of entanglement.
+
+## Bell States
+Let's try to take this entangled state we've created and generalize it a  bit. First of all, we can note that knowing the value of one qubit will mean that we know the values of all (two) qubits. This may seem a bit silly for the two qubit case, but we will see this property for more qubits as well. This means that this circuit is **maximally entangled**.
+
+The first maximally entangled state we found is the one we talked about earlier, where the control qubit is $|+\rangle$ and the target qubit is $|0\rangle$:
+{String.raw`$$
+|\Phi^{+}\rangle = \frac{|00\rangle+|11\rangle}{\sqrt{2}}
+$$`}
+
+The other thing we can notice is that we can assemble a maximally entangled two qubit state in multiple ways. For example, if the control qubit is in the $|-\rangle$ state instead of the $|+\rangle$ state, we get the state
+{String.raw`$$
+|\Phi^{-}\rangle = \frac{|00\rangle-|11\rangle}{\sqrt{2}}
+$$`}
+The relationship between $|\Phi^\{+\}\rangle$ and $|\Phi^\{-\}\rangle$ is very similar to the relationship between $|+\rangle$ and $|-\rangle$ but for two qubits. We can't observe any difference through measurement, but the states are assembled differently and could have different results based on certain other gates applied to them.
+
+If we initialize the target qubit to $|1\rangle$ with the control qubit as $|+\rangle$ before applying the $CX$ gate, we get the state
+{String.raw`$$
+|\Psi^{+}\rangle = \frac{|01\rangle+|10\rangle}{\sqrt{2}}
+$$`}
+Even though the qubits aren't the same, this state is maximally entangled because they are *never* the same: if we know the state of one qubit, we always know the state of the other. The last of these states can be assembled with the target qubit as $|1\rangle$ and the control qubit as $|-\rangle$:
+{String.raw`$$
+|\Psi^{-}\rangle = \frac{|01\rangle-|10\rangle}{\sqrt{2}}
+$$`}
+
+These four states together are known as the **Bell states** (named after [John Stewart Bell](https://en.wikipedia.org/wiki/John_Stewart_Bell)) or **EPR pairs** (named after [Einstein](https://en.wikipedia.org/wiki/Albert_Einstein), [Podolsky](https://en.wikipedia.org/wiki/Boris_Podolsky), and [Rosen](https://en.wikipedia.org/wiki/Nathan_Rosen)).
+
+As a reference, the following table can help you remember what gate combinations lead to each Bell state:
+<Table data={{headers: ["Control State", "Target State", "Result"], rows: [["$H|0\\rangle=|+\\rangle$", "$|0\\rangle$", "$|\\Phi^\{+\}\\rangle$"], ["$HX|0\\rangle=|-\\rangle$", "$|0\\rangle$", "$|\\Phi^\{-\}\\rangle$"], ["$H|0\\rangle=|+\\rangle$", "$X|0\\rangle=|1\\rangle$", "$|\\Psi^\{+\}\\rangle$"], ["$HX|0\\rangle=|-\\rangle$", "$X|0\\rangle=|1\\rangle$", "$|\\Psi^\{-\}\\rangle$"]]}}/>
+
+I encourage you to try creating the four Bell states on your own using Qiskit and then measuring the circuit to ensure that the result is what you expect.
+<br/>
+<hr style={{width: "40%"}}/>
+
+<a name="foot1">1</a>. From a physical perspective, this result is quite unexpected. It means that two particles can be extremely far apart from each other but still affect each other's state. The discovery of quantum entanglement led to the [EPR paradox](https://en.wikipedia.org/wiki/Einstein%E2%80%93Podolsky%E2%80%93Rosen_paradox), which argues that our description of physical reality based on quantum mechanics is fundamentally incomplete. 
+</KatexSpan>
