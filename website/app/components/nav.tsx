@@ -17,7 +17,7 @@ const navItems = {
   },
 }
 
-const scrollingText = "week 4: sept 24, 2025 @ 6pm in cas 208"
+const scrollingText = "week 4: oct 1, 2025 @ 6pm in cas 208"
 
 export function Navbar() {
   return (
