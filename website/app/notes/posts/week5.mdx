@@ -161,7 +161,7 @@ $$`}
 
 In contrast to our phase oracle from before, this is known as a *bit oracle*.<sup><a href="#foot4">4</a></sup>
 
-Let's now write out the algorithm. I will use a pretty common piece of notation I haven't used before, which is using calligraphic letter subscripts to notate different quanatum registers. This notation is useful when you want to be explicit about what register certain operations will apply to, which will be particularly important here.
+Let's now write out the algorithm. I will use a pretty common piece of notation I haven't used before, which is using calligraphic letter subscripts to notate different quantum registers. This notation is useful when you want to be explicit about what register certain operations will apply to, which will be particularly important here.
 
 We will start in state {String.raw`$|0^n\rangle_\mathcal{A} |0^n\rangle_\mathcal{B}$`}, with $n$ qubits in register $\\mathcal\{A\}$ and $n$ qubits in register $\\mathcal\{B\}$. We will then apply {String.raw`$H_\mathcal{A}^{\otimes n}$`} to the state, a Hadamard transform on register $\\mathcal\{A\}$. We will then apply $O_f$, which leaves the value of register $\\mathcal\{A\}$ unchanged and sets register $\\mathcal\{B\}$ to $f(H^\{\\otimes n\}|0\\rangle_\\mathcal\{A\})$. We then apply {String.raw`$H_\mathcal{A}^{\otimes n}$`} to the state again and measure the value in register $\\mathcal\{A\}$. We can just discard the value in register $\\mathcal\{B\}$.
 
