@@ -1,0 +1,43 @@
+---
+title: "Addendum: Iterative Quantum Phase Estimation"
+publishedAt: '2025-09-01'
+week: 7
+summary: 'This page contains the addendum for week 7 of BU Quantum.'
+---
+<KatexSpan>
+In this addendum, I want to cover a variation of the quantum phase estimation algorithm, known as **iterative quantum phase estimation** (IQPE), as well as talk a bit about Hamiltonian simulation.
+
+In the main lesson, I decided to present phase estimation as a general mathematical algorithm to find eigenvalues given a unitary operator and an eigenvector. This is a perfectly valid way to present the algorithm, but in practice, the algorithm is most often used in the context of Hamiltonian simulation.
+
+A Hamiltonian is an operator that encodes the energy of a quantum system. And importantly to us, its spectrum (its set of eigenvalues) describes the possible outcomes when measuring its energy.
+
+In the context of quantum computing, a Hamiltonian operator $H$ is Hermitian and of size $2^n \times 2^n$, but not unitary. Therefore, we need to convert it into a unitary operator that we can use for phase estimation.
+
+Luckily, we can do this by exponentiating it and adding a parameter $t$. This is known as the **time-evolution operator**. It turns out that the operator
+{String.raw`$$
+U(t) = e^{-iHt}
+$$`}
+will always be unitary as long as $H$ is Hermitian, making it a great fit for phase estimation. If we have an eigenvector $|v_\theta\rangle$, we can use phase estimation to find its corresponding eigenvalue $e^\{-iE_ot\}$, where $E_o$ is the eigenvalue of the original Hamiltonian. 
+
+However, remember that the output of our phase estimation algorithm will be a number $\theta \in [0,1]$ where the eigenvalue of the unitary operator is $e^\{2\pi i \theta\}$. Therefore, we have the equivalence
+{String.raw`$$
+e^{-iE_ot} = e^{2\pi i \theta} \implies E_o = -2\pi\theta/t.
+$$`}
+You might wonder how we select the parameter $t$. The truth is this parameter can often be quite flexible, and it depends on the specifics of the quantum system you're simulating. However, it's important that the maximum eigenvalue $|E_\{\text\{max\}\}t| < 2\pi$, since we know that the numerator of the formula above cannot be larger than $2\pi$.
+
+That's essentially the only tweak for this application of the algorithm. Hamiltonian simulation is super useful, particularly for large Hamiltonians that are impractical to diagonalize. To actually implement the unitary operator, you can synthesize it into a circuit using [Suzuki-Trotter decomposition](https://quantum.cloud.ibm.com/docs/en/api/qiskit/qiskit.synthesis.SuzukiTrotter), which I'm not going to cover in-depth here.
+
+Now, let's talk a bit about IQPE. In truth, in my research, I've used IQPE more often than the "traditional" quantum phase estimation algorithm we covered during the lesson. IQPE works similarly to QPE, but it avoids the need to create a large circuit by repeating a smaller circuit in such a way that the previous result is incorporated into the next circuit execution.
+
+We begin with the state $|v_\theta\rangle|+\rangle$ and let $m$ be the precision of our phase approximation, which will also be the number of iterations of the circuit. We will let $k$ be the number iteration we're on.
+
+Once our initial state is prepared, we apply the controlled unitary operator $U^\{2^\{m-k\}\}$ with our ancillary qubit $|+\rangle$ as the control and the eigenvector as the target. In the case of IQPE, this exposes the $(m-k)$th bit as the integral part of the phase, and allows it to be measured with only one qubit. We then apply a phase gate, which will have a parameter of $\phi_1=0$ in the first iteration and do nothing. We then apply an $H$ gate and measure our ancillary qubit. 
+
+Our result after the first iteration will just be the rightmost bit of our phase approximation. We then repeat for the next iteration, halving the exponent of our unitary. The difference is that we will now apply $P(\phi_2=0.x_\{m-1\})$, where $x_\{m-1\}$ is the rightmost bit we just measured. This will output $x_\{m-2\}$ when measured. The purpose of this phase gate is to remove the fractional information in the phase, so we just get the integral part, which is the bit we want for each iteration.
+
+Now, for the $k$th step, we simply repeat and apply $P(\phi_k=0.x_\{m-k+1\} \cdots x_\{m-1\})$. This allows us to iteratively build up the phase using a much smaller circuit than in QPE.
+
+The power of this algorithm might not be totally obvious, but for me, the most important part of IQPE is the fact that it iteratively executes a small circuit instead of iteratively building a big circuit to be run all at once. Since the output of each "piece" is just classical information (a bit), we can create circuits with low circuit depth and run them far more effectively on a quantum computer.
+
+From my experience, I've found that the bigger bottleneck is applying the Hamiltonian itself. Implementing a Hamiltonian as a circuit can often be quite computationally intensive, although there are a lot of clever tricks you can use to minimize circuit depth. The fact that most of today's quantum computers can only run circuits with very low circuit depths accurately is a major bottleneck for running more complicated algorithms.
+</KatexSpan>
