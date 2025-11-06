@@ -75,7 +75,7 @@ Now all we need to do is figure out how to find the period $r$ and put everythin
 
 We want to construct a unitary operator $U_\{a,N\}$ where
 {String.raw`$$
-U_{a,N}|y \bmod N)\rangle = |ay \bmod N)\rangle.
+U_{a,N}|y \bmod N\rangle = |ay \bmod N\rangle.
 $$`}
 Let's assume for now that we can implement it. We can use it as the unitary for phase estimation. This is because we can implement $U_\{a,N\}^\{2^k\}$ easily by setting $a^\{2^k\} \bmod N$ as the input to the unitary instead.
 
@@ -175,7 +175,7 @@ def find_period(a, N, n_count):
     
     pe = phase_estimation(n_count, unitary)
 
-    qc = QuantumCircuit(n_count+N.bit_count(), n_count)
+    qc = QuantumCircuit(n_count+N.bit_length(), n_count)
     qc.x(n_count)
     qc = qc.compose(pe)
     qc.measure(range(n_count), range(n_count))
