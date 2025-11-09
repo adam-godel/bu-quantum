@@ -93,7 +93,7 @@ What it does allow us to do, though, is communicate securely using a quantum com
 
 So let's go over the procedure. It's actually super simple. Alice simply applies one Pauli gate to her qubit depending on the bitstring she wants to encode:
 <Table data={{headers: ["Bitstring", "Pauli Gate"], rows: [['$00$', '$I$'], ['$01$', '$X$'], ['$10$', '$Z$'], ['$11$', '$Y$']]}}/>
-Once Bob then receives Alice's qubit, he simply undos the entanglement by performing an $H$ gate on Alice's qubit and then a $CX$ gate with Alice's qubit as the control and his qubit as the target. This will collapse the two qubits into the bitstring Alice encoded with certainty.
+Once Bob then receives Alice's qubit, he simply undos the entanglement by performing a $CX$ gate with Alice's qubit as the control and his qubit as the target and then an $H$ gate on Alice's qubit. This will collapse the two qubits into the bitstring Alice encoded with certainty.
 
 <Quiz 
     question={"Instead of applying a $Y$ gate to encode $11$, we could also apply $ZX$."}
