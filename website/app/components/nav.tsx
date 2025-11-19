@@ -17,7 +17,7 @@ const navItems = {
   },
 }
 
-const scrollingText = ""
+const scrollingText = "have a great winter break!"
 
 export function Navbar() {
   return (
