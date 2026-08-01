@@ -172,7 +172,11 @@ export function CustomMDX(props) {
     <MDXRemote
       {...props}
       components={{ ...components, ...(props.components || {}) }}
-      options={{scope: {
+      // next-mdx-remote v6 strips `{...}` expressions by default (blockJS).
+      // Our MDX is first-party content in this repo and relies on expression
+      // props, so we opt out; blockDangerousJS stays on, which still blocks
+      // eval/Function/process and friends.
+      options={{blockJS: false, scope: {
         pt0: m.useMovablePoint([1/Math.sqrt(2),1/Math.sqrt(2)]),
         pt1: m.useMovablePoint([1/Math.sqrt(2),-1/Math.sqrt(2)])
       }}}
