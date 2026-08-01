@@ -34,7 +34,7 @@ export default function Mail() {
 
     return (
         <div className="max-w-md mx-auto mt-8 p-6 rounded-lg border-2 border-red-500 shadow-lg w-full">
-            <h2 className="text-2xl font-bold text-center mb-6 text-white">join our mailing list!</h2>
+            <h2 className="text-2xl font-bold text-center mb-6 text-white">Join our mailing list!</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                     <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">
