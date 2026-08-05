@@ -15,7 +15,7 @@ export default function About() {
 
             <div className="flex flex-col gap-12">
                 <InfoBox
-                    eyebrow="Who we are"
+                    eyebrow="Overview"
                     title="About Us"
                     info="Established in Fall 2025, BU Quantum aims to foster a community around quantum computing, on campus. We’re building a space for interested students to get the resources they need, collaborate with each other, and connect with faculty."
                 />
@@ -34,13 +34,13 @@ export default function About() {
             </div>
 
             <section className="rule pt-10 mt-16">
-                <p className="eyebrow mb-4">The team</p>
-                <h2 className="section-title mb-10">Our Team</h2>
+                <p className="eyebrow mb-4">Our Team</p>
+                <h2 className="section-title mb-10">Who We Are</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <MemberProfile name="Yebin Song" role="Director" imageUrl="/yebin.jpg" linkedin="https://www.linkedin.com/in/yebin-song-11158232a" bio={<>Data science major.<br/>Vision model explainability research.<br/>Baited by Richard Feynman.</>}/>
-                    <MemberProfile name="Adam Godel" role="Founder" imageUrl="/adam.png" linkedin="https://www.linkedin.com/in/adam-godel" bio={<>Passionate about quantum computing.<br/>QSL fellow @ Wiser/NNL.<br/>Awards @ iQuHack & QRISE.<br/>Not fault-tolerant myself.</>}/>
-                    <MemberProfile name="Allen Chen" role="Head of Operations" imageUrl="/allen.jpg" linkedin="https://www.linkedin.com/in/allenchen28" bio={<>Electrical engineering major.<br/>Quantum optics research.<br/>Passionate about quantum hardware and its fabrication.</>}/>
-                    <MemberProfile name="Artem Arefev" role="Head of Physics" imageUrl="/artem.jpg" linkedin="https://www.linkedin.com/in/artem-arefev-0789563a5" bio={<>Passionate about physics in tech.<br/>Awards at iQuHack.<br/>Working on VQE and NQS!<br/>"6'2"</>}/>
+                    <MemberProfile name="Yebin Song" imageUrl="/yebin.jpg" linkedin="https://www.linkedin.com/in/yebin-song-11158232a" bio="Placeholder description. Replace this with a short bio."/>
+                    <MemberProfile name="Adam Godel" imageUrl="/adam.png" linkedin="https://www.linkedin.com/in/adam-godel" bio="Placeholder description. Replace this with a short bio."/>
+                    <MemberProfile name="Allen Chen" imageUrl="/allen.jpg" linkedin="https://www.linkedin.com/in/allenchen28" bio="Placeholder description. Replace this with a short bio."/>
+                    <MemberProfile name="Artem Arefev" imageUrl="/artem.jpg" linkedin="https://www.linkedin.com/in/artem-arefev-0789563a5" bio="Placeholder description. Replace this with a short bio."/>
                 </div>
             </section>
         </div>

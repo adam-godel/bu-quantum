@@ -9,15 +9,15 @@ const navItems = {
   '/about': {
     name: 'About',
   },
-  '/notes': {
-    name: 'Notes',
+  '/schedule': {
+    name: 'Schedule',
   },
-  '/contact': {
-    name: 'Contact',
+  '/crash-course': {
+    name: 'Crash Course',
   },
 }
 
-const scrollingText = "Weekly workshops · Fall 2025 · All majors welcome"
+const scrollingText = "Weekly workshops · Fall 2026 · All majors welcome"
 
 export function Navbar() {
   return (

@@ -3,10 +3,20 @@ import path from 'path'
 
 type Metadata = {
   title: string
-  publishedAt: string
-  week: string
+  /** Comma-separated slugs of the pages this one builds on. */
+  requires?: string
   summary?: string
   image?: string
+}
+
+export type Lesson = {
+  slug: string
+  content: string
+  metadata: Metadata
+  /** Prerequisite slugs, parsed from `requires`. */
+  requires: string[]
+  /** Longest path from a page with no prerequisites. 0 = start here. */
+  depth: number
 }
 
 function parseFrontmatter(fileContent: string) {
@@ -50,42 +60,48 @@ function getMDXData(dir) {
   })
 }
 
-export function getBlogPosts() {
-  return getMDXData(path.join(process.cwd(), 'app', 'notes', 'posts'))
+function parseRequires(value?: string): string[] {
+  if (!value) return []
+  return value
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean)
 }
 
-export function formatDate(date: string, includeRelative = false) {
-  let currentDate = new Date()
-  if (!date.includes('T')) {
-    date = `${date}T00:00:00`
-  }
-  let targetDate = new Date(date)
+export function getBlogPosts(): Lesson[] {
+  const raw = getMDXData(path.join(process.cwd(), 'app', 'crash-course', 'posts'))
+  const requiresBySlug = new Map<string, string[]>(
+    raw.map((p) => [p.slug, parseRequires(p.metadata.requires)])
+  )
 
-  let yearsAgo = currentDate.getFullYear() - targetDate.getFullYear()
-  let monthsAgo = currentDate.getMonth() - targetDate.getMonth()
-  let daysAgo = currentDate.getDate() - targetDate.getDate()
-
-  let formattedDate = ''
-
-  if (yearsAgo > 0) {
-    formattedDate = `${yearsAgo}y ago`
-  } else if (monthsAgo > 0) {
-    formattedDate = `${monthsAgo}mo ago`
-  } else if (daysAgo > 0) {
-    formattedDate = `${daysAgo}d ago`
-  } else {
-    formattedDate = 'Today'
-  }
-
-  let fullDate = targetDate.toLocaleString('en-us', {
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric',
-  })
-
-  if (!includeRelative) {
-    return fullDate
+  // Longest path from a root, so a page always renders below everything it
+  // depends on. Memoised, with a guard so a bad `requires` edge can't hang the
+  // build on a cycle.
+  const depths = new Map<string, number>()
+  const depthOf = (slug: string, seen = new Set<string>()): number => {
+    if (depths.has(slug)) return depths.get(slug)!
+    if (seen.has(slug)) return 0
+    seen.add(slug)
+    const reqs = (requiresBySlug.get(slug) ?? []).filter((r) =>
+      requiresBySlug.has(r)
+    )
+    const d = reqs.length
+      ? Math.max(...reqs.map((r) => depthOf(r, new Set(seen)))) + 1
+      : 0
+    depths.set(slug, d)
+    return d
   }
 
-  return `${fullDate} (${formattedDate})`
+  return raw.map((p) => ({
+    ...p,
+    requires: (requiresBySlug.get(p.slug) ?? []).filter((r) =>
+      requiresBySlug.has(r)
+    ),
+    depth: depthOf(p.slug),
+  }))
+}
+
+/** Pages that list `slug` as a prerequisite. */
+export function getDependents(slug: string): Lesson[] {
+  return getBlogPosts().filter((p) => p.requires.includes(slug))
 }

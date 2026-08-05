@@ -1,8 +1,7 @@
 ---
-title: "Quantum Fourier Transform, Phase Estimation"
-publishedAt: '2025-10-29'
-week: 7
-summary: 'This page contains the notes for week 7 of BU Quantum.'
+title: 'Quantum Fourier Transform, Phase Estimation'
+requires: grovers-algorithm
+summary: 'The transform and the estimation routine that most advanced algorithms are built from.'
 ---
 <KatexSpan>
 ## Table of Contents
@@ -10,7 +9,7 @@ summary: 'This page contains the notes for week 7 of BU Quantum.'
 2. [Phase Estimation](#phase-estimation)
 
 ## Quantum Fourier Transform
-This week's lesson will be pretty involved, as we're going to set up most of the groundwork necessary to understand Shor's algorithm, arguably the most important quantum algorithm known to date.
+This page is pretty involved, as we're going to set up most of the groundwork necessary to understand Shor's algorithm, arguably the most important quantum algorithm known to date.
 
 I want to start with a quick discussion of the continuous Fourier transform. Imagine the sound wave of some complicated chord being played. The Fourier transform allows us to decompose the notes being played by converting the "time domain" of the sound wave plotted to a "frequency domain," where each note frequency can stand out as a spike.
 
@@ -145,7 +144,7 @@ As you can guess, if the phase is not exactly a fraction of $2^n$, there will be
 
 There are two more points I want to make. 
 
-Firstly, I want to note how remarkable it is that this algorithm can find eigenvalues without diagonalizing a matrix. This can allow for much more efficient calculations, especially for large matrices. If you weren't convinced by last week, this is a clear example of the utility of quantum computing. However, quantum hardware isn't quite there yet to compute cases that would be out of reach for classical computers. As time passes and quantum hardware becomes better, though, this will almost certainly change.
+Firstly, I want to note how remarkable it is that this algorithm can find eigenvalues without diagonalizing a matrix. This can allow for much more efficient calculations, especially for large matrices. If you weren't convinced before, this is a clear example of the utility of quantum computing. However, quantum hardware isn't quite there yet to compute cases that would be out of reach for classical computers. As time passes and quantum hardware becomes better, though, this will almost certainly change.
 
 Secondly, a limiting factor of this algorithm you may not have thought of is the fact that you need an eigenvector to run the algorithm. It turns out that with a specific setup, you can apply the algorithm even when you don't have a specific eigenvector, using some very clever manipulation and the power of quantum superposition. This is exactly the insight that powers Shor's algorithm—breaking classical encryption as we know it.
 

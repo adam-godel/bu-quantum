@@ -1,3 +1,18 @@
+// Shared by the brick texture and its vignette so the two layers stay aligned.
+const BLEED =
+  'absolute -inset-y-10 sm:-inset-y-16 -inset-x-4 sm:-inset-x-6'
+
+// Hold the texture near-fully opaque through the middle, then fall away hard
+// only in the last stretch, so the brick reads clearly around the sign and the
+// darkening is concentrated at the edges.
+const BRICK_MASK =
+  'radial-gradient(ellipse farthest-side at center, rgba(0,0,0,1) 48%, rgba(0,0,0,0.9) 70%, rgba(0,0,0,0.35) 88%, rgba(0,0,0,0) 100%)'
+
+// rgb(11,11,12) is --color-ink; gradients can't read CSS vars through `url()`-free
+// inline styles reliably across the mask/background pair, so it's written out.
+const BRICK_VIGNETTE =
+  'radial-gradient(ellipse farthest-side at center, rgba(11,11,12,0) 50%, rgba(11,11,12,0.12) 70%, rgba(11,11,12,0.55) 87%, rgba(11,11,12,1) 100%)'
+
 export default function Page() {
   return (
     <section className="flex items-center mb-24">
@@ -11,26 +26,34 @@ export default function Page() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3">
-            <a href="/notes" className="btn">
-              Explore the crash course
+            <a href="/schedule" className="btn">
+              View our schedule
             </a>
-            <a href="/contact" className="btn-ghost">
-              Get in touch
+            <a href="/crash-course" className="btn-ghost">
+              Explore the crash course
             </a>
           </div>
         </div>
 
         {/* neon sign */}
         <div className="relative lg:w-1/2 min-w-0 flex flex-col items-center lg:items-end mt-4 lg:mt-0 p-4 sm:p-8">
+          {/* Brick texture. The mask must be an `ellipse farthest-side` so it
+              reaches full transparency exactly at every edge — a `circle` is
+              sized to the farthest corner, so on a non-square box it is still
+              partly opaque where the box ends and leaves a hard seam. */}
           <div
-            className="absolute -inset-y-10 sm:-inset-y-16 -inset-x-4 sm:-inset-x-6 bg-cover bg-center opacity-20 saturate-50 -z-10"
+            className={`${BLEED} bg-cover bg-center opacity-20 saturate-50 -z-10`}
             style={{
               backgroundImage: `url('/brick.jpg')`,
-              maskImage:
-                'radial-gradient(circle at center, rgba(0,0,0,1) 35%, rgba(0,0,0,0.55) 62%, rgba(0,0,0,0) 88%)',
-              WebkitMaskImage:
-                'radial-gradient(circle at center, rgba(0,0,0,1) 35%, rgba(0,0,0,0.55) 62%, rgba(0,0,0,0) 88%)',
+              maskImage: BRICK_MASK,
+              WebkitMaskImage: BRICK_MASK,
             }}
+          />
+          {/* Vignette on top of the brick, fading to the page colour so the
+              texture sinks into the background rather than ending on an edge. */}
+          <div
+            className={`${BLEED} pointer-events-none -z-10`}
+            style={{ background: BRICK_VIGNETTE }}
           />
           <div className="neon-sign [box-shadow:0_0.1vw_0.4vw_#fff7f7,0_0.4vw_0.6vw_#e97272,0_0_4vw_0.4vw_#cc0000,inset_0_0_1.5vw_0.4vw_#cc0000,inset_0_0_0.4vw_0.2vw_#e97272,inset_0_0_0.5vw_0.2vw_#fff7f7] rounded-3xl w-full max-w-[24rem] px-8 pt-8 pb-4 sm:px-12 sm:pt-12 sm:pb-6">
             <img

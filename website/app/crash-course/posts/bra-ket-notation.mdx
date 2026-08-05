@@ -1,13 +1,12 @@
 ---
-title: 'Addendum: Bra-Ket Notation'
-publishedAt: '2025-09-03'
-week: 1
-summary: 'This page contains the addendum for week 1 of BU Quantum.'
+title: 'Bra-Ket Notation'
+requires: linear-algebra
+summary: 'The notation used to write quantum states, and the operations that go with it.'
 ---
 <KatexSpan>
-This is the first addendum, a piece of supplementary material to help you further understand topics that are important to quantum computing but not the focus of our meetings. Most of these will focus on either providing more mathematical background or looking more at the theory side of something we cover in a meeting. 
+This is a piece of supplementary material, meant to help you further understand topics that are important to quantum computing but not the main focus of the course. Pages like this one either provide more mathematical background or look more closely at the theory behind something covered elsewhere. 
 
-This addendum will be doing the former for **bra-ket notation**, a type of notation widely used in quantum physics and computing but not used as often in math or computer science.
+This page will be doing the former for **bra-ket notation**, a type of notation widely used in quantum physics and computing but not used as often in math or computer science.
 
 A **ket** is simply a column vector, i.e. a list of amplitudes in the form of a $n \times 1$ matrix. For a qubit, this list is always of size 2, where the first term represents the amplitude for $|0\rangle$ and the second term represents the amplitude for $|1\rangle$. We write a ket as $|\psi\rangle$, where $\psi$ is our quantum state variable.
 
@@ -45,7 +44,7 @@ a^2 & ab-aci \\
 ab+aci & b^2+c^2
 \end{bmatrix}
 $$`}
-I will use the rest of this addendum to discuss a few other properties of bra-ket notation that we will look at in more detail over the next few weeks. Don't worry if you don't understand much of this; we'll be looking at each of these properties more closely as the semester goes along! Likewise, feel free to use this page as reference anytime during the semester.
+I will use the rest of this page to discuss a few other properties of bra-ket notation that later pages look at in more detail. Don't worry if you don't understand much of this; each of these properties is covered more closely further on. Likewise, feel free to use this page as a reference at any point.
 
 You will often see kets written next to each other, like $|\psi\rangle|\xi\rangle$. This is *not* matrix multiplication, since the dimensions are invalid. Instead, this is used to refer to the tensor product, sometimes denoted with the $\otimes$ symbol. For example,
 {String.raw`$$
@@ -73,9 +72,9 @@ A \otimes B = \begin{bmatrix}
     a_{m1}B & \cdots & a_{mn}B
 \end{bmatrix}
 $$`}
-This matrix will have size $mp \times nq$. Tensor products are really useful in quantum computing. We'll be using them a lot throughout the semester, and I hope it becomes more clear why they're the right operation for a lot of what we're doing as the semester goes along.
+This matrix will have size $mp \times nq$. Tensor products are really useful in quantum computing. We'll be using them a lot, and I hope it becomes more clear why they're the right operation for a lot of what we're doing as you read on.
 
-The final thing I'll mention in this addendum is that you can multiply matrices with bras or kets, since they are just vectors. Often in quantum computing, this will be a square matrix with a size that corresponds to a power of 2. For example, suppose we have the matrix
+The final thing I'll mention here is that you can multiply matrices with bras or kets, since they are just vectors. Often in quantum computing, this will be a square matrix with a size that corresponds to a power of 2. For example, suppose we have the matrix
 {String.raw`$$
 H = \begin{bmatrix}
 1/\sqrt{2} & 1/\sqrt{2} \\
@@ -101,5 +100,5 @@ There is a more subtle fact about this matrix $H$. We can observe that $HH^\dag=
 $$
 \langle\psi|U^\dag U|\psi\rangle = \langle\psi|\psi\rangle = 1
 $$
-where $\langle\psi|U^\dag$ represents the unitary $U$ being applied on the bra and $U|\psi\rangle$ represents it being applied on the ket. This unitary $H$ is extremely important; it is known as a **Hadamard gate**, and we will be talking about it next week.
+where $\langle\psi|U^\dag$ represents the unitary $U$ being applied on the bra and $U|\psi\rangle$ represents it being applied on the ket. This unitary $H$ is extremely important; it is known as a **Hadamard gate**, and we will be talking about it in [Superposition, Single-Qubit Gates, Intro to Qiskit](/crash-course/superposition-and-single-qubit-gates).
 </KatexSpan>

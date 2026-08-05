@@ -1,8 +1,7 @@
 ---
 title: "Grover's Algorithm"
-publishedAt: '2025-10-22'
-week: 6
-summary: 'This page contains the notes for week 6 of BU Quantum.'
+requires: deutsch-jozsa-and-simons-algorithms
+summary: 'Searching an unstructured space quadratically faster than any classical search.'
 ---
 <KatexSpan>
 Today, we will discuss the most complicated algorithm so far, and a much more compelling case that quantum computers can prove to be useful. Specifically, we will be talking about search algorithms, one of the most fundamental types of algorithms in computer science.
@@ -15,7 +14,7 @@ Hopefully, by now, you have a pretty good understanding of some of the strengths
 
 We will get to that, but let's start with a bit of history and a formulation of the problem. Grover's algorithm was discovered by computer scientist [Lov Grover](https://en.wikipedia.org/wiki/Lov_Grover) in 1996. His algorithm came after a landmark proof that the best quantum search algorithm must run in $\\Omega(\\sqrt\{n\})$ time.<sup><a href="#foot1">1</a></sup>
 
-You should have an intuitive sense of how this problem is structured, but let's word it in a way that a quantum computer would understand. Specifically, the key intuition is to formulate it similarly to the oracular problems we talked about last week.
+You should have an intuitive sense of how this problem is structured, but let's word it in a way that a quantum computer would understand. Specifically, the key intuition is to formulate it similarly to the oracular problems covered earlier.
 
 Specifically, suppose we have a function {String.raw`$f: \{0,1\}^n \to \{0,1\}$`} that maps bitstrings of length $n$ (that could encode any sort of information) to a boolean. $f(x)$ outputs $1$ if the input $x$ is the item we want and $0$ otherwise. 
 
@@ -141,12 +140,12 @@ f(x) = \begin{cases}
 0 & \text{otherwise}
 \end{cases}
 $$`}
-both with and without using the built-in Grover operator functions in Qiskit or Classiq (for those who have read the [addendum](/notes/week5-addendum) from last lesson). An oracle like this (but at a much larger scale) is a bit more "practical" since the oracle's test is far less obvious from just looking at each bitstring.
+both with and without using the built-in Grover operator functions in Qiskit or Classiq (for those who have read [Bernstein-Vazirani Algorithm, Intro to Classiq](/crash-course/bernstein-vazirani-and-classiq)). An oracle like this (but at a much larger scale) is a bit more "practical" since the oracle's test is far less obvious from just looking at each bitstring.
 
 <br/>
 <hr style={{width: "40%"}}/>
 
 <a name="foot1">1</a>. Big Omega notation indicates an algorithm's lower bound. Here, this just means that there cannot be a quantum search algorithm that runs in under $O(\sqrt\{n\})$ time.
 
-<a name="foot2">2</a>. I feel like this is much easier to "see" and understand visually than it is to compute. If you're interested in computing this rotation rigorously and a discussion of the generalization of Grover's algorithm, known as **amplitude amplification**, see the [addendum](/notes/week6-addendum).
+<a name="foot2">2</a>. I feel like this is much easier to "see" and understand visually than it is to compute. If you're interested in computing this rotation rigorously and a discussion of the generalization of Grover's algorithm, known as **amplitude amplification**, see [Rotation Matrices, Amplitude Amplification](/crash-course/amplitude-amplification).
 </KatexSpan>

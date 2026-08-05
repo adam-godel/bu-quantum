@@ -1,17 +1,19 @@
-import { getBlogPosts } from 'app/notes/utils'
+import { getBlogPosts } from 'app/crash-course/utils'
 
 export const baseUrl = 'https://buquantum.org'
 
 export default async function sitemap() {
-  let blogs = getBlogPosts().map((post) => ({
-    url: `${baseUrl}/blog/${post.slug}`,
-    lastModified: post.metadata.publishedAt,
+  let today = new Date().toISOString().split('T')[0]
+
+  let lessons = getBlogPosts().map((post) => ({
+    url: `${baseUrl}/crash-course/${post.slug}`,
+    lastModified: today,
   }))
 
-  let routes = ['', '/blog'].map((route) => ({
+  let routes = ['', '/about', '/schedule', '/crash-course'].map((route) => ({
     url: `${baseUrl}${route}`,
-    lastModified: new Date().toISOString().split('T')[0],
+    lastModified: today,
   }))
 
-  return [...routes, ...blogs]
+  return [...routes, ...lessons]
 }

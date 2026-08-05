@@ -1,8 +1,7 @@
 ---
 title: 'Superposition, Single-Qubit Gates, Intro to Qiskit'
-publishedAt: '2025-09-10'
-week: 2
-summary: 'This page contains the notes for week 2 of BU Quantum.'
+requires: qubits-and-the-bloch-sphere, bra-ket-notation
+summary: 'A formal definition of superposition, the single-qubit gates, and your first circuit in Qiskit.'
 ---
 <KatexSpan>
 ## Table of Contents
@@ -11,7 +10,7 @@ summary: 'This page contains the notes for week 2 of BU Quantum.'
 3. [Intro to Qiskit](#intro-to-qiskit)
 
 ## Superposition
-Let's generalize the definition of superposition we talked about last week. For two perfectly distinguishable quantum states $|A\rangle$ and $|B\rangle$ and two complex numbers $\alpha,\beta$ where $|\alpha|^2+|\beta|^2=1$, a **superposition** of $|A\rangle$ and $|B\rangle$ is defined as
+Let's generalize the definition of superposition introduced earlier. For two perfectly distinguishable quantum states $|A\rangle$ and $|B\rangle$ and two complex numbers $\alpha,\beta$ where $|\alpha|^2+|\beta|^2=1$, a **superposition** of $|A\rangle$ and $|B\rangle$ is defined as
 $$
 |\psi\rangle = \alpha|A\rangle + \beta|B\rangle
 $$
@@ -19,12 +18,12 @@ The term "perfectly distinguishable" refers to physical experimentation. In our 
 
 We can formally define what we mean by "measurement" as well. If {String.raw`$\{|v_1\rangle, |v_2\rangle, \dots, |v_d\rangle\}$`} is a basis, a **measurement** (formally, a *complete projective measurement*) of some quantum state $|\psi\rangle$ will result in $|v_i\rangle$ with probability $|\langle v_i | \psi \rangle|^2$. Take some time to convince yourself that this definition gives us the expected probabilities for the computational basis {String.raw`$\{|0\rangle,|1\rangle\}$`}.
 
-We won't be dealing too much with formal definitions throughout the semester, but I wanted to include the definitions of superposition and measurement because they are so fundamental to quantum computing. Less formally, a measurement collapses a state in superposition into a state in the computational basis with a probability corresponding to the square of the absolute value of the amplitude. Make sure that sentence makes sense to you!
+We won't be dealing too much with formal definitions, but I wanted to include the definitions of superposition and measurement because they are so fundamental to quantum computing. Less formally, a measurement collapses a state in superposition into a state in the computational basis with a probability corresponding to the square of the absolute value of the amplitude. Make sure that sentence makes sense to you!
 
 ## Single-Qubit Gates
 We have now built up enough theory about what quantum states and qubits are that we can start looking at how we can use a qubit in practice. To build quantum circuits, we need a systematic way to change quantum states. 
 
-A **single-qubit quantum gate** is a $2 \times 2$ [unitary matrix](https://en.wikipedia.org/wiki/Unitary_matrix). All of the quantum gates we will be looking at this semester are also **Hermitian**, which means that they are equal to their conjugate transpose. This means that for a quantum gate $U$, $U^2=I$, so applying the gate a second time will reverse it.
+A **single-qubit quantum gate** is a $2 \times 2$ [unitary matrix](https://en.wikipedia.org/wiki/Unitary_matrix). All of the quantum gates we will be looking at are also **Hermitian**, which means that they are equal to their conjugate transpose. This means that for a quantum gate $U$, $U^2=I$, so applying the gate a second time will reverse it.
 
 Quantum gates are really easy to read. The first column tells you where the $|0\rangle$ state goes to and the second column tells you where the $|1\rangle$ state goes to. For example, the identity gate
 {String.raw`$$
@@ -139,5 +138,5 @@ For all our hard work today, we have a glorified coin flip program to show for i
 
 <a name="foot1">1</a>. If you actually do the calculation, you may notice that $X|-\rangle=-|-\rangle$, since the signs of the amplitudes in $|-\rangle$ switch. The sign flip here is called a *global phase*, which is usually ignored in quantum physics and computing since it is unobservable.
 
-<a name="foot2">2</a>. We will not be using actual quantum hardware this semester, simply because every quantum backend (as of the time I'm writing this) requires you to either pay or enter a credit card for verification, and I don't want that to be a barrier for anyone. Also, running a circuit on actual quantum hardware usually takes at least a few hours. If you have a credit card for verification and you'd like to execute your circuits on quantum hardware, see this week's [addendum](/notes/week2-addendum).
+<a name="foot2">2</a>. We will not be using actual quantum hardware here, simply because every quantum backend (as of the time I'm writing this) requires you to either pay or enter a credit card for verification, and I don't want that to be a barrier for anyone. Also, running a circuit on actual quantum hardware usually takes at least a few hours. If you have a credit card for verification and you'd like to execute your circuits on quantum hardware, see [Using Quantum Hardware](/crash-course/using-quantum-hardware).
 </KatexSpan>

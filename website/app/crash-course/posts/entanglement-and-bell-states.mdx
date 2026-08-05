@@ -1,8 +1,7 @@
 ---
 title: 'Controlled Gates, Entanglement, Bell States'
-publishedAt: '2025-09-17'
-week: 3
-summary: 'This page contains the notes for week 3 of BU Quantum.'
+requires: superposition-and-single-qubit-gates
+summary: 'Two-qubit gates, entanglement, and the four Bell states.'
 ---
 <KatexSpan>
 ## Table of Contents
@@ -86,7 +85,7 @@ As I have indicated, this quantum state is so important that it has a special sy
 ## Entanglement
 The result we got above is really striking. This isn't like setting a variable to some value and then copying that value to a second variable or anything like that. This result shows that at the fundamental gate level, totally separate qubits can be the same state.<sup><a href="#foot1">1</a></sup>
 
-Let's test it out! Let's reuse our code from last time to measure this quantum circuit.
+Let's test it out! Let's reuse our earlier code to measure this quantum circuit.
 ```
 from qiskit_aer.primitives import SamplerV2
 
@@ -96,7 +95,7 @@ job = sampler.run([qc], shots=2048)
 result = job.result()
 result[0].data.meas.get_counts()
 ```
-As a side note, we are always going to use this block of code to execute the quantum circuits we made. I would recommend saving it somewhere easy to access, and I'm going to stop pasting it in future notes pages. The Qiskit Aer package has a lot of interesting options for noisy (error-prone) simulation, but this is outside the scope of what we'll be talking about this semester.
+As a side note, we are always going to use this block of code to execute the quantum circuits we made. I would recommend saving it somewhere easy to access, as I'm going to stop pasting it into later pages. The Qiskit Aer package has a lot of interesting options for noisy (error-prone) simulation, but this is outside the scope of what we'll be talking about here.
 
 Anyway, my output looks like this:
 ```
@@ -121,7 +120,7 @@ As we can see, there are no instances of '01' or '10' showing up. The property o
     ]}
 />
 
-We'll be looking at our first quantum algorithm next week, which performs better than the best possible classical algorithm due to the principle of entanglement.
+Next, we'll look at our first quantum algorithm, which performs better than the best possible classical algorithm due to the principle of entanglement.
 
 ## Bell States
 Let's try to take this entangled state we've created and generalize it a  bit. First of all, we can note that knowing the value of one qubit will mean that we know the values of all (two) qubits. This may seem a bit silly for the two qubit case, but we will see this property for more qubits as well. This means that this circuit is **maximally entangled**.

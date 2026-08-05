@@ -1,8 +1,7 @@
 ---
 title: 'Motivation, Qubits, Bloch Sphere'
-publishedAt: '2025-09-03'
-week: 1
-summary: 'This page contains the notes for week 1 of BU Quantum.'
+requires: linear-algebra
+summary: 'Why quantum computing matters, what a qubit is, and how to picture one.'
 ---
 <KatexSpan>
 ## Table of Contents
@@ -24,12 +23,12 @@ Most pressingly, quantum computers are known to be able to break encryption due 
 
 Beyond being important for computational or security reasons, quantum computing can be really useful in simulating physical and chemical systems efficiently. As an inherently quantum system, it does a good job simulating quantum mechanics accurately.
 
-Hopefully, this short introduction has begun to convince you that quantum computing is worth pursuing. It is by no means an easy field to get into, but it is exciting to introduce you to the basics this semester. To start, we need to understand the fundamental unit of information a quantum computer uses—this won't just take a bit ;)
+Hopefully, this short introduction has begun to convince you that quantum computing is worth pursuing. It is by no means an easy field to get into, but the basics are more approachable than they look. To start, we need to understand the fundamental unit of information a quantum computer uses—this won't just take a bit ;)
 
 ## Qubits
 As you probably already know, a **bit** is the most basic unit of information for a classical computer. A bit is a binary state—it can be either 0 or 1. A **qubit** is the most basic unit of information for a quantum computer. It can be exclusively 0 or 1, but it can also be a combination—known as a *superposition*—of these two states.
 
-We will look at a more formal definition of superposition next week. For now, the important thing to understand is that a quantum state in superposition has some probability of being 0 and some probability of being 1 when measured. A *measurement* is an observation of the state, which causes it to collapse into either 0 or 1 in accordance with the rules of superposition. Let's say we have a quantum state $|\psi\rangle$.<sup><a href="#foot1">1</a></sup> If we measure it and it collapses to $|0\rangle$, the state has physically changed; any subsequent time we measure it, it will remain as $|0\rangle$.
+We will look at a more formal definition of superposition on a later page. For now, the important thing to understand is that a quantum state in superposition has some probability of being 0 and some probability of being 1 when measured. A *measurement* is an observation of the state, which causes it to collapse into either 0 or 1 in accordance with the rules of superposition. Let's say we have a quantum state $|\psi\rangle$.<sup><a href="#foot1">1</a></sup> If we measure it and it collapses to $|0\rangle$, the state has physically changed; any subsequent time we measure it, it will remain as $|0\rangle$.
 
 Instead of a binary number, we can represent a quantum state $|\psi\rangle$ as a vector, where the first term represents the "amount" of $|0\rangle$ that it has and the second term represents the "amount" of $|1\rangle$ it has.
 {String.raw`$$
@@ -130,9 +129,9 @@ It is worth mentioning that the Bloch sphere allows us to think of gates as rota
 <br/>
 <hr style={{width: "40%"}}/>
 
-<a name="foot1">1</a>. This state is written in [bra-ket notation](https://en.wikipedia.org/wiki/Bra%E2%80%93ket_notation), which is widely used in quantum physics and computing. Bra-ket notation can be pretty confusing to understand at first, so it is recommended to check out this week's [addendum](/notes/week1-addendum) to learn more about it.
+<a name="foot1">1</a>. This state is written in [bra-ket notation](https://en.wikipedia.org/wiki/Bra%E2%80%93ket_notation), which is widely used in quantum physics and computing. Bra-ket notation can be pretty confusing to understand at first, so it is recommended to read [Bra-Ket Notation](/crash-course/bra-ket-notation) to learn more about it.
 
-<a name="foot2">2</a>. In the expression $\langle \psi | \psi \rangle$, each term of $|\psi\rangle$ will be squared and summed up. There is some subtlety going on here with complex numbers, as the bra $\langle \psi |$ is actually the [conjugate transpose](https://en.wikipedia.org/wiki/Conjugate_transpose) of the ket $|\psi\rangle$. See this week's [addendum](/notes/week1-addendum) for more about this point.
+<a name="foot2">2</a>. In the expression $\langle \psi | \psi \rangle$, each term of $|\psi\rangle$ will be squared and summed up. There is some subtlety going on here with complex numbers, as the bra $\langle \psi |$ is actually the [conjugate transpose](https://en.wikipedia.org/wiki/Conjugate_transpose) of the ket $|\psi\rangle$. See [Bra-Ket Notation](/crash-course/bra-ket-notation) for more about this point.
 
 <a name="foot3">3</a>. You may be wondering why only one of the amplitudes is a complex number, or why we are even using complex numbers at all. The answer to the latter question is that complex numbers help us model [phase](https://en.wikipedia.org/wiki/Phase_factor) in quantum mechanics. The answer to the former question is due to our restriction that $|\alpha|^2+|\beta|^2=1$. In more general sources discussing quantum mechanics, both $\alpha$ and $\beta$ are complex. But there is no reason for us to have four variables when the fourth is essentially locked in by our restriction. Hence, in quantum computing, we use the convention that $\alpha$ has no imaginary part and non-negative.
 </KatexSpan>

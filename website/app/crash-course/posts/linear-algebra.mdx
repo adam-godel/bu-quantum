@@ -1,8 +1,6 @@
 ---
-title: 'Addendum: Linear Algebra Basics'
-publishedAt: '2025-09-03'
-week: 0
-summary: 'This page contains the addendum for week 0 of BU Quantum.'
+title: 'Linear Algebra Basics'
+summary: 'The vectors, matrices, and inner products that quantum computing is built on.'
 ---
 <KatexSpan>
 ## Table of Contents
@@ -95,7 +93,7 @@ $$`}
 
 Think of the {String.raw`$C_{ij}$`} entry in the matrix product as the inner product of the row vector $i$ in $A$ and the column vector $j$ in $B$, which is a visual interpretation of {String.raw`$C_{ij}=\sum_{k=1}^{n} A_{ik}B_{kj}$`}.
 
-There are a few different ways to write the inner product. In quantum computing, we generally use <a href="https://en.wikipedia.org/wiki/Bra%E2%80%93ket_notation" target="_blank">bra-ket notation</a>, where we would write this operation as $\langle a | b \rangle$. For more on bra-ket notation, see the week 1 addendum.
+There are a few different ways to write the inner product. In quantum computing, we generally use <a href="https://en.wikipedia.org/wiki/Bra%E2%80%93ket_notation" target="_blank">bra-ket notation</a>, where we would write this operation as $\langle a | b \rangle$. For more on bra-ket notation, see [Bra-Ket Notation](/crash-course/bra-ket-notation).
 
 The **outer product** of two vectors $a$ and $b$ is the opposite operation, the product of all possible corresponding terms in each vector.
 {String.raw`$$
@@ -271,7 +269,7 @@ $$`}
 
 In quantum computing, when you "measure" a particle that physically exists (whose probability is not zero), you are bound to measure something. That is, the sum of the probabilities of all possible outcomes must be equal to 1 or 100%. Mathematically, this means that all statevectors must be normalized.
 
-As we progress throughout the semester, you will see expressions normalized to satisfy this rule. An example is $|+\rangle$ where: 
+Throughout these pages, you will see expressions normalized to satisfy this rule. An example is $|+\rangle$ where: 
 {String.raw`$$
 |+\rangle = \frac{|0\rangle+|1\rangle}{\sqrt{2}}
 $$`}

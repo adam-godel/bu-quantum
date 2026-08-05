@@ -1,51 +1,57 @@
 import Link from 'next/link'
-import { getBlogPosts, formatDate } from 'app/notes/utils'
+import { getBlogPosts } from 'app/crash-course/utils'
 
 export function BlogPosts() {
-  let allBlogs = getBlogPosts()
+  const all = getBlogPosts()
+  const titleBySlug = new Map(all.map((p) => [p.slug, p.metadata.title]))
+
+  // Group into tiers by dependency depth, so nothing appears above something it
+  // builds on. Order within a tier is alphabetical — there is no chronology here.
+  const maxDepth = all.reduce((m, p) => Math.max(m, p.depth), 0)
+  const tiers = Array.from({ length: maxDepth + 1 }, (_, d) =>
+    all
+      .filter((p) => p.depth === d)
+      .sort((a, b) => a.metadata.title.localeCompare(b.metadata.title))
+  )
 
   return (
-    <div className="border-t border-line">
-      {allBlogs
-        .sort((a, b) => {
-          const weekDiff =
-            parseInt(b.metadata.week) - parseInt(a.metadata.week)
-          if (weekDiff !== 0) {
-            return weekDiff
-          }
-          // Within a week, the lesson comes before its addendum.
-          const aAdd = a.metadata.title.includes('Addendum') ? 1 : 0
-          const bAdd = b.metadata.title.includes('Addendum') ? 1 : 0
-          return aAdd - bAdd
-        })
-        .map((post) => {
-          const isAddendum = post.metadata.title.includes('Addendum')
-
-          return (
-            <Link
-              key={post.slug}
-              className="post-row"
-              href={`/notes/${post.slug}`}
-            >
-              <span className="meta w-[5.5rem] shrink-0">
-                {'Lesson ' + post.metadata.week}
-              </span>
-              <span
-                className={
-                  isAddendum
-                    ? 'post-row-title italic flex-1'
-                    : 'post-row-title flex-1'
-                }
+    <div className="tree">
+      {tiers.map((tier, d) => (
+        <section key={d} className="tree-tier">
+          {/* Only the entry tier is labelled — the rail and each card's
+              "Requires" line carry the structure from there down. */}
+          {d === 0 && (
+            <p className="eyebrow tree-tier-label">Start here · no prerequisites</p>
+          )}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {tier.map((post) => (
+              <Link
+                key={post.slug}
+                href={`/crash-course/${post.slug}`}
+                className="lesson-card"
               >
-                {isAddendum && <span className="text-faint mr-1.5">↳</span>}
-                {post.metadata.title}
-              </span>
-              <span className="meta hidden sm:block shrink-0">
-                {formatDate(post.metadata.publishedAt)}
-              </span>
-            </Link>
-          )
-        })}
+                <span className="lesson-card-title">{post.metadata.title}</span>
+                {post.metadata.summary && (
+                  <span className="lesson-card-summary">
+                    {post.metadata.summary}
+                  </span>
+                )}
+                {post.requires.length > 0 && (
+                  <span className="lesson-card-reqs">
+                    <span className="eyebrow">Requires</span>
+                    <span className="lesson-card-reqs-list">
+                      {post.requires
+                        .map((r) => titleBySlug.get(r))
+                        .filter(Boolean)
+                        .join(' · ')}
+                    </span>
+                  </span>
+                )}
+              </Link>
+            ))}
+          </div>
+        </section>
+      ))}
     </div>
   )
 }

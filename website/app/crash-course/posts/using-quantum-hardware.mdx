@@ -1,11 +1,10 @@
 ---
-title: 'Addendum: Using Quantum Hardware'
-publishedAt: '2025-09-10'
-week: 2
-summary: 'This page contains the addendum for week 2 of BU Quantum.'
+title: 'Using Quantum Hardware'
+requires: superposition-and-single-qubit-gates
+summary: 'How to run the circuits you build on a real quantum backend.'
 ---
 <KatexSpan>
-This addendum gives a quick introduction to running your code on IBM quantum hardware through Qiskit. You will need to enter a credit card to do this, but you are allocated 10 free minutes of execution per month. The code in this addendum works as of the time of writing, but Qiskit is always being updated, so new versions may break this.
+This page gives a quick introduction to running your code on IBM quantum hardware through Qiskit. You will need to enter a credit card to do this, but you are allocated 10 free minutes of execution per month. The code on this page works as of the time of writing, but Qiskit is always being updated, so new versions may break this.
 
 First, make an account on [IBM Quantum Platform](https://quantum.cloud.ibm.com/) and verify your account with your card. Then, create and save your [API key](https://cloud.ibm.com/iam/apikeys) and [CRN](https://quantum.cloud.ibm.com/instances).
 
@@ -63,5 +62,5 @@ sampler.run([isa_circuit], shots=2048)
 ```
 Let's go over this code line by line. We first get `backend`, which is the current least busy quantum computer that is operational and not a simulator. We then need to transpile this code; we do so using the `generate_preset_pass_manager` function. Setting the `optimization_level` to 1 just means that there will be light optimization applied, and we will transpile it for our specific quantum backend. We then initialize our quantum sampler and run our transpiled circuit on it.
 
-We won't really be talking about what transpilation is or how Qiskit's sampler works, since these are very technical details and frankly not my area of expertise. For the purposes of our lessons this semester, you can basically substitute any Qiskit Aer code with the block above and run your quantum circuit on an actual quantum computer. The details aren't really relevant to our circuits, since they're all going to use very common gates and operations. 
+We won't really be talking about what transpilation is or how Qiskit's sampler works, since these are very technical details and frankly not my area of expertise. For the purposes of these lessons, you can basically substitute any Qiskit Aer code with the block above and run your quantum circuit on an actual quantum computer. The details aren't really relevant to our circuits, since they're all going to use very common gates and operations. 
 </KatexSpan>

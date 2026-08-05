@@ -1,8 +1,7 @@
 ---
-title: "Quantum Key Distribution, BB84 Protocol"
-publishedAt: '2025-11-19'
-week: 9
-summary: 'This page contains the notes for week 9 of BU Quantum.'
+title: 'Quantum Key Distribution, BB84 Protocol'
+requires: shors-algorithm
+summary: 'Using quantum mechanics to share a key that cannot be intercepted unnoticed.'
 ---
 <KatexSpan>
 ## Table of Contents
@@ -82,7 +81,7 @@ There are more sophisticated QKD protocols, but I just wanted to give a taste of
 
 <a name="foot1">1</a>. I am omitting a bit of important information here. When I say that $g$ is a base, I mean that $g$ is a primitive root modulo $p$, i.e. the period of $f(k)=g^k \bmod p$ is $q=p-1$. More broadly, this scheme is often presented using the terminology of group theory, but I am trying to simplify it a bit for those without abstract algebra experience.
 
-<a name="foot2">2</a>. For a description of an encryption scheme that is believed to be resistant to Shor's algorithm, see this week's [addendum](/notes/week9-addendum).
+<a name="foot2">2</a>. For a description of an encryption scheme that is believed to be resistant to Shor's algorithm, see [Post-Quantum Cryptography, Kyber](/crash-course/post-quantum-cryptography).
 
 <a name="foot3">3</a>. And I welcome you to tell me about them! QKD is probably the widely-known quantum algorithm I am the least familiar with. Despite my computer science background, most of my quantum computing experience has been in Hamiltonian simulation, which hasn't seemed to have much overlap with it. I am always interested in learning more about quantum cryptography!
 </KatexSpan>

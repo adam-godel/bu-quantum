@@ -1,15 +1,14 @@
 ---
-title: 'Addendum: Bernstein-Vazirani Algorithm, Intro to Classiq'
-publishedAt: '2025-10-08'
-week: 5
-summary: 'This page contains the addendum for week 5 of BU Quantum.'
+title: 'Bernstein-Vazirani Algorithm, Intro to Classiq'
+requires: deutsch-jozsa-and-simons-algorithms
+summary: 'Another oracular algorithm, and a higher-level way to describe quantum circuits.'
 ---
 <KatexSpan>
 Another basic quantum algorithm involving an oracle that is taught a lot is the **Bernstein-Vazirani algorithm**. The speedup offered by the algorithm is a lot more humble, but I think it's pretty easy to understand. The best classical algorithm can solve the problem in a linear number of queries, while the quantum algorithm can do it in only one.
 
-What I want to do differently in this addendum is present the problem and algorithm a little more formally, closer to what you would see in a graduate-level course or a research paper. Try to use what you know so far to figure out exactly what the algorithm is doing. I recommend looking up any terms or notation that you don't understand!
+What I want to do differently on this page is present the problem and algorithm a little more formally, closer to what you would see in a graduate-level course or a research paper. Try to use what you know so far to figure out exactly what the algorithm is doing. I recommend looking up any terms or notation that you don't understand!
 
-The other thing I want to do in this addendum is to present [Classiq](https://classiq.io), another popular quantum software development kit built on Python. Most algorithms can be made on either Qiskit or Classiq, but the big difference between them to me is that Qiskit employs a low, gate-level approach and emphasizes control over transpilation methods, while Classiq is better used to create abstract quantum functions, with more of the lower-level elements performed behind the scenes.
+The other thing I want to do on this page is to present [Classiq](https://classiq.io), another popular quantum software development kit built on Python. Most algorithms can be made on either Qiskit or Classiq, but the big difference between them to me is that Qiskit employs a low, gate-level approach and emphasizes control over transpilation methods, while Classiq is better used to create abstract quantum functions, with more of the lower-level elements performed behind the scenes.
 
 Let me begin by presenting the problem. Suppose we have a boolean function {String.raw`$f: \{0, 1\}^n \to \{0,1\}$`}, with
 {String.raw`$$
@@ -33,7 +32,7 @@ I think this algorithm is simple enough to understand. It is very reminiscent of
 
 Now, let's implement it using Classiq. The Classiq SDK is built on *quantum functions* (defined with `@qfunc` above the function header), which are special strongly typed functions that fit into a quantum circuit. You could think about them like quantum operators, such as our `PhaseOracle` object from Qiskit, but with Classiq, I think it's much easier to abstract away the circuit level and just think about them as functions in the same way you would when programming.
 
-Just as a side note, all of the code that I will be using in this addendum comes from [this documentation page](https://docs.classiq.io/latest/explore/algorithms/bernstein_vazirani/bernstein_vazirani) on Classiq.
+Just as a side note, all of the code that I will be using on this page comes from [this documentation page](https://docs.classiq.io/latest/explore/algorithms/bernstein_vazirani/bernstein_vazirani) on Classiq.
 
 Let's start by implementing our function $f(x)$, which we'll have to do using quantum gates. To distinguish it from the function defining our quantum circuit, we will call it a *predicate*.
 ```py

@@ -1,4 +1,4 @@
-export default function MemberProfile({ name, role, imageUrl, bio, linkedin }) {
+export default function MemberProfile({ name, imageUrl, bio, linkedin }) {
     return (
         <a
             href={linkedin}
@@ -11,8 +11,7 @@ export default function MemberProfile({ name, role, imageUrl, bio, linkedin }) {
                 src={imageUrl}
                 alt={name}
             />
-            <div className="text-base font-medium text-text mb-1.5">{name}</div>
-            <p className="eyebrow accent mb-3">{role}</p>
+            <div className="text-base font-medium text-text mb-2">{name}</div>
             <p className="text-sm leading-relaxed text-muted">{bio}</p>
         </a>
     )

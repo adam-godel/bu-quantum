@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import { CustomMDX } from 'app/components/mdx'
-import { formatDate, getBlogPosts } from 'app/notes/utils'
+import Link from 'next/link'
+import { getBlogPosts, getDependents } from 'app/crash-course/utils'
 import { baseUrl } from 'app/sitemap'
 
 export async function generateStaticParams() {
@@ -17,12 +18,7 @@ export function generateMetadata({ params }) {
     return
   }
 
-  let {
-    title,
-    publishedAt: publishedTime,
-    summary: description,
-    image,
-  } = post.metadata
+  let { title, summary: description, image } = post.metadata
   let ogImage = image
     ? image
     : `${baseUrl}/og?title=${encodeURIComponent(title)}`
@@ -34,8 +30,7 @@ export function generateMetadata({ params }) {
       title,
       description,
       type: 'article',
-      publishedTime,
-      url: `${baseUrl}/blog/${post.slug}`,
+      url: `${baseUrl}/crash-course/${post.slug}`,
       images: [
         {
           url: ogImage,
@@ -58,6 +53,12 @@ export default async function Blog({ params }) {
     notFound()
   }
 
+  const bySlug = new Map(getBlogPosts().map((p) => [p.slug, p]))
+  const prerequisites = post.requires
+    .map((slug) => bySlug.get(slug))
+    .filter((p): p is NonNullable<typeof p> => Boolean(p))
+  const nextUp = getDependents(post.slug)
+
   return (
     <section className="max-w-[68ch] mx-auto w-full mb-24">
       <script
@@ -66,15 +67,13 @@ export default async function Blog({ params }) {
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             '@context': 'https://schema.org',
-            '@type': 'BlogPosting',
+            '@type': 'Article',
             headline: post.metadata.title,
-            datePublished: post.metadata.publishedAt,
-            dateModified: post.metadata.publishedAt,
             description: post.metadata.summary,
             image: post.metadata.image
               ? `${baseUrl}${post.metadata.image}`
               : `/og?title=${encodeURIComponent(post.metadata.title)}`,
-            url: `${baseUrl}/blog/${post.slug}`,
+            url: `${baseUrl}/crash-course/${post.slug}`,
             author: {
               '@type': 'Person',
               name: 'BU Quantum',
@@ -82,18 +81,42 @@ export default async function Blog({ params }) {
           }),
         }}
       />
-      <p className="eyebrow mb-4">{'Lesson ' + post.metadata.week}</p>
       <h1 className="display-sm mb-4">
         {post.metadata.title}
       </h1>
-      <div className="flex justify-between items-center pb-8 mb-10 border-b border-line">
-        <p className="meta">
-          {formatDate(post.metadata.publishedAt)}
-        </p>
-      </div>
+      {post.metadata.summary && (
+        <p className="lede mb-6">{post.metadata.summary}</p>
+      )}
+      {prerequisites.length > 0 && (
+        <div className="pb-8 mb-10 border-b border-line">
+          <p className="eyebrow mb-3">Read first</p>
+          <div className="flex flex-wrap gap-2">
+            {prerequisites.map((p) => (
+              <Link key={p.slug} href={`/crash-course/${p.slug}`} className="chip">
+                {p.metadata.title}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+      {prerequisites.length === 0 && (
+        <div className="pb-8 mb-10 border-b border-line" />
+      )}
       <article className="prose">
         <CustomMDX source={post.content} />
       </article>
+      {nextUp.length > 0 && (
+        <div className="mt-16 pt-8 border-t border-line">
+          <p className="eyebrow mb-3">Builds on this page</p>
+          <div className="flex flex-wrap gap-2">
+            {nextUp.map((p) => (
+              <Link key={p.slug} href={`/crash-course/${p.slug}`} className="chip">
+                {p.metadata.title}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
     </section>
   )
 }

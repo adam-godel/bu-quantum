@@ -1,13 +1,12 @@
 ---
-title: "Addendum: Post-Quantum Cryptography, Kyber"
-publishedAt: '2025-11-19'
-week: 9
-summary: 'This page contains the notes for week 9 of BU Quantum.'
+title: 'Post-Quantum Cryptography, Kyber'
+requires: quantum-key-distribution
+summary: 'Classical encryption schemes believed to resist quantum attack.'
 ---
 <KatexSpan>
-In this week's lesson, we discussed quantum key distribution, which I tried to stress was not a solution to the fact that Shor's algorithm breaks most classical encryption.
+Previously, we discussed quantum key distribution, which I tried to stress was not a solution to the fact that Shor's algorithm breaks most classical encryption.
 
-In this addendum, I want to talk about post-quantum cryptography, which has a better shot at being reliable in the face of Shor's algorithm. A PQC algorithm is a classical or quantum algorithm that doesn't rely on the hardness of factoring or any other problem that is currently known to be breakable by quantum computation.
+On this page, I want to talk about post-quantum cryptography, which has a better shot at being reliable in the face of Shor's algorithm. A PQC algorithm is a classical or quantum algorithm that doesn't rely on the hardness of factoring or any other problem that is currently known to be breakable by quantum computation.
 
 When you think of encryption, you probably think of a scheme that generates a public key $pk$ and a secret key $sk$. A message $m$ can be encrypted with $pk$, producing a ciphertext string $c$, and $c$ can be decrypted using $sk$ to recover $m$.
 

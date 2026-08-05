@@ -1,13 +1,12 @@
 ---
-title: "Addendum: Variational Quantum Eigensolver"
-publishedAt: '2025-11-05'
-week: 8
-summary: 'This page contains the addendum for week 8 of BU Quantum.'
+title: 'Variational Quantum Eigensolver'
+requires: quantum-fourier-transform
+summary: 'Finding the minimum eigenvalue of a Hamiltonian with a hybrid algorithm.'
 ---
 <KatexSpan>
-Last week, we talked about a way to find the eigenvalue of a Hamiltonian given its eigenvector. And this week, we found out that given a clever specific setup, we don't even necessarily need the eigenvector to find the eigenvalue.
+Earlier, we talked about a way to find the eigenvalue of a Hamiltonian given its eigenvector. We then found out that given a clever specific setup, we don't even necessarily need the eigenvector to find the eigenvalue.
 
-I figured that this week's addendum would be a good place to talk about another eigenvalue-finding algorithm, since I don't have much else to say about Shor's algorithm. The algorithm is known as the **variational quantum eigensolver** (VQE), and given a Hamiltonian, it specifically finds its *minimum* eigenvalue.
+This is a good place to talk about another eigenvalue-finding algorithm, since I don't have much else to say about Shor's algorithm. The algorithm is known as the **variational quantum eigensolver** (VQE), and given a Hamiltonian, it specifically finds its *minimum* eigenvalue.
 
 While this algorithm can be used for any unitary operator, I'm going to call it a Hamiltonian as this algorithm is most widely used in quantum chemistry, where the minimum eigenvalue represents the **ground state energy**. Finding the ground state energy classically requires diagonalizing the Hamiltonian, which is difficult for large Hamiltonians.
 
