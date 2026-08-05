@@ -17,7 +17,7 @@ const navItems = {
   },
 }
 
-const scrollingText = "Weekly workshops · Fall 2026 · All majors welcome"
+const scrollingText = "First meeting · September 11, 2026"
 
 export function Navbar() {
   return (
