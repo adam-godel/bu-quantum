@@ -15,10 +15,10 @@ summary: 'This page contains the addendum for week 0 of BU Quantum.'
 
 ## Matrix Basics
 This is an extra page to help explain some of the basics of linear algebra to those who are unfamiliar with it. 
-I highly recommend watching 3blue1brown's <a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank">Essence of Linear Algebra</a> series, 
-as it does a great job providing a visual intuition for all of the concepts it covers.
-If you want a course to utilize for a greater understanding of linear algebra, 
-I recommend MIT's <a href="https://ocw.mit.edu/courses/mathematics/18-06-linear-algebra-spring-2010/" target="_blank">Linear Algebra</a> course. 
+It is highly recommended to watch 3blue1brown's <a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank">Essence of Linear Algebra</a> series, 
+as it does a great job of providing a simple, visual intuition for all of the concepts it covers.
+If, on the other hand, you want a deeper understanding of linear algebra, 
+you should use MIT's <a href="https://ocw.mit.edu/courses/mathematics/18-06-linear-algebra-spring-2010/" target="_blank">Linear Algebra</a> course. 
 The course is provided for free via MIT's OpenCourseWare.
 
 A **matrix** is simply a 2D list of numbers. We can write a size $m \times n$ matrix as
@@ -32,7 +32,7 @@ a_{m1} & a_{m2} & \cdots & a_{mn}
 \end{bmatrix}
 $$`}
 When we say a matrix is size $m \times n$, we are saying that it has $m$ rows and $n$ columns. 
-We write the position in the subscript, with the row coming first and then the column, so $A_\{ij\}$ represents the element at row $i$ and column $j$. 
+We write the position of an entry within a matrix the entry's subscript. The row number comes first and is followed by the column number. To represent the element at row $i$ and column $j$, we write $A_\{ij\}$. 
 A matrix with only 1 column is known as a **column vector**, or just a vector. A matrix with only one row is known as a **row vector**.
 
 {String.raw`$$
@@ -65,8 +65,8 @@ b & d & f
 \end{bmatrix}
 $$`}
 In quantum computing, we will generally use the <a href="https://en.wikipedia.org/wiki/Conjugate_transpose" target="_blank">conjugate transpose</a>, 
-denoted with the subscript $\dag$, which also flips the sign of the imaginary part of every value in the matrix.
-You will see its use as we progress, but for now, just know that it is the same as the transpose, but with the imaginary part of each value flipped.
+denoted with the subscript $\dag$, which transposes the matrix and applies the complex conjugate to every value of the matrix (flipping the sign of the imaginary part in a value).
+You will see its use as we progress, but for now, just know that it is the same as the transpose, just with the conjugate part stitched on.
 
 If $A$ is a $m \times n$ matrix, and $B$ is a $n \times p$ matrix, the values of the matrix product $C=AB$, which is a $m \times p$ matrix, are defined as {String.raw`$C_{ij}=\sum_{k=1}^{n} A_{ik}B_{kj}$`}. 
 The number of columns in $A$ must match the number of rows in $B$ for a matrix product to exist. For example,
@@ -93,21 +93,30 @@ The **inner product** of two vectors $a$ and $b$ of size $n$ is the sum of the p
 a^\dag b = a \cdot b = a_1b_1+\cdots+a_nb_n
 $$`}
 
-As you can see, there are a few different ways to write the inner product. In quantum computing, we generally use <a href="https://en.wikipedia.org/wiki/Bra%E2%80%93ket_notation" target="_blank">bra-ket notation</a>, where we would write this operation as $\langle a | b \rangle$. For more on bra-ket notation, see the week 1 addendum.
+Think of the {String.raw`$C_{ij}$`} entry in the matrix product as the inner product of the row vector $i$ in $A$ and the column vector $j$ in $B$, which is a visual interpretation of {String.raw`$C_{ij}=\sum_{k=1}^{n} A_{ik}B_{kj}$`}.
+
+There are a few different ways to write the inner product. In quantum computing, we generally use <a href="https://en.wikipedia.org/wiki/Bra%E2%80%93ket_notation" target="_blank">bra-ket notation</a>, where we would write this operation as $\langle a | b \rangle$. For more on bra-ket notation, see the week 1 addendum.
 
 The **outer product** of two vectors $a$ and $b$ is the opposite operation, the product of all possible corresponding terms in each vector.
 {String.raw`$$
-ab^\dag = \begin{bmatrix}
-a_1b_1 & a_1b_2 & a_1b_3 \\
-a_2b_1 & a_2b_2 & a_2b_3 \\
-a_3b_1 & a_3b_2 & a_3b_3
+ab^\dag = 
+\begin{bmatrix}
+a_1 \\ a_2 \\ a_3
+\end{bmatrix} 
+\begin{bmatrix}
+b_1^* & b_2^* & b_3^*
+\end{bmatrix} = 
+\begin{bmatrix}
+a_1b_1^* & a_1b_2^* & a_1b_3^* \\
+a_2b_1^* & a_2b_2^* & a_2b_3^* \\
+a_3b_1^* & a_3b_2^* & a_3b_3^*
 \end{bmatrix}
 $$`}
 In bra-ket notation, we would write this operation as $|a\rangle\langle b|$.
 
 ## Basis
-A set of vectors {String.raw`$\{v_1,\dots,v_n\}$`} is a **basis** if every possible vector in the 
-**space**<sup><a href="#foot1">1</a></sup> we're in (everywhere we can reach by scaling the vectors) can be written as a linear combination of the vectors in the basis. 
+A set of vectors {String.raw`$\{v_1,\dots,v_n\}$`} is a **basis** for some vector space (defined as every point we can reach by scaling the vectors), if every possible vector in that 
+**space**<sup><a href="#foot1">1</a></sup> we're in can be written as a linear combination of the vectors in the basis. 
 The elements of a basis must be linearly independent, i.e. it cannot be possible to write one vector in the basis as a linear combination of the other vectors In other words,
 
 $$
@@ -122,8 +131,8 @@ An **eigenvalue** and **eigenvector** are some value $\lambda$ and vector {Strin
 
 {String.raw`$$A\vec{v} = \lambda \vec{v}$$`}
 
-Conceptually, eigenvectors are vectors that don't change in its direction in space when multiplied by a transformation matrix. 
-In order to find these eigenvectors, we can find its associated eigenvalue using the **characteristic polynomial** of a matrix, which is given by the equation:
+Conceptually, eigenvectors are vectors that don't change their direction in space when multiplied by a matrix. For example, any vector pointing along the direction of the Z-axis would be an eigenvector of the Z-rotation matrix (which rotates vectors around the Z-axis), since the Z-axis is its axis of rotation.
+In order to find an eigenvalue and its eigenvector(s), associated with some matrix $A$, we use the **characteristic polynomial** of $A$. It is given by the equation:
 
 {String.raw`$$
 \text{det}(A - \lambda I) = 0$$`}
@@ -220,12 +229,12 @@ Some examples of their applications include
 <a href="https://en.wikipedia.org/wiki/Eigenvalues_and_eigenvectors#Schr%C3%B6dinger_equation" target="_blank">Schrödinger's equation</a> and 
 <a href="https://en.wikipedia.org/wiki/Eigenvalues_and_eigenvectors#Molecular_orbitals" target="_blank">molecular orbitals</a>.
 
-We will be looking at a quantum algorithm to estimate the eigenvalues of a matrix later on in the semester.
+We will be looking at a quantum algorithm to estimate the eigenvalues of a matrix later on in the lessons.
 
 ## Normalization
-Another important concept is **normalization**. A vector is normalized if its ratio of magnitude (also called its norm, denoted as $\|\|v\|\|$) is based on 1. 
-In the world of linear algebra, we call this the unit vector (like a unit circle, where the max value is 1). 
-For a vector {String.raw`$\vec{v}$`} with components $v_1, v_2, \dots, v_n$, the norm is given by
+Another important concept is **normalization**. A vector is normalized if its magnitude (also called its norm, denoted as $\|\|v\|\|$) is equal to 1. 
+In the world of linear algebra, we call this the unit vector (like a unit circle, where the radius is 1). 
+For a vector {String.raw`$\vec{v}$`} with components $v_1, v_2, \dots, v_n$, the norm is given by the Pythagorean theorem:
 
 {String.raw`$$
 \|v\| = \sqrt{|v_1|^2 + |v_2|^2 + \cdots + |v_n|^2}
@@ -260,9 +269,9 @@ Below is an example of a normalized vector calculation:
 \end{align*}
 $$`}
 
-In quantum computing, all statevectors must be normalized, since the sum of the probabilities of all possible outcomes must be equal to 1, representing 100%.
+In quantum computing, when you "measure" a particle that physically exists (whose probability is not zero), you are bound to measure something. That is, the sum of the probabilities of all possible outcomes must be equal to 1 or 100%. Mathematically, this means that all statevectors must be normalized.
 
-As we progress throughout the semester, you will see equations having been normalized for use in quantum computing. An example is $|+\rangle$ where: 
+As we progress throughout the semester, you will see expressions normalized to satisfy this rule. An example is $|+\rangle$ where: 
 {String.raw`$$
 |+\rangle = \frac{|0\rangle+|1\rangle}{\sqrt{2}}
 $$`}

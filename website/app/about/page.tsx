@@ -10,23 +10,29 @@ export const metadata = {
 export default function About() {
     return (
         <div className="lg:min-h-[calc(100vh-288px)] mb-8 flex flex-col justify-center">
-            <InfoBox title="about us" info="bu quantum is a student organization at boston university dedicated to promoting quantum computing and quantum information science. we aim to provide resources, workshops, and networking opportunities for students interested in the field." />
+            <InfoBox title="About Us" info="Established in Fall 2025, BU Quantum aims to foster a community around quantum computing, on campus. We’re building a space for interested students to get the resources they need, collaborate with each other, and connect with faculty." />
             <br />
-            <InfoBox title="what we do" info="we organize talks, workshops, and hackathons to educate and engage students in quantum technologies. we also collaborate with industry professionals and researchers to provide insights into the latest advancements in the field." />
+            <InfoBox
+                title="What We’re Doing:"
+                info={
+                    <ol className="list-decimal pl-6 space-y-2">
+                        <li>We help beginners get started with quantum computing: from learning basic linear alebra and building their first quantum circuit, to eventually breaking RSA encryption with Shor's algorithm.</li>
+                        <li>We host hands-on workshops, nearly every week: focusing on software implementation, across a variety of hardware platforms.</li>
+                        <li>We host events for faculty and fellow students to discuss their research, providing broad coverage of ideas at the forefront of the field.</li>
+                        <li>We form teams and organize trips to quantum computing hackathons, at least once a semester.</li>
+                    </ol>
+                }
+            />
             <br />
-            <InfoBox title="our mission" info="our mission is to foster a community of students passionate about quantum technologies, facilitate learning and collaboration, and connect students with industry professionals and researchers in the field. we believe that by empowering students with knowledge and resources, we can contribute to the advancement of quantum science and its applications." />
             <div 
                 className="bg-gradient-to-br from-black via-neutral-900 to-black rounded-lg p-6 mt-16 mb-8 border-2 border-red-400 transition-transform duration-200 ease-out"
             >
-                <h1 className="text-4xl text-center justify-center mb-4 font-bold drop-shadow-[0_0_7px_rgba(224,92,92,0.8)]">our team</h1>
-                <div className="grid grid-cols-1 md:grid-cols-3 justify-center">
-                    <MemberProfile name="adam godel" role="director" imageUrl="/adam.png" linkedin="https://www.linkedin.com/in/adam-godel" bio={<>passionate about quantum computing.<br/>qsl fellow @ wiser/nnl.<br/>awards @ iquhack & qrise.<br/>not fault-tolerant myself.</>}/>
-                    <MemberProfile name="nico jackson" role="vice director" imageUrl="/nico.png" linkedin="https://www.linkedin.com/in/nicola-jackson-64b22833b" bio={<>passionate about web dev and swe.<br/>big fan of gta v and bears.<br/>"6’2".</>}/>
-                    <MemberProfile name="travis meyer" role="head of finance" imageUrl="/travis.png" linkedin="https://www.linkedin.com/in/travis-meyer-2b313a299" bio={<>passionate about something.<br/>swe & excel victim.<br/>5’8.</>}/>
-                    <div className="flex-col md:flex-row md:col-span-3 flex justify-center gap-8">
-                        <MemberProfile name="jacky lin" role="head of operations" imageUrl="/jacky.png" linkedin="https://www.linkedin.com/in/lin-jacky" bio={<>passionate about boba.<br/>badminton/tv enthusiast.<br/>always exploring new domains.<br/>i love birds.</>}/>
-                        <MemberProfile name="timothy wright" role="head of pedagogy" imageUrl="/timothy.png" linkedin="https://www.linkedin.com/in/timmyjr11" bio={<>passionate about robots.<br/>lead swe and start-up founder.<br/>quantum shill.<br/>existing is chill.</>}/>
-                    </div>
+                <h1 className="text-4xl text-center justify-center mb-4 font-bold drop-shadow-[0_0_7px_rgba(224,92,92,0.8)]">Our Team</h1>
+                <div className="grid grid-cols-1 md:grid-cols-4 justify-center">
+                    <MemberProfile name="Yebin Song" role="Director" imageUrl="/yebin.jpg" linkedin="https://www.linkedin.com/in/yebin-song-11158232a" bio={<>Data science major.<br/>Vision model explainability research.<br/>Baited by Richard Feynman.</>}/>
+                    <MemberProfile name="Adam Godel" role="Founder" imageUrl="/adam.png" linkedin="https://www.linkedin.com/in/adam-godel" bio={<>Passionate about quantum computing.<br/>QSL fellow @ Wiser/NNL.<br/>Awards @ iQuHack & QRISE.<br/>Not fault-tolerant myself.</>}/>
+                    <MemberProfile name="Allen Chen" role="Head of Operations" imageUrl="/allen.jpg" linkedin="https://www.linkedin.com/in/allenchen28" bio={<>Electrical engineering major.<br/>Quantum optics research.<br/>Passionate about quantum hardware and its fabrication.</>}/>
+                    <MemberProfile name="Artem Arefev" role="Head of Physics" imageUrl="/artem.jpg" linkedin="https://www.linkedin.com/in/artem-arefev-0789563a5" bio={<>Passionate about physics in tech.<br/>Awards at iQuHack.<br/>Working on VQE and NQS!<br/>"6'2"</>}/>
                 </div>
             </div>
         </div>
