@@ -1,0 +1,143 @@
+---
+title: 'Superposition, Single-Qubit Gates, Intro to Qiskit'
+publishedAt: '2025-09-10'
+week: 2
+summary: 'This page contains the notes for week 2 of BU Quantum.'
+---
+<KatexSpan>
+## Table of Contents
+1. [Superposition](#superposition)
+2. [Single-Qubit Gates](#single-qubit-gates)
+3. [Intro to Qiskit](#intro-to-qiskit)
+
+## Superposition
+Let's generalize the definition of superposition we talked about last week. For two perfectly distinguishable quantum states $|A\rangle$ and $|B\rangle$ and two complex numbers $\alpha,\beta$ where $|\alpha|^2+|\beta|^2=1$, a **superposition** of $|A\rangle$ and $|B\rangle$ is defined as
+$$
+|\psi\rangle = \alpha|A\rangle + \beta|B\rangle
+$$
+The term "perfectly distinguishable" refers to physical experimentation. In our case, it means that {String.raw`$\{|A\rangle,|B\rangle\}$`} is a basis.
+
+We can formally define what we mean by "measurement" as well. If {String.raw`$\{|v_1\rangle, |v_2\rangle, \dots, |v_d\rangle\}$`} is a basis, a **measurement** (formally, a *complete projective measurement*) of some quantum state $|\psi\rangle$ will result in $|v_i\rangle$ with probability $|\langle v_i | \psi \rangle|^2$. Take some time to convince yourself that this definition gives us the expected probabilities for the computational basis {String.raw`$\{|0\rangle,|1\rangle\}$`}.
+
+We won't be dealing too much with formal definitions throughout the semester, but I wanted to include the definitions of superposition and measurement because they are so fundamental to quantum computing. Less formally, a measurement collapses a state in superposition into a state in the computational basis with a probability corresponding to the square of the absolute value of the amplitude. Make sure that sentence makes sense to you!
+
+## Single-Qubit Gates
+We have now built up enough theory about what quantum states and qubits are that we can start looking at how we can use a qubit in practice. To build quantum circuits, we need a systematic way to change quantum states. 
+
+A **single-qubit quantum gate** is a $2 \times 2$ [unitary matrix](https://en.wikipedia.org/wiki/Unitary_matrix). All of the quantum gates we will be looking at this semester are also **Hermitian**, which means that they are equal to their conjugate transpose. This means that for a quantum gate $U$, $U^2=I$, so applying the gate a second time will reverse it.
+
+Quantum gates are really easy to read. The first column tells you where the $|0\rangle$ state goes to and the second column tells you where the $|1\rangle$ state goes to. For example, the identity gate
+{String.raw`$$
+I = \begin{bmatrix}
+1 & 0 \\
+0 & 1
+\end{bmatrix}
+$$`}
+tells you that $|0\rangle$ goes to itself and $|1\rangle$ goes to itself. Therefore, all superpositions of $|0\rangle$ and $|1\rangle$ must not change either.
+
+The quantum analogue of the classical NOT gate is the $X$ gate:
+{String.raw`$$
+X = \begin{bmatrix}
+0 & 1 \\
+1 & 0
+\end{bmatrix}
+$$`}
+We can see that $X|0\rangle=|1\rangle$ and $X|1\rangle=|0\rangle$, so this gate switches the amplitudes of any quantum state. On the Bloch sphere, this can be thought of as a 180° rotation about the x-axis. Hence, $X|+\rangle=|+\rangle$ and $X|-\rangle=|-\rangle$.<sup><a href="#foot1">1</a></sup>
+
+Likewise, we can create similar gates that exhibit the same rotation for the y-axis and z-axis.
+{String.raw`$$
+Y = \begin{bmatrix}
+0 & -i \\
+i & 0
+\end{bmatrix} \qquad Z = \begin{bmatrix}
+1 & 0 \\
+0 & -1
+\end{bmatrix}
+$$`}
+These four gates ($I$, $X$, $Y$, $Z$) are known as the **Pauli gates**.
+
+The Pauli gates can be very useful, but they don't put $|0\rangle$ or $|1\rangle$ into superposition. For that, we need to use the **Hadamard gate**.
+{String.raw`$$
+H = \frac{1}{\sqrt{2}} \begin{bmatrix}
+1 & 1 \\
+1 & -1
+\end{bmatrix}
+$$`}
+The Hadamard gate allows us to get in and out of superposition, as $H|0\rangle=|+\rangle$ and $H|1\rangle=|-\rangle$. Since quantum gates are reversible, $H|+\rangle=|0\rangle$ and $H|-\rangle=|1\rangle$. Feel free to perform the matrix multiplication to convince yourself that this is the case.
+
+<Quiz 
+    question={String.raw`$HY|0\rangle=XHY|0\rangle$.`}
+    answers={[
+        "True",
+        "False",
+    ]}
+    correct={0}
+    explanation={[
+        <span>We know that <InlineMath>Y|0\rangle=i|1\rangle</InlineMath>, which is a global phase, so this is equivalent to <InlineMath>|1\rangle</InlineMath>. From there, the <InlineMath>H</InlineMath> gate will make this state <InlineMath>|-\rangle</InlineMath>, and we know that the <InlineMath>X</InlineMath> gate does not affect the <InlineMath>|-\rangle</InlineMath> state.</span>, 
+        <span>We know that <InlineMath>Y|0\rangle=i|1\rangle</InlineMath>, which is a global phase, so this is equivalent to <InlineMath>|1\rangle</InlineMath>. From there, the <InlineMath>H</InlineMath> gate will make this state <InlineMath>|-\rangle</InlineMath>, and we know that the <InlineMath>X</InlineMath> gate does not affect the <InlineMath>|-\rangle</InlineMath> state.</span>,
+    ]}
+/>
+
+These quantum gates finally give us a toolkit to build circuits with. So, let's switch to code and build our first circuit using Qiskit!
+
+## Intro to Qiskit
+First, let's make sure you have Qiskit installed. You probably have pip (the Python package manager) installed already, but you can run the following command to check:
+```
+python -m ensurepip --upgrade
+```
+Then, you can install Qiskit and two other libraries that will help us.
+```
+pip install qiskit
+pip install qiskit-aer
+pip install jupyter
+```
+Jupyter is a notebook software that allows you to embed Python (as well as Julia and R) code into markdown documentation. We use Jupyter notebooks extensively in quantum computing.
+
+Let's create a very simple circuit that converts $|0\rangle$ into $|-\rangle$. Create a file named something like "week2.ipynb" in the folder of your choice and enter this code into the first cell:
+```py
+from qiskit import QuantumCircuit
+
+qc = QuantumCircuit(1)
+qc.x(0)
+qc.h(0)
+qc.measure_all()
+qc.draw()
+```
+This results in the following output:
+```
+        ┌───┐┌───┐ ░ ┌─┐
+     q: ┤ X ├┤ H ├─░─┤M├
+        └───┘└───┘ ░ └╥┘
+meas: 1/══════════════╩═
+                      0
+```
+Let's walk through what this code is doing line by line. First, we are creating a `QuantumCircuit` object, where the parameter represents the number of qubits. Here, one qubit is initialized as $|q\rangle=|0\rangle$, which is the default for Qiskit. Then, we are applying the $X$ and $H$ gates to $|q\rangle$, and finally measuring it. The draw function simply visualizes the circuit for us.
+$$
+|q\rangle = HX|0\rangle = |-\rangle
+$$
+Cool! So we've created our first quantum circuit. But how do we convince ourselves that we have indeed put $|q\rangle$ in equal superposition? 
+
+This is what the Qiskit Aer library is for. It allows us to create a local quantum simulator where we can measure the state, go back in time, and remeasure as many times as we want.<sup><a href="#foot2">2</a></sup> Qiskit calls this local simulator a sampler, and each instance we measure our circuit using the sampler is known as a shot.
+```
+from qiskit_aer.primitives import SamplerV2
+
+sampler = SamplerV2()
+job = sampler.run([qc], shots=2048)
+
+result = job.result()
+result[0].data.meas.get_counts()
+```
+Your output should be something like this:
+```
+{'0': 1027, '1': 1021}
+```
+The counts will probably be a little bit different because the measurement is truly random. Try running that cell of your Jupyter notebook a few times to observe the slight variation. However, it's very clear that '0' and '1' are appearing roughly equally—we have successfully created an equal superposition state!
+
+For all our hard work today, we have a glorified coin flip program to show for it... however, this initial circuit sets the foundation for looking at two qubit gates, where we can actually start to do things that a classical computer cannot fundamentally do.
+<br/>
+<hr style={{width: "40%"}}/>
+
+<a name="foot1">1</a>. If you actually do the calculation, you may notice that $X|-\rangle=-|-\rangle$, since the signs of the amplitudes in $|-\rangle$ switch. The sign flip here is called a *global phase*, which is usually ignored in quantum physics and computing since it is unobservable.
+
+<a name="foot2">2</a>. We will not be using actual quantum hardware this semester, simply because every quantum backend (as of the time I'm writing this) requires you to either pay or enter a credit card for verification, and I don't want that to be a barrier for anyone. Also, running a circuit on actual quantum hardware usually takes at least a few hours. If you have a credit card for verification and you'd like to execute your circuits on quantum hardware, see this week's [addendum](/notes/week2-addendum).
+</KatexSpan>

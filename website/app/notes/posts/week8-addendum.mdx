@@ -1,0 +1,123 @@
+---
+title: "Addendum: Variational Quantum Eigensolver"
+publishedAt: '2025-11-05'
+week: 8
+summary: 'This page contains the addendum for week 8 of BU Quantum.'
+---
+<KatexSpan>
+Last week, we talked about a way to find the eigenvalue of a Hamiltonian given its eigenvector. And this week, we found out that given a clever specific setup, we don't even necessarily need the eigenvector to find the eigenvalue.
+
+I figured that this week's addendum would be a good place to talk about another eigenvalue-finding algorithm, since I don't have much else to say about Shor's algorithm. The algorithm is known as the **variational quantum eigensolver** (VQE), and given a Hamiltonian, it specifically finds its *minimum* eigenvalue.
+
+While this algorithm can be used for any unitary operator, I'm going to call it a Hamiltonian as this algorithm is most widely used in quantum chemistry, where the minimum eigenvalue represents the **ground state energy**. Finding the ground state energy classically requires diagonalizing the Hamiltonian, which is difficult for large Hamiltonians.
+
+What makes VQE unique is how simple it is, and how much of it is classical. Additionally, it has very high accuracy even on very noisy quantum computers, meaning that it is widely used and the subject of much research even with today's super noisy quantum hardware technology.
+
+Given a Hamiltonian $H$, we want to solve the Schrödinger equation
+{String.raw`$$
+H|\Psi_0\rangle = E_0|\Psi_0\rangle,
+$$`}
+where $H$ is the Hamiltonian, $|\Psi_0\rangle$ is the ground state, and $E_0$ is the ground state energy. This is just the eigenequation rephrased to fit quantum chemistry terminology.
+
+We start by choosing an **ansatz**, an initial guess, defined as $|\Psi\rangle \equiv |\psi(\vec\{\theta\})\rangle$. An ansatz is a parameterized trial wavefunction that, given the right set of parameters, matches the ground state $|\Psi_0\rangle$. There are many different ways to choose an ansatz, but the best ansätze trade computational efficiency for information about the specific quantum system. Where along that line your ansatz should lie depends on your specific Hamiltonian.
+
+It turns out that there is an inequality, known as the **Rayleigh-Ritz principle**, which allows us to optimize our ansatz towards the ground state. It turns out that the ground state energy $E_0$ is always less than or equal to the expectation value of $H$ with respect to the ansatz $|\Psi\rangle$. Written mathematically,
+{String.raw`$$
+E_0 \leq \frac{\langle \Psi | H | \Psi\rangle}{\langle \Psi | \Psi \rangle}.
+$$`}
+Importantly, this inequality is saturated when the ansatz is equal to the ground state:
+{String.raw`$$
+E_0 = \frac{\langle \Psi_0 | H | \Psi_0\rangle}{\langle \Psi_0 | \Psi_0 \rangle}.
+$$`}
+This is a cost function that we can perform *classical* optimization over using [gradient descent](https://en.wikipedia.org/wiki/Gradient_descent) or another classical optimization algorithm.
+
+I want to make it clear that the only quantum part of this algorithm is the estimation of the ground state energy, which also relies on the quantum encoding of the ansatz and the Hamiltonian. The actual optimization of the parameters $\vec\{\theta\}$ is purely classical. This makes VQE truly a hybrid quantum-classical algorithm, rather than having discrete classical and quantum parts like, say, Shor's algorithm.
+
+Unfortunately, the quantum encoding of both the ansatz and the Hamiltonian can be difficult depending on the Hamiltonian. 
+
+We typically want to represent our Hamiltonian as a **Pauli list**, which is a linear combination of tensor products of Pauli operators. The number of Pauli matrices in each term will be $n$ for a $2^n \times 2^n$ Hamiltonian, and there can be up to $4^n$ terms in the Pauli list, so finding an efficient Pauli list representation of your Hamiltonian is crucial.
+
+As a simple example, let's verify that VQE works on the Hamiltonian
+{String.raw`$$
+H = ZZ-XX = \begin{pmatrix}
+1 & 0 & 0 & 1 \\
+0 & -1 & 1 & 0 \\
+0 & 1 & -1 & 0 \\
+1 & 0 & 0 & 1
+\end{pmatrix}.
+$$`}
+I encourage you to diagonalize $H$ yourself and confirm that
+{String.raw`$$
+|\Psi_0\rangle = \frac{1}{\sqrt{2}}\begin{pmatrix}
+0 \\ 1 \\ -1 \\ 0
+\end{pmatrix} = \frac{|01\rangle-|10\rangle}{\sqrt{2}}
+$$`}
+(up to a global phase) and $E_0=-2$.
+
+This quantum state is actually the well-known Bell state $|\Psi^\{-\}\rangle$. We can prepare it as a circuit by applying $HZ$ on qubit 0, $XZ$ on qubit 1, and then $CX$ with qubit 0 as the control and qubit 1 as the target.
+
+In a general case, we wouldn't know exactly how to construct this circuit, so we would need to use a more general ansatz. A good one here is to apply $R_y(\theta_0)$ to qubit 0 and $R_y(\theta_1)$ to qubit 1, and then apply the $CX$ with qubit 0 as the control and qubit 1 as the target. 
+
+Notice how this ansatz has two parameters $\theta_0, \theta_1$ that form $\vec\{\theta\}$. It turns out that for $|\Psi_0\rangle$, $\vec\{\theta\} = (-\pi/2, -\pi)$. I encourage you to do the calculation and convince yourself that this is the case.
+
+We know what to expect for this Hamiltonian. Let's now construct our implementation.
+```py
+from qiskit import QuantumCircuit
+from qiskit.quantum_info import SparsePauliOp
+from qiskit.circuit import ParameterVector
+from qiskit_ibm_runtime import Session, Estimator
+from scipy.optimize import minimize
+from qiskit_aer import AerSimulator
+import numpy as np
+
+hamiltonian = SparsePauliOp(['ZZ', 'XX'], [1, -1])
+
+params = ParameterVector(name='θ', length=2)
+ansatz = QuantumCircuit(2)
+ansatz.ry(params[0], 0)
+ansatz.ry(params[1], 1)
+ansatz.cx(0, 1)
+
+x0 = 2 * np.pi * np.random.random(ansatz.num_parameters)
+
+cost_history_dict = {
+    "prev_vector": None,
+    "iters": 0,
+    "cost_history": [],
+}
+def cost_func(params, ansatz, hamiltonian, estimator):
+    pub = (ansatz, [hamiltonian], [params])
+    result = estimator.run(pubs=[pub]).result()
+    energy = result[0].data.evs[0]
+ 
+    cost_history_dict["iters"] += 1
+    cost_history_dict["prev_vector"] = params
+    cost_history_dict["cost_history"].append(energy)
+ 
+    print(f"Iteration {cost_history_dict["iters"]}: {energy}")
+    return energy
+
+backend = AerSimulator()
+with Session(backend=backend) as session:
+    estimator = Estimator(mode=session)
+    estimator.options.default_shots = 100000
+ 
+    res = minimize(
+        cost_func,
+        x0,
+        args=(ansatz, hamiltonian, estimator),
+        method="cobyla",
+    )
+
+print(res.fun)
+```
+This implementation might look like a lot, but let's go over it step by step. 
+
+We first construct our Hamiltonian as a simple Pauli list and our ansatz as a quantum circuit. We then define a cost function using Qiskit's runtime estimator that just runs the estimator, gets the energy, and updates it as our latest result. We also print our current energy at each step. 
+
+We then initialize the estimator, plugging in our parameters and our initial vector, which will be the length of the ansatz's parameters but with random values. We will use the [COBYLA](https://docs.scipy.org/doc/scipy/reference/optimize.minimize-cobyla.html) algorithm as our classical optimizer, which is a pretty fast and simple one.
+
+Feel free to run this code and watch as the output converges to the correct value $E_0=-2$. It should converge pretty quickly for a simple Hamiltonian like the one we input.
+
+Hopefully you can see that VQE is quite a powerful algorithm. You could probably run this configuration on actual quantum hardware and get similarly accurate results, which is very rare for a quantum algorithm, at least in our present day.
+</KatexSpan>
