@@ -15,18 +15,18 @@ hljs.registerLanguage('python', python)
 
 function Table({ data }) {
   let headers = data.headers.map((header, index) => (
-    <th className="font-normal px-6 py-3 border-0.5 border-solid border-white" key={index}>{header}</th>
+    <th className="eyebrow px-5 py-3 text-left align-middle bg-surface border border-line" key={index}>{header}</th>
   ))
   let rows = data.rows.map((row, index) => (
     <tr key={index}>
       {row.map((cell, cellIndex) => (
-        <td className="px-6 py-3 border-0.5 border-solid border-white" key={cellIndex}>{cell}</td>
+        <td className="px-5 py-2.5 text-left border border-line" key={cellIndex}>{cell}</td>
       ))}
     </tr>
   ))
 
   return (
-    <table className="text-center mx-auto border-collapse border-0.5 border-solid border-white">
+    <table className="mx-auto border-collapse border border-line rounded-[4px]">
       <thead>
         <tr>{headers}</tr>
       </thead>
@@ -107,7 +107,7 @@ function GHZInteractive() {
   return (
     <center>
       <p style={{fontSize: "1.1rem"}}><i>Click on the left table entries to change the assignment of symbols.</i></p>
-      <div style={{display: "flex", justifyContent: "center", alignItems: "center", gap: "5rem"}}>
+      <div style={{display: "flex", flexWrap: "wrap", justifyContent: "center", alignItems: "center", gap: "2rem 5rem"}}>
         <div><Table data={{headers: ["Player", "$X$", "$Y$"], rows: [["$A$", <div style={{cursor: "pointer", userSelect: "none"}} onClick={() => {handleChange(0,0)}}><InlineMath>{assignment[0][0]}</InlineMath></div>, <div style={{cursor: "pointer", userSelect: "none"}} onClick={() => {handleChange(0,1)}}><InlineMath>{assignment[0][1]}</InlineMath></div>], ["$B$", <div style={{cursor: "pointer", userSelect: "none"}} onClick={() => {handleChange(1,0)}}><InlineMath>{assignment[1][0]}</InlineMath></div>, <div style={{cursor: "pointer", userSelect: "none"}} onClick={() => {handleChange(1,1)}}><InlineMath>{assignment[1][1]}</InlineMath></div>], ["$C$", <div style={{cursor: "pointer", userSelect: "none"}} onClick={() => {handleChange(2,0)}}><InlineMath>{assignment[2][0]}</InlineMath></div>, <div style={{cursor: "pointer", userSelect: "none"}} onClick={() => {handleChange(2,1)}}><InlineMath>{assignment[2][1]}</InlineMath></div>]]}}/></div>
         <div><Table data={{headers: ["Input", "Output"], rows: [["$\\textit{XXX}$", <div style={{color: status[0] ? "#A1DD70" : "#FB4141"}}><InlineMath>{assignment[0][0]+assignment[1][0]+assignment[2][0]}</InlineMath></div>], ["$\\textit{YYX}$", <div style={{color: status[1] ? "#A1DD70" : "#FB4141"}}><InlineMath>{assignment[0][1]+assignment[1][1]+assignment[2][0]}</InlineMath></div>], ["$\\textit{YXY}$", <div style={{color: status[2] ? "#A1DD70" : "#FB4141"}}><InlineMath>{assignment[0][1]+assignment[1][0]+assignment[2][1]}</InlineMath></div>], ["$\\textit{XYY}$", <div style={{color: status[3] ? "#A1DD70" : "#FB4141"}}><InlineMath>{assignment[0][0]+assignment[1][1]+assignment[2][1]}</InlineMath></div>]]}}/></div>
       </div>

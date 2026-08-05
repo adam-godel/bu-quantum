@@ -59,7 +59,7 @@ export default async function Blog({ params }) {
   }
 
   return (
-    <section className="lg:w-1/2 mx-auto">
+    <section className="max-w-[68ch] mx-auto w-full mb-24">
       <script
         type="application/ld+json"
         suppressHydrationWarning
@@ -82,12 +82,13 @@ export default async function Blog({ params }) {
           }),
         }}
       />
-      <h1 className="title font-semibold text-2xl tracking-tighter">
+      <p className="eyebrow mb-4">{'Lesson ' + post.metadata.week}</p>
+      <h1 className="display-sm mb-4">
         {post.metadata.title}
       </h1>
-      <div className="flex justify-between items-center mt-2 mb-8 text-sm">
-        <p className="text-sm text-neutral-400">
-          {'Lesson '+post.metadata.week+' • '+formatDate(post.metadata.publishedAt)}
+      <div className="flex justify-between items-center pb-8 mb-10 border-b border-line">
+        <p className="meta">
+          {formatDate(post.metadata.publishedAt)}
         </p>
       </div>
       <article className="prose">

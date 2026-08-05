@@ -3,114 +3,479 @@
 @import 'mafs/core.css';
 @import 'mafs/font.css';
 
-::selection {
-  background-color: #a40606;
-  color: #fefefe;
-}
+/* ---------------------------------------------------------------------------
+   Design tokens
+   Tailwind 4.0.0-alpha.13 uses the early namespaces: --font-family-*, not
+   --font-sans; --font-size-*, not --text-*.
+   --------------------------------------------------------------------------- */
+@theme {
+  /* ground + surfaces */
+  --color-ink: #0b0b0c;
+  --color-surface: #141416;
+  --color-surface-2: #1c1c20;
+  --color-line: #26262a;
+  --color-line-strong: #34343a;
 
-:root {
-  --sh-class: #4c97f8;
-  --sh-identifier: white;
-  --sh-keyword: #f47067;
-  --sh-string: #0fa295;
-  --sh-keyword: #e02518;
-  --sh-comment: #a19595;
-  --sh-jsxliterals: #6266d1;
-  --sh-property: #e25a1c;
-  --sh-entity: #e25a1c;
+  /* text */
+  --color-text: #ededef;
+  --color-muted: #9a9aa2;
+  --color-faint: #6b6b73;
+
+  /* accent — crimson on ink is ~3.6:1, so it is for borders, rules, fills and
+     large type only. Use --color-crimson-lt (~4.9:1) for any body-size red text. */
+  --color-crimson: #c1272d;
+  --color-crimson-deep: #8c1d1d;
+  --color-crimson-lt: #e8595f;
+
+  --font-family-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-family-serif: var(--font-source-serif), ui-serif, Georgia, Cambria, serif;
+  --font-family-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 html {
   min-width: 360px;
   scroll-behavior: smooth;
+  background-color: var(--color-ink);
+  color: var(--color-text);
 }
 
-.prose .anchor {
-  @apply absolute invisible no-underline;
-
-  margin-left: -1em;
-  padding-right: 0.5em;
-  width: 80%;
-  max-width: 700px;
-  cursor: pointer;
+/* `clip` rather than `hidden` so it never becomes a scroll container and the
+   sticky nav keeps working. Guards the .full-bleed 100vw trick below. */
+body {
+  overflow-x: clip;
 }
 
-.anchor:hover {
-  @apply visible;
+/* Escape the centered max-w-6xl column to run edge-to-edge. */
+.full-bleed {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
 }
 
-.prose a {
-  @apply underline transition-all decoration-neutral-600 underline-offset-2 decoration-[0.1em];
+::selection {
+  background-color: var(--color-crimson-deep);
+  color: #fff;
 }
 
-.prose .anchor:after {
-  @apply text-neutral-700;
-  content: '#';
+:focus-visible {
+  outline: 2px solid var(--color-crimson-lt);
+  outline-offset: 2px;
+  border-radius: 2px;
 }
 
-.prose *:hover > .anchor {
-  @apply visible;
+/* ---------------------------------------------------------------------------
+   Typographic scale
+   Spacing is deliberately left to utilities so JSX can still override it.
+   --------------------------------------------------------------------------- */
+.eyebrow {
+  font-family: var(--font-family-sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-muted);
 }
 
-.prose pre {
-  @apply bg-neutral-900 rounded-lg overflow-x-auto border border-neutral-200 dark:border-neutral-900 py-2 px-3 text-sm;
+.display {
+  font-family: var(--font-family-serif);
+  font-size: clamp(2.25rem, 4vw, 3rem);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  color: var(--color-text);
+  text-wrap: balance;
 }
 
-.prose code {
-  @apply px-1 py-0.5 rounded-lg;
+.display-sm {
+  font-family: var(--font-family-serif);
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.012em;
+  color: var(--color-text);
+  text-wrap: balance;
 }
 
-.prose pre code {
-  @apply p-0;
-  border: initial;
-  line-height: 1.5;
+.section-title {
+  font-family: var(--font-family-serif);
+  font-size: 1.75rem;
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--color-text);
 }
 
-.prose code span {
-  @apply font-medium;
+.lede {
+  font-size: 1.125rem;
+  line-height: 1.65;
+  color: var(--color-muted);
+  max-width: 60ch;
 }
 
-.prose img {
-  /* Don't apply styles to next/image */
-  @apply m-0;
+.body-copy {
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  color: var(--color-text);
+  max-width: 68ch;
+}
+
+.meta {
+  font-family: var(--font-family-mono);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--color-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.title {
+  text-wrap: balance;
+}
+
+/* The type classes above sit outside @layer utilities, so a `text-*` utility
+   can't recolour them. This modifier can — keep it declared last. */
+.accent {
+  color: var(--color-crimson-lt);
+}
+
+/* ---------------------------------------------------------------------------
+   Components
+   --------------------------------------------------------------------------- */
+.rule {
+  border-top: 1px solid var(--color-line);
+}
+
+.card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: 4px;
+}
+
+.btn,
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--font-family-sans);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1;
+  padding: 0.75rem 1.25rem;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.btn {
+  background-color: var(--color-crimson);
+  border-color: var(--color-crimson);
+  color: #fff;
+}
+
+.btn:hover {
+  background-color: var(--color-crimson-deep);
+  border-color: var(--color-crimson-deep);
+}
+
+.btn-ghost {
+  background-color: transparent;
+  border-color: var(--color-line-strong);
+  color: var(--color-text);
+}
+
+.btn-ghost:hover {
+  background-color: var(--color-surface);
+  border-color: var(--color-crimson);
+}
+
+/* Nav links: a crimson rule that wipes in from the left, replacing the old
+   red drop-shadow glow. */
+.nav-link {
+  position: relative;
+  font-size: 0.875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  padding: 0.25rem 0 0.4rem;
+  transition: color 0.2s ease;
+}
+
+.nav-link:hover {
+  color: var(--color-text);
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background-color: var(--color-crimson);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.25s ease;
+}
+
+.nav-link:hover::after {
+  transform: scaleX(1);
+}
+
+/* Four letterspaced caps links + the logo don't fit the 360px floor at full
+   size — tighten below the sm breakpoint. */
+@media (max-width: 419px) {
+  .nav-link {
+    font-size: 0.8125rem;
+    letter-spacing: 0.06em;
+  }
+}
+
+/* Syllabus rows on /notes — the hover band bleeds past the text column. */
+.post-row {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.9rem 0.75rem;
+  margin: 0 -0.75rem;
+  border-bottom: 1px solid var(--color-line);
+  border-radius: 3px;
+  transition: background-color 0.18s ease;
+}
+
+.post-row:hover {
+  background-color: var(--color-surface);
+}
+
+.post-row:hover .post-row-title {
+  color: var(--color-crimson-lt);
+}
+
+.post-row-title {
+  font-size: 1.0625rem;
+  color: var(--color-text);
+  transition: color 0.18s ease;
+}
+
+/* Form controls */
+.field {
+  width: 100%;
+  background-color: var(--color-ink);
+  border: 1px solid var(--color-line-strong);
+  border-radius: 4px;
+  padding: 0.625rem 0.75rem;
+  font-size: 0.9375rem;
+  color: var(--color-text);
+  transition: border-color 0.2s ease;
+}
+
+.field::placeholder {
+  color: var(--color-faint);
+}
+
+.field:focus {
+  outline: none;
+  border-color: var(--color-crimson);
+}
+
+.field:focus-visible {
+  outline: none;
+}
+
+/* Remove Safari input shadow on mobile */
+input[type='text'],
+input[type='email'] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* ---------------------------------------------------------------------------
+   Long-form lesson notes (.prose is hand-rolled — no @tailwindcss/typography)
+   --------------------------------------------------------------------------- */
+.prose {
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  color: var(--color-text);
 }
 
 .prose p {
-  @apply my-4 text-neutral-200;
+  margin: 1.25rem 0;
+  color: var(--color-text);
 }
 
 .prose h1 {
-  @apply text-4xl font-medium tracking-tight mt-6 mb-2;
+  font-family: var(--font-family-serif);
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.012em;
+  margin: 2.5rem 0 0.75rem;
 }
 
 .prose h2 {
-  @apply text-xl font-medium tracking-tight mt-6 mb-2;
+  font-family: var(--font-family-serif);
+  font-size: 1.625rem;
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  margin: 3rem 0 0.75rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--color-line);
 }
 
 .prose h3 {
-  @apply text-xl font-medium tracking-tight mt-6 mb-2;
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 2rem 0 0.5rem;
 }
 
 .prose h4 {
-  @apply text-lg font-medium tracking-tight mt-6 mb-2;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  margin: 1.5rem 0 0.5rem;
+  color: var(--color-muted);
 }
 
 .prose strong {
-  @apply font-medium;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.prose a {
+  color: var(--color-crimson-lt);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: rgba(232, 89, 95, 0.45);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.2s ease;
+}
+
+.prose a:hover {
+  text-decoration-color: var(--color-crimson-lt);
 }
 
 .prose ul {
-  @apply list-disc pl-6;
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin: 1.25rem 0;
 }
 
 .prose ol {
-  @apply list-decimal pl-6;
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+  margin: 1.25rem 0;
 }
 
-.prose > :first-child {
-  /* Override removing top margin, causing layout shift */
-  margin-top: 1.25em !important;
-  margin-bottom: 1.25em !important;
+.prose li {
+  margin: 0.5rem 0;
+}
+
+.prose li::marker {
+  color: var(--color-faint);
+}
+
+.prose blockquote {
+  border-left: 2px solid var(--color-crimson);
+  padding-left: 1.25rem;
+  margin: 1.75rem 0;
+  color: var(--color-muted);
+  font-style: italic;
+}
+
+.prose hr {
+  border: 0;
+  border-top: 1px solid var(--color-line);
+  margin: 2.5rem auto;
+}
+
+.prose img {
+  border-radius: 4px;
+  margin: 1.75rem auto;
+}
+
+/* Long display equations scroll inside their own block rather than pushing the
+   whole document wider than the viewport on narrow screens. */
+.prose .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.25rem 0 0.75rem;
+}
+
+.prose .katex-display::-webkit-scrollbar {
+  display: none;
+}
+
+.prose .katex-display {
+  scrollbar-width: none;
+}
+
+.prose pre {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: 4px;
+  padding: 1rem 1.125rem;
+  margin: 1.5rem 0;
+  overflow-x: auto;
+  font-size: 0.875rem;
+}
+
+.prose code {
+  font-family: var(--font-family-mono);
+  font-size: 0.875em;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: 3px;
+  padding: 0.15em 0.4em;
+}
+
+.prose pre code {
+  background: none;
+  border: 0;
+  padding: 0;
+  font-size: inherit;
+  line-height: 1.6;
+}
+
+/* next-mdx-remote wraps the article body in a <span>, so headings are
+   grandchildren of .prose — these must be descendant selectors, not `>`. */
+.prose > :first-child,
+.prose > span:first-child > :first-child {
+  margin-top: 0 !important;
+}
+
+/* The first heading in an article shouldn't carry the section divider — the
+   post header already has a rule directly above it. */
+.prose h2:first-of-type {
+  border-top: 0;
+  padding-top: 0;
+  margin-top: 0;
+}
+
+/* Heading anchors */
+/* Kept narrow on purpose: the old `width: 80%; max-width: 700px` made this
+   invisible anchor a page-width box that pushed the document's scrollWidth
+   past the viewport on mobile. */
+.prose .anchor {
+  position: absolute;
+  visibility: hidden;
+  text-decoration: none;
+  margin-left: -1em;
+  padding-right: 0.5em;
+  cursor: pointer;
+  color: var(--color-faint);
+}
+
+.prose .anchor::after {
+  content: '#';
+  color: var(--color-faint);
+}
+
+.prose *:hover > .anchor,
+.prose .anchor:hover {
+  visibility: visible;
 }
 
 pre::-webkit-scrollbar {
@@ -122,33 +487,45 @@ pre {
   scrollbar-width: none; /* Firefox */
 }
 
-/* Remove Safari input shadow on mobile */
-input[type='text'],
-input[type='email'] {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-}
-
+/* ---------------------------------------------------------------------------
+   Tables (rendered by app/components/mdx.tsx)
+   --------------------------------------------------------------------------- */
+/* `display: block` + `overflow-x: auto` lets a wide table scroll inside itself.
+   max-width must be 100%, not fit-content — with `mx-auto`, fit-content lets an
+   oversized table take negative margins and spill out of the page on mobile. */
 table {
   display: block;
-  max-width: fit-content;
+  width: fit-content;
+  max-width: 100%;
   overflow-x: auto;
   white-space: nowrap;
+  font-size: 0.9375rem;
 }
 
-.title {
-  text-wrap: balance;
+/* ---------------------------------------------------------------------------
+   Home page neon sign — steady glow, with one slow low-amplitude breathe in
+   place of the old flicker.
+   --------------------------------------------------------------------------- */
+@keyframes signGlow {
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.06);
+  }
 }
 
-@keyframes flicker {
-  0%, 13.999%, 15.4%, 44.099%, 44.8%, 45.499%, 49% {
-    opacity: .99;
+@media (prefers-reduced-motion: no-preference) {
+  .neon-sign {
+    animation: signGlow 8s ease-in-out infinite;
   }
-  14%, 15.399%, 45%, 45.699%, 46.5%, 48.999% {
-    opacity: 0.4;
-  }
-  70%, 100% {
-    opacity: .99;
+}
+
+/* react-fast-marquee animates via CSS, so it can be stopped the same way. */
+@media (prefers-reduced-motion: reduce) {
+  .rfm-marquee,
+  .rfm-initial-child-container {
+    animation: none !important;
   }
 }

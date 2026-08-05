@@ -7,8 +7,13 @@ export const metadata = {
 
 export default function Page() {
   return (
-    <section className="lg:w-1/2 mx-auto lg:min-h-[calc(100vh-288px)] mb-8 flex flex-col justify-center">
-      <h1 className="font-semibold text-4xl mb-8 tracking-tighter">Quantum Computing Crash Course</h1>
+    <section className="max-w-3xl mx-auto w-full mb-24">
+      <p className="eyebrow mb-5">Crash course</p>
+      <h1 className="display mb-5">Quantum Computing Crash Course</h1>
+      <p className="lede mb-12">
+        Every session we've run, from linear algebra fundamentals through Shor's
+        algorithm. Addenda go deeper on the mathematics behind each lesson.
+      </p>
       <BlogPosts />
     </section>
   )

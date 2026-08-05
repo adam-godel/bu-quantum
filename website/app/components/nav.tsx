@@ -17,44 +17,46 @@ const navItems = {
   },
 }
 
-const scrollingText = "Welcome back to BU!"
+const scrollingText = "Weekly workshops · Fall 2025 · All majors welcome"
 
 export function Navbar() {
   return (
-    <aside className="-mt-6 -ml-[8px] mb-12 tracking-tight">
-      <div className="absolute left-0 w-screen overflow-hidden hover:cursor-default">
-        <Marquee className="w-full">
-          {Array.from({ length: 30 }).map((_, i) => (
-            <span key={i} className="flex items-center font-stretch-expanded">
+    <header className="mb-16">
+      <div className="full-bleed border-b border-line bg-surface hover:cursor-default">
+        <Marquee speed={28} gradient={false} className="py-2">
+          {Array.from({ length: 12 }).map((_, i) => (
+            <span
+              key={i}
+              className="flex items-center text-[11px] uppercase tracking-[0.18em] text-muted"
+            >
               <span>{scrollingText}</span>
-              <span className="mx-2">•</span>
+              <span className="mx-4 text-crimson">◆</span>
             </span>
           ))}
         </Marquee>
       </div>
-      <div className="mt-6 lg:sticky lg:top-20">
+
+      <div className="pt-7 lg:sticky lg:top-0 lg:z-20 lg:bg-ink">
         <nav
-          className="flex flex-row items-center justify-between relative px-0 pb-0 fade overflow-visible scroll-pr-6 md:relative"
+          className="flex flex-row items-center justify-between gap-4 border-b border-line pb-4"
           id="nav"
         >
-          <div className="flex">
-            <Image 
+          <Link href="/" className="flex items-center gap-3 shrink-0">
+            <Image
               src="/logo.png"
               alt="BU Quantum"
               width={100}
               height={100}
-              className="flex align-middle relative px-2 scale-150"
+              className="h-10 w-10 object-contain"
             />
-          </div>
-          <div className="flex flex-row space-x-0">
+            <span className="hidden text-sm uppercase tracking-[0.2em] text-text sm:inline">
+              BU Quantum
+            </span>
+          </Link>
+          <div className="flex flex-row items-center gap-3.5 sm:gap-7">
             {Object.entries(navItems).map(([path, { name }]) => {
               return (
-                <Link
-                  key={path}
-                  href={path}
-                  // blur hover effect still too subtle, will come back to it later
-                  className="text-2xl transition-all hover:text-neutral-200 hover:drop-shadow-[0_0_8px_rgba(239,68,68,0.8)] flex align-middle relative py-1 px-2 m-1"
-                >
+                <Link key={path} href={path} className="nav-link">
                   {name}
                 </Link>
               )
@@ -62,6 +64,6 @@ export function Navbar() {
           </div>
         </nav>
       </div>
-    </aside>
+    </header>
   )
 }

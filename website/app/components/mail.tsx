@@ -33,12 +33,12 @@ export default function Mail() {
     }
 
     return (
-        <div className="max-w-md mx-auto mt-8 p-6 rounded-lg border-2 border-red-500 shadow-lg w-full">
-            <h2 className="text-2xl font-bold text-center mb-6 text-white">Join our mailing list!</h2>
-            <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="card max-w-md mt-12 p-7 w-full">
+            <h2 className="section-title mb-6">Join our mailing list</h2>
+            <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">
-                        email address <span className="text-red-500">*</span>
+                    <label htmlFor="email" className="eyebrow block mb-2">
+                        Email address <span className="accent">*</span>
                     </label>
                     <input
                         type="email"
@@ -46,38 +46,38 @@ export default function Mail() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
-                        className="w-full px-3 py-2 bg-zinc-900 border border-zinc-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent"
+                        className="field"
                         placeholder="quantum@entanglement.com"
                     />
                 </div>
-                
+
                 <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-1">
-                        name
+                    <label htmlFor="name" className="eyebrow block mb-2">
+                        Name
                     </label>
                     <input
                         type="text"
                         id="name"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        className="w-full px-3 py-2 bg-zinc-900 border border-zinc-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent"
-                        placeholder="david deutsch"
+                        className="field"
+                        placeholder="David Deutsch"
                     />
                 </div>
-                
+
                 <button
                     type="submit"
                     disabled={status === 'submitting'}
-                    className="w-full py-2 px-4 bg-red-800 text-white font-medium rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 focus:ring-offset-gray-900 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="btn w-full disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                    {status === 'submitting' ? 'subscribing...' : 'subscribe'}
+                    {status === 'submitting' ? 'Subscribing…' : 'Subscribe'}
                 </button>
-                
+
                 {status === 'success' && (
-                    <p className="text-white text-sm text-center">thanks for subscribing!</p>
+                    <p className="text-sm text-center text-muted">Thanks for subscribing.</p>
                 )}
                 {status === 'error' && (
-                    <p className="text-red-400 text-sm text-center">something went wrong. please try again.</p>
+                    <p className="text-sm text-center accent">Something went wrong. Please try again.</p>
                 )}
             </form>
         </div>

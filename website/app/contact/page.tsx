@@ -7,9 +7,22 @@ export const metadata = {
 
 export default function Contact() {
     return (
-        <div className="lg:h-[calc(100vh-288px)] flex flex-col items-center justify-center text-center mb-8">
-            <h1 className="text-4xl font-bold">Curious?</h1>
-            <p className="text-2xl m-4">If you'd like to reach out, please feel free to send us an email. <br /> If you're interested in hearing more from us, join our mailing list and follow our socials!</p>
+        <div className="max-w-3xl mx-auto w-full mb-24">
+            <p className="eyebrow mb-5">Get involved</p>
+            <h1 className="display mb-6">Curious?</h1>
+            <p className="lede mb-4">
+                If you'd like to reach out, please feel free to send us an email at{' '}
+                <a
+                    href="mailto:bosuquantum@gmail.com"
+                    className="text-crimson-lt underline underline-offset-[3px] decoration-1"
+                >
+                    bosuquantum@gmail.com
+                </a>
+                .
+            </p>
+            <p className="lede">
+                If you're interested in hearing more from us, join our mailing list and follow our socials.
+            </p>
             <Mail/>
         </div>
     )

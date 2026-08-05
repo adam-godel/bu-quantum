@@ -1,36 +1,51 @@
 import Link from 'next/link'
-import { getBlogPosts } from 'app/notes/utils'
+import { getBlogPosts, formatDate } from 'app/notes/utils'
 
 export function BlogPosts() {
   let allBlogs = getBlogPosts()
 
   return (
-    <div>
+    <div className="border-t border-line">
       {allBlogs
         .sort((a, b) => {
-          if (
-            parseInt(a.metadata.week) > parseInt(b.metadata.week)
-          ) {
-            return -1
+          const weekDiff =
+            parseInt(b.metadata.week) - parseInt(a.metadata.week)
+          if (weekDiff !== 0) {
+            return weekDiff
           }
-          return 1
+          // Within a week, the lesson comes before its addendum.
+          const aAdd = a.metadata.title.includes('Addendum') ? 1 : 0
+          const bAdd = b.metadata.title.includes('Addendum') ? 1 : 0
+          return aAdd - bAdd
         })
-        .map((post) => (
-          <Link
-            key={post.slug}
-            className="flex flex-col space-y-1 mb-4"
-            href={`/notes/${post.slug}`}
-          >
-            <div className="w-full flex flex-col md:flex-row space-x-0 md:space-x-2 text-lg">
-              <p className="text-neutral-400 w-[80px] tabular-nums">
-                {"Lesson "+post.metadata.week}
-              </p>
-              <p className={"text-neutral-100 tracking-tight"+(post.metadata.title.includes('Addendum') && " italic")}>
+        .map((post) => {
+          const isAddendum = post.metadata.title.includes('Addendum')
+
+          return (
+            <Link
+              key={post.slug}
+              className="post-row"
+              href={`/notes/${post.slug}`}
+            >
+              <span className="meta w-[5.5rem] shrink-0">
+                {'Lesson ' + post.metadata.week}
+              </span>
+              <span
+                className={
+                  isAddendum
+                    ? 'post-row-title italic flex-1'
+                    : 'post-row-title flex-1'
+                }
+              >
+                {isAddendum && <span className="text-faint mr-1.5">↳</span>}
                 {post.metadata.title}
-              </p>
-            </div>
-          </Link>
-        ))}
+              </span>
+              <span className="meta hidden sm:block shrink-0">
+                {formatDate(post.metadata.publishedAt)}
+              </span>
+            </Link>
+          )
+        })}
     </div>
   )
 }

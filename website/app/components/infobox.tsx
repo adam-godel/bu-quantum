@@ -1,10 +1,11 @@
-export default function infoBox({ title, info }) {
+export default function infoBox({ eyebrow, title, info }) {
     return (
-        <div className="rounded-lg my-4">
-            <h2 className="text-4xl font-semibold mb-2 ">{title}</h2>
-            <div className="text-xl text-white text-justify">
+        <section className="rule pt-10">
+            {eyebrow && <p className="eyebrow mb-4">{eyebrow}</p>}
+            <h2 className="section-title mb-4">{title}</h2>
+            <div className="body-copy">
                 {info}
             </div>
-        </div>
+        </section>
     )
 }
