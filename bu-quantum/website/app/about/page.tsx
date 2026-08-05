@@ -31,7 +31,7 @@ export default function About() {
                 <div className="grid grid-cols-1 md:grid-cols-4 justify-center">
                     <MemberProfile name="Yebin Song" role="Director" imageUrl="/yebin.jpg" linkedin="https://www.linkedin.com/in/yebin-song-11158232a" bio={<>Data science major.<br/>Vision model explainability research.<br/>Baited by Richard Feynman.</>}/>
                     <MemberProfile name="Adam Godel" role="Founder" imageUrl="/adam.png" linkedin="https://www.linkedin.com/in/adam-godel" bio={<>Passionate about quantum computing.<br/>QSL fellow @ Wiser/NNL.<br/>Awards @ iQuHack & QRISE.<br/>Not fault-tolerant myself.</>}/>
-                    <MemberProfile name="Allen Chen" role="Head of Operations" imageUrl="/allen.jpg" linkedin="https://www.linkedin.com/in/allenchen28" bio={<>passionate about something.<br/></>}/>
+                    <MemberProfile name="Allen Chen" role="Head of Operations" imageUrl="/allen.jpg" linkedin="https://www.linkedin.com/in/allenchen28" bio={<>Electrical engineering major.<br/>Quantum optics research.<br/>Passionate about quantum hardware and its fabrication.</>}/>
                     <MemberProfile name="Artem Arefev" role="Head of Physics" imageUrl="/artem.jpg" linkedin="https://www.linkedin.com/in/artem-arefev-0789563a5" bio={<>Passionate about physics in tech.<br/>Awards at iQuHack.<br/>Working on VQE and NQS!<br/>"6'2"</>}/>
                 </div>
             </div>
