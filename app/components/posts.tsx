@@ -23,7 +23,7 @@ export function BlogPosts() {
           {d === 0 && (
             <p className="eyebrow tree-tier-label">Start here · no prerequisites</p>
           )}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="tree-row">
             {tier.map((post) => (
               <Link
                 key={post.slug}

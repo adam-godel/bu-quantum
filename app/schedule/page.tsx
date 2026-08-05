@@ -5,14 +5,16 @@ export const metadata = {
   description: 'Upcoming BU Quantum workshops, with slides, notes, and resources.',
 }
 
-// Add a workshop by appending an entry here. `resources` renders as a row of
-// buttons; leave it off (or empty) before a session and fill it in afterwards.
+// Add a workshop by appending an entry here. `resources` has three states:
+//   resources: [{...}]  -> a row of link buttons
+//   resources: []       -> "Resources will be posted here after the meeting."
+//   (key omitted)       -> nothing, for a past meeting that had no resources
 const workshops: Workshop[] = [
   {
     date: '2026-09-11',
-    title: 'Workshop title',
+    title: 'The Variational Quantum Eigensolver',
     description:
-      'A short description of what this workshop covers and who it is for. Replace this text once the session is planned.',
+      'Learn about this important quantum algorithm for optimization, which is largely functional even on the very small-scale, noisy quantum computers that exist today. No prior experience in quantum computing is required!',
     location: 'Location TBA',
     resources: [],
   },
@@ -22,20 +24,20 @@ export default function Schedule() {
   const upcoming = [...workshops].sort((a, b) => a.date.localeCompare(b.date))
 
   return (
-    <div className="max-w-3xl mx-auto w-full mb-24">
+    <div className="w-full mb-24">
       <p className="eyebrow mb-5">Schedule</p>
-      <h1 className="display mb-5">Come to a workshop.</h1>
+      <h1 className="display mb-5">Come to a meeting.</h1>
       <p className="lede mb-12">
-        Every session we run is listed here. Slides, notes, and any other
-        resources get posted to the workshop below once it has taken place.
+        Every meeting we host is listed here. Slides, notes, and any other
+        resources for a meeting get posted below once it has taken place.
       </p>
 
       {upcoming.length === 0 ? (
-        <p className="rule pt-10 text-muted">
+        <p className="rule pt-10 text-muted measure">
           Nothing scheduled yet — check back soon.
         </p>
       ) : (
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-6 measure">
           {upcoming.map((w) => (
             <WorkshopCard key={w.date + w.title} workshop={w} />
           ))}

@@ -32,6 +32,16 @@
   --font-family-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
+:root {
+  /* One measure shared by body copy and the content blocks that sit under it,
+     so a block never stretches wider than the paragraph introducing it. */
+  --measure: 44rem;
+  /* Crash-course cards are capped so three fit across the 6xl column, allowing
+     for the 6xl max-width, the main px-6 gutters, the tree rail's left padding
+     and two 1rem gaps. */
+  --card: 21.25rem;
+}
+
 html {
   min-width: 360px;
   scroll-behavior: smooth;
@@ -110,14 +120,19 @@ body {
   font-size: 1.125rem;
   line-height: 1.65;
   color: var(--color-muted);
-  max-width: 60ch;
+  max-width: var(--measure);
+}
+
+/* Opt a block into the shared text measure. */
+.measure {
+  max-width: var(--measure);
 }
 
 .body-copy {
   font-size: 1.0625rem;
   line-height: 1.75;
   color: var(--color-text);
-  max-width: 68ch;
+  max-width: var(--measure);
 }
 
 .meta {
@@ -286,14 +301,21 @@ body {
   margin-bottom: 1rem;
 }
 
+/* Row of cards that size to their content rather than filling the page. They
+   still stretch to a common height (flex default), which is what keeps the
+   Requires divider on a shared baseline via its `margin-top: auto`. */
+.tree-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
 .lesson-card {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  /* Grid stretches cards in a row to equal height; combined with the
-     `margin-top: auto` on .lesson-card-reqs this keeps the Requires divider on
-     the same baseline across neighbouring cards. */
-  height: 100%;
+  flex: 0 1 auto;
+  max-width: min(100%, var(--card));
   padding: 1.125rem 1.25rem;
   border: 1px solid var(--color-line);
   border-radius: 4px;
@@ -482,10 +504,12 @@ input[type='email'] {
 /* ---------------------------------------------------------------------------
    Long-form lesson notes (.prose is hand-rolled — no @tailwindcss/typography)
    --------------------------------------------------------------------------- */
+/* The lesson page container is full width; the reading column is not. */
 .prose {
   font-size: 1.0625rem;
   line-height: 1.75;
   color: var(--color-text);
+  max-width: var(--measure);
 }
 
 .prose p {

@@ -60,7 +60,7 @@ export default async function Blog({ params }) {
   const nextUp = getDependents(post.slug)
 
   return (
-    <section className="max-w-[68ch] mx-auto w-full mb-24">
+    <section className="w-full mb-24">
       <script
         type="application/ld+json"
         suppressHydrationWarning

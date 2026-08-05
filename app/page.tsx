@@ -19,10 +19,10 @@ export default function Page() {
       <div className="w-full flex flex-col lg:flex-row lg:items-center lg:justify-between gap-16">
         {/* text content */}
         <div className="lg:w-1/2 lg:pr-12">
-          <p className="eyebrow mb-5">Boston University · Student Organization</p>
-          <h1 className="display mb-6">This is BU Quantum.</h1>
+          <p className="eyebrow mb-5">Quantum Seminars · Quantum Workshops</p>
+          <h1 className="display mb-6">We are BU Quantum.</h1>
           <p className="lede mb-9">
-            We're a community of students at Boston University passionate about quantum computing: from both a theory and computational perspective. We host lessons, share resources, and collaborate on projects at the cutting edge of the field.
+            We're a community of students at Boston University passionate about quantum computing, from both a theory and computational perspective. We host seminars and workshops for students and faculty alike to learn more about the field and discuss their research.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3">

@@ -8,7 +8,7 @@ export const metadata = {
 
 export default function Page() {
   return (
-    <section className="max-w-3xl mx-auto w-full mb-24">
+    <section className="w-full mb-24">
       <p className="eyebrow mb-5">Crash Course</p>
       <h1 className="display mb-5">Learn about quantum computing.</h1>
       <p className="lede mb-12">

@@ -9,6 +9,10 @@ export type Workshop = {
   title: string
   description: string
   location?: string
+  /**
+   * Omit entirely for a workshop that simply has no resources — nothing renders.
+   * Set to `[]` to promise resources later ("will be posted here").
+   */
   resources?: Resource[]
 }
 
@@ -29,7 +33,9 @@ function formatWorkshopDate(iso: string) {
 
 export default function WorkshopCard({ workshop }: { workshop: Workshop }) {
   const { weekday, full, month, day } = formatWorkshopDate(workshop.date)
-  const resources = workshop.resources ?? []
+  // Deliberately not defaulted: `undefined` (no resources, nothing to say) and
+  // `[]` (resources pending) render differently.
+  const { resources } = workshop
 
   return (
     <article className="workshop">
@@ -47,7 +53,7 @@ export default function WorkshopCard({ workshop }: { workshop: Workshop }) {
         <h2 className="workshop-title">{workshop.title}</h2>
         <p className="workshop-description">{workshop.description}</p>
 
-        {resources.length > 0 ? (
+        {resources === undefined ? null : resources.length > 0 ? (
           <div className="flex flex-wrap gap-2 mt-5">
             {resources.map((r) => (
               <a
@@ -62,7 +68,7 @@ export default function WorkshopCard({ workshop }: { workshop: Workshop }) {
             ))}
           </div>
         ) : (
-          <p className="meta mt-5">Resources will be posted here.</p>
+          <p className="meta mt-5">Resources will be posted here after the meeting.</p>
         )}
       </div>
     </article>

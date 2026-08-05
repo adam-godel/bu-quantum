@@ -1,7 +1,7 @@
-export default function MemberProfile({ name, imageUrl, bio, linkedin }) {
+export default function MemberProfile({ name, imageUrl, bio, website }) {
     return (
         <a
-            href={linkedin}
+            href={website}
             target="_blank"
             rel="noopener noreferrer"
             className="group block border border-line rounded-[4px] p-5 transition-colors hover:border-crimson"

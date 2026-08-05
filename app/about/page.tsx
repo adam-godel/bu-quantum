@@ -17,7 +17,7 @@ export default function About() {
                 <InfoBox
                     eyebrow="Overview"
                     title="About Us"
-                    info="Established in Fall 2025, BU Quantum aims to foster a community around quantum computing, on campus. We’re building a space for interested students to get the resources they need, collaborate with each other, and connect with faculty."
+                    info="Established in Fall 2025, BU Quantum aims to foster a community around quantum computing, on campus. We’re building a space for interested students to learn more about the field and discuss the research they have been working on."
                 />
                 <InfoBox
                     eyebrow="Our work"
@@ -25,9 +25,8 @@ export default function About() {
                     info={
                         <ol className="list-decimal pl-6 space-y-3 marker:text-faint">
                             <li>We help beginners get started with quantum computing: from learning basic linear alebra and building their first quantum circuit, to eventually breaking RSA encryption with Shor's algorithm.</li>
-                            <li>We host hands-on workshops, nearly every week: focusing on software implementation, across a variety of hardware platforms.</li>
+                            <li>We host hands-on workshops on quantum programming accessible to beginners and experts alike, to learn about how quantum algorithms work and how they can be implemented in code.</li>
                             <li>We host events for faculty and fellow students to discuss their research, providing broad coverage of ideas at the forefront of the field.</li>
-                            <li>We form teams and organize trips to quantum computing hackathons, at least once a semester.</li>
                         </ol>
                     }
                 />
@@ -37,10 +36,10 @@ export default function About() {
                 <p className="eyebrow mb-4">Our Team</p>
                 <h2 className="section-title mb-10">Who We Are</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <MemberProfile name="Yebin Song" imageUrl="/yebin.jpg" linkedin="https://www.linkedin.com/in/yebin-song-11158232a" bio="Placeholder description. Replace this with a short bio."/>
-                    <MemberProfile name="Adam Godel" imageUrl="/adam.png" linkedin="https://www.linkedin.com/in/adam-godel" bio="Placeholder description. Replace this with a short bio."/>
-                    <MemberProfile name="Allen Chen" imageUrl="/allen.jpg" linkedin="https://www.linkedin.com/in/allenchen28" bio="Placeholder description. Replace this with a short bio."/>
-                    <MemberProfile name="Artem Arefev" imageUrl="/artem.jpg" linkedin="https://www.linkedin.com/in/artem-arefev-0789563a5" bio="Placeholder description. Replace this with a short bio."/>
+                    <MemberProfile name="Adam Godel" imageUrl="/adam.jpg" website="https://adamgodel.me/" bio="Mathematics & Computer Science @ BU '27."/>
+                    <MemberProfile name="Yebin Song" imageUrl="/yebin.jpg" website="https://www.linkedin.com/in/yebin-song-11158232a" bio="Placeholder description. Replace this with a short bio."/>
+                    <MemberProfile name="Allen Chen" imageUrl="/allen.jpg" website="https://www.linkedin.com/in/allenchen28" bio="Electrical Engineering @ BU '28."/>
+                    <MemberProfile name="Artem Arefev" imageUrl="/artem.jpg" website="https://www.linkedin.com/in/artem-arefev-0789563a5" bio="Placeholder description. Replace this with a short bio."/>
                 </div>
             </section>
         </div>
