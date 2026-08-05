@@ -4,20 +4,20 @@ import Marquee from "react-fast-marquee"
 
 const navItems = {
   '/': {
-    name: 'home',
+    name: 'Home',
   },
   '/about': {
-    name: 'about',
+    name: 'About',
   },
   '/notes': {
-    name: 'notes',
+    name: 'Notes',
   },
   '/contact': {
-    name: 'contact',
+    name: 'Contact',
   },
 }
 
-const scrollingText = "have a great winter break!"
+const scrollingText = "Welcome back to BU!"
 
 export function Navbar() {
   return (

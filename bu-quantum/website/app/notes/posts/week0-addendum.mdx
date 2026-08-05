@@ -229,12 +229,12 @@ Some examples of their applications include
 <a href="https://en.wikipedia.org/wiki/Eigenvalues_and_eigenvectors#Schr%C3%B6dinger_equation" target="_blank">Schrödinger's equation</a> and 
 <a href="https://en.wikipedia.org/wiki/Eigenvalues_and_eigenvectors#Molecular_orbitals" target="_blank">molecular orbitals</a>.
 
-We will be looking at a quantum algorithm to estimate the eigenvalues of a matrix later on in the semester.
+We will be looking at a quantum algorithm to estimate the eigenvalues of a matrix later on in the lessons.
 
 ## Normalization
-Another important concept is **normalization**. A vector is normalized if its ratio of magnitude (also called its norm, denoted as $\|\|v\|\|$) is based on 1. 
-In the world of linear algebra, we call this the unit vector (like a unit circle, where the max value is 1). 
-For a vector {String.raw`$\vec{v}$`} with components $v_1, v_2, \dots, v_n$, the norm is given by
+Another important concept is **normalization**. A vector is normalized if its magnitude (also called its norm, denoted as $\|\|v\|\|$) is equal to 1. 
+In the world of linear algebra, we call this the unit vector (like a unit circle, where the radius is 1). 
+For a vector {String.raw`$\vec{v}$`} with components $v_1, v_2, \dots, v_n$, the norm is given by the Pythagorean theorem:
 
 {String.raw`$$
 \|v\| = \sqrt{|v_1|^2 + |v_2|^2 + \cdots + |v_n|^2}
@@ -269,9 +269,9 @@ Below is an example of a normalized vector calculation:
 \end{align*}
 $$`}
 
-In quantum computing, all statevectors must be normalized, since the sum of the probabilities of all possible outcomes must be equal to 1, representing 100%.
+In quantum computing, when you "measure" a particle that physically exists (whose probability is not zero), you are bound to measure something. That is, the sum of the probabilities of all possible outcomes must be equal to 1 or 100%. Mathematically, this means that all statevectors must be normalized.
 
-As we progress throughout the semester, you will see equations having been normalized for use in quantum computing. An example is $|+\rangle$ where: 
+As we progress throughout the semester, you will see expressions normalized to satisfy this rule. An example is $|+\rangle$ where: 
 {String.raw`$$
 |+\rangle = \frac{|0\rangle+|1\rangle}{\sqrt{2}}
 $$`}
