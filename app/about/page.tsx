@@ -40,6 +40,7 @@ export default function About() {
                     <MemberProfile name="Yebin Song" imageUrl="/yebin.jpg" website="https://www.linkedin.com/in/yebin-song-11158232a" bio="Placeholder description. Replace this with a short bio."/>
                     <MemberProfile name="Allen Chen" imageUrl="/allen.jpg" website="https://www.linkedin.com/in/allenchen28" bio="Electrical Engineering @ BU '28."/>
                     <MemberProfile name="Artem Arefev" imageUrl="/artem.jpg" website="https://www.linkedin.com/in/artem-arefev-0789563a5" bio="Placeholder description. Replace this with a short bio."/>
+                    <MemberProfile name="Alex Poremba" imageUrl="/alex.jpg" website="https://scc1.bu.edu/poremba/" bio="Professor @ BU CS & Physics."/>
                 </div>
             </section>
         </div>
