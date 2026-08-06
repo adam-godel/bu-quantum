@@ -37,9 +37,9 @@ export default function About() {
                 <h2 className="section-title mb-10">Who We Are</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     <MemberProfile name="Adam Godel" imageUrl="/adam.jpg" website="https://adamgodel.me/" bio="Mathematics & Computer Science @ BU '27."/>
-                    <MemberProfile name="Yebin Song" imageUrl="/yebin.jpg" website="https://www.linkedin.com/in/yebin-song-11158232a" bio="Placeholder description. Replace this with a short bio."/>
+                    <MemberProfile name="Yebin Song" imageUrl="/yebin.jpg" website="https://www.linkedin.com/in/yebin-song-11158232a" bio="Data Science @ BU '28."/>
                     <MemberProfile name="Allen Chen" imageUrl="/allen.jpg" website="https://www.linkedin.com/in/allenchen28" bio="Electrical Engineering @ BU '28."/>
-                    <MemberProfile name="Artem Arefev" imageUrl="/artem.jpg" website="https://www.linkedin.com/in/artem-arefev-0789563a5" bio="Placeholder description. Replace this with a short bio."/>
+                    <MemberProfile name="Artem Arefev" imageUrl="/artem.jpg" website="https://www.linkedin.com/in/artem-arefev-0789563a5" bio="Mathematics & Physics @ BU '29."/>
                     <MemberProfile name="Alex Poremba" imageUrl="/alex.jpg" website="https://scc1.bu.edu/poremba/" bio="Professor @ BU CS & Physics."/>
                 </div>
             </section>
