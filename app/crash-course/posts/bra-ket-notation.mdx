@@ -10,18 +10,9 @@ This page will be doing the former for **bra-ket notation**, a type of notation 
 
 A **ket** is simply a column vector, i.e. a list of amplitudes in the form of a $n \times 1$ matrix. For a qubit, this list is always of size 2, where the first term represents the amplitude for $|0\rangle$ and the second term represents the amplitude for $|1\rangle$. We write a ket as $|\psi\rangle$, where $\psi$ is our quantum state variable.
 
-A **bra** is simply a row vector, i.e. a list of amplitudes in the form of a $1 \times n$ matrix. Similarly to a ket, we write a bra as $\langle \psi|$. Importantly, $\langle \psi| = |\psi\rangle^\dag$ and $|\psi\rangle = \langle\psi|^\dag$. 
+A **bra** is simply a row vector, i.e. a list of amplitudes in the form of a $1 \times n$ matrix. Similarly to a ket, we write a bra as $\langle \psi|$. Importantly the bra and the ket are related by, $\langle \psi| = |\psi\rangle^\dag$ and $|\psi\rangle = \langle\psi|^\dag$. 
 
-Here, the $\dag$ symbol denotes the **conjugate transpose** of the vector. You may be familiar with the [transpose](https://en.wikipedia.org/wiki/Transpose) of a matrix already; the conjugate transpose simply also flips the sign of the imaginary part of each element. For example,
-{String.raw`$$
-|\psi\rangle = \begin{bmatrix}
-a \\
-b+ci
-\end{bmatrix} \qquad |\psi\rangle^\dag=\langle\psi|=\begin{bmatrix}
-a & b-ci
-\end{bmatrix}
-$$`}
-There is nothing special about vectors here; you can find the conjugate transpose of any matrix in a similar way.
+Here, the $\dag$ symbol denotes the **conjugate transpose** of the vector. You should be familiar with the transpose already, from [Linear Algebra Basics](/crash-course/linear-algebra).
 
 In bra-ket notation, $\langle \psi | \psi \rangle$ represents the [inner product](https://en.wikipedia.org/wiki/Dot_product) (dot product) and $|\psi\rangle \langle \psi |$ represents the [outer product](https://en.wikipedia.org/wiki/Outer_product). For the example above, we find that
 {String.raw`$$
@@ -44,9 +35,9 @@ a^2 & ab-aci \\
 ab+aci & b^2+c^2
 \end{bmatrix}
 $$`}
-I will use the rest of this page to discuss a few other properties of bra-ket notation that later pages look at in more detail. Don't worry if you don't understand much of this; each of these properties is covered more closely further on. Likewise, feel free to use this page as a reference at any point.
+The rest of this page will discuss a few other properties of bra-ket notation that later pages look at in more detail. Don't worry if you don't understand much of this; each of these properties is covered more closely further on. Likewise, feel free to use this page as a reference at any point.
 
-You will often see kets written next to each other, like $|\psi\rangle|\xi\rangle$. This is *not* matrix multiplication, since the dimensions are invalid. Instead, this is used to refer to the tensor product, sometimes denoted with the $\otimes$ symbol. For example,
+You will often see kets written next to each other, like $|\psi\rangle|\xi\rangle$. This is *not* matrix multiplication, since the dimensions would be invalid. Instead, this is shorthand for refer to the tensor product, denoted with the $\otimes$ symbol. For example,
 {String.raw`$$
 A = \begin{bmatrix}
 a \\
@@ -72,9 +63,9 @@ A \otimes B = \begin{bmatrix}
     a_{m1}B & \cdots & a_{mn}B
 \end{bmatrix}
 $$`}
-This matrix will have size $mp \times nq$. Tensor products are really useful in quantum computing. We'll be using them a lot, and I hope it becomes more clear why they're the right operation for a lot of what we're doing as you read on.
+This matrix will have size $mp \times nq$. The tensor product joins two vector spaces together, by "gluing" on vector space #1 along every direction of vector space #2. This manifests in the rules you see above. Tensor products are really useful in quantum computing. We'll be using them a lot, and it will hopefully become more clear why they're the right operation for a lot of what we're doing as you read on.
 
-The final thing I'll mention here is that you can multiply matrices with bras or kets, since they are just vectors. Often in quantum computing, this will be a square matrix with a size that corresponds to a power of 2. For example, suppose we have the matrix
+The final thing worth mentioning here is that you can multiply matrices with kets, since they are just vectors. Often in quantum computing, this will be a square matrix. For example, suppose we have the matrix
 {String.raw`$$
 H = \begin{bmatrix}
 1/\sqrt{2} & 1/\sqrt{2} \\

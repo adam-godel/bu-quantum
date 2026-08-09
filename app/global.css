@@ -35,7 +35,7 @@
 :root {
   /* One measure shared by body copy and the content blocks that sit under it,
      so a block never stretches wider than the paragraph introducing it. */
-  --measure: 44rem;
+  --measure: 64rem;
   /* Crash-course cards are capped so three fit across the 6xl column, allowing
      for the 6xl max-width, the main px-6 gutters, the tree rail's left padding
      and two 1rem gaps. */
@@ -149,7 +149,7 @@ body {
 
 /* The type classes above sit outside @layer utilities, so a `text-*` utility
    can't recolour them. This modifier can — keep it declared last. */
-.accent {
+.accent:not(.katex .accent) {
   color: var(--color-crimson-lt);
 }
 
