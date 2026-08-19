@@ -37,7 +37,7 @@ export default function About() {
                     info={
                          <p>
                             We meet every week: alternating between general, lesson-style events aimed at undergraduates and specialized, seminar-style events aimed at graduates and dedicated undergrads. <br /><br />
-                            Event order, meeting locations, and other details TBA. <br /><br />
+                            The meetings take place every Friday in room 701 of the CDS building, from 3:00 PM to 5:00 PM. <br /><br />
                             
                             Check our full list of events on the{' '}
                             <Link href="/schedule" className="accent">

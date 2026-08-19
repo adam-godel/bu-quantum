@@ -12,10 +12,18 @@ export const metadata = {
 const workshops: Workshop[] = [
   {
     date: '2026-09-11',
-    title: 'The Variational Quantum Eigensolver',
+    title: 'Seminar: The Variational Quantum Eigensolver',
     description:
-      'Learn about this important quantum algorithm for optimization, which is largely functional even on the very small-scale, noisy quantum computers that exist today. No prior experience in quantum computing is required!',
-    location: 'Location TBA',
+      'Learn about an important quantum algorithm for optimization, which is largely functional even on the very small-scale, noisy quantum computers that exist today. No prior experience in quantum computing is required!',
+    location: '701 CDS',
+    resources: [],
+  },
+  {
+    date: '2026-09-18',
+    title: 'Workshop: Quantum Computing Basics',
+    description:
+      'Learn about single qubit gates, two qubit gates, their mathematical representations, and how they can be applied.',
+    location: '701 CDS',
     resources: [],
   },
 ]
@@ -26,7 +34,7 @@ export default function Schedule() {
   return (
     <div className="w-full mb-24">
       <p className="eyebrow mb-5">Schedule</p>
-      <h1 className="display mb-5">Come to a meeting.</h1>
+      <h1 className="display mb-5">Come to a meeting</h1>
       <p className="lede mb-12">
         Every meeting we host is listed here. Slides, notes, and any other
         resources for a meeting get posted below once it has taken place.
