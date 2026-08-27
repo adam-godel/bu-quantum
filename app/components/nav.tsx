@@ -17,7 +17,7 @@ const navItems = {
   },
 }
 
-const scrollingText = "First meeting · Friday, September 11, 2026"
+const scrollingText = "First meeting · Friday, September 11, 2026 · 3-5pm · CDS 701"
 
 export function Navbar() {
   return (

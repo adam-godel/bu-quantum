@@ -11,19 +11,19 @@ export const metadata = {
 //   (key omitted)       -> nothing, for a past meeting that had no resources
 const workshops: Workshop[] = [
   {
-    date: '2026-09-11',
+    date: '2026-09-04',
     title: 'Seminar: The Variational Quantum Eigensolver',
     description:
       'Learn about an important quantum algorithm for optimization, which is largely functional even on the very small-scale, noisy quantum computers that exist today. No prior experience in quantum computing is required!',
-    location: '701 CDS',
+    location: '3-5pm · CDS 701',
     resources: [],
   },
   {
-    date: '2026-09-18',
+    date: '2026-09-11',
     title: 'Workshop: Quantum Computing Basics',
     description:
       'Learn about single qubit gates, two qubit gates, their mathematical representations, and how they can be applied.',
-    location: '701 CDS',
+    location: '3-5pm · CDS 701',
     resources: [],
   },
 ]
