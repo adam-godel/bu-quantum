@@ -42,7 +42,7 @@ export default function About() {
                             Check our full list of events on the{' '}
                             <Link href="/schedule" className="accent">
                                 schedule page
-                            </Link>
+                            </Link>.
                         </p>
                     }
                 />
