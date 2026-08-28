@@ -8,7 +8,14 @@ export type Workshop = {
   date: string
   title: string
   description: string
+  /** Time of day, e.g. '3-5pm'. Rendered before the location. */
+  time?: string
   location?: string
+  /**
+   * Rendered as "Presenter: Name" above the description, or "Presenters: A, B"
+   * when given several. Omit (or pass an empty array) for none.
+   */
+  presenter?: string | string[]
   /**
    * Omit entirely for a workshop that simply has no resources — nothing renders.
    * Set to `[]` to promise resources later ("will be posted here").
@@ -36,6 +43,7 @@ export default function WorkshopCard({ workshop }: { workshop: Workshop }) {
   // Deliberately not defaulted: `undefined` (no resources, nothing to say) and
   // `[]` (resources pending) render differently.
   const { resources } = workshop
+  const presenters = [workshop.presenter ?? []].flat()
 
   return (
     <article className="workshop">
@@ -47,10 +55,17 @@ export default function WorkshopCard({ workshop }: { workshop: Workshop }) {
       <div className="workshop-body">
         <p className="eyebrow mb-2">
           <span className="sr-only">Scheduled for </span>
-          {weekday}, {full}
-          {workshop.location && <> · {workshop.location}</>}
+          {[`${weekday}, ${full}`, workshop.time, workshop.location]
+            .filter(Boolean)
+            .join(' · ')}
         </p>
         <h2 className="workshop-title">{workshop.title}</h2>
+        {presenters.length > 0 && (
+          <p className="workshop-presenter">
+            {presenters.length > 1 ? 'Presenters' : 'Presenter'}:{' '}
+            <strong>{presenters.join(', ')}</strong>
+          </p>
+        )}
         <p className="workshop-description">{workshop.description}</p>
 
         {resources === undefined ? null : resources.length > 0 ? (

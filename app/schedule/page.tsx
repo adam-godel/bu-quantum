@@ -15,7 +15,9 @@ const workshops: Workshop[] = [
     title: 'Seminar: The Variational Quantum Eigensolver',
     description:
       'Learn about an important quantum algorithm for optimization, which is largely functional even on the very small-scale, noisy quantum computers that exist today. No prior experience in quantum computing is required!',
-    location: '3-5pm · CDS 701',
+    time: '3-5pm',
+    location: 'CDS 701',
+    presenter: 'Adam Godel',
     resources: [],
   },
   {
@@ -23,7 +25,8 @@ const workshops: Workshop[] = [
     title: 'Workshop: Quantum Computing Basics',
     description:
       'Learn about single qubit gates, two qubit gates, their mathematical representations, and how they can be applied.',
-    location: '3-5pm · CDS 701',
+    time: '3-5pm',
+    location: 'CDS 701',
     resources: [],
   },
 ]

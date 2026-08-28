@@ -417,6 +417,18 @@ body {
   margin-bottom: 0.5rem;
 }
 
+.workshop-presenter {
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--color-muted);
+  margin-bottom: 0.25rem;
+}
+
+.workshop-presenter strong {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
 .workshop-description {
   font-size: 0.9375rem;
   line-height: 1.65;
