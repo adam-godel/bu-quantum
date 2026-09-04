@@ -18,7 +18,7 @@ const workshops: Workshop[] = [
     time: '3-5pm',
     location: 'CDS 701',
     presenter: 'Adam Godel',
-    resources: [],
+    resources: [{ label: 'Slides', href: '/vqe-slides.pdf' }],
   },
   {
     date: '2026-09-11',
