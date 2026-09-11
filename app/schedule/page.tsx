@@ -17,7 +17,7 @@ const workshops: Workshop[] = [
       'Learn about an important quantum algorithm for optimization, which is largely functional even on the very small-scale, noisy quantum computers that exist today. No prior experience in quantum computing is required!',
     time: '3-5pm',
     location: 'CDS 701',
-    presenter: 'Adam Godel',
+    presenter: 'Adam Godel (Boston University)',
     resources: [{ label: 'Slides', href: '/vqe-slides.pdf' }],
   },
   {
@@ -27,6 +27,7 @@ const workshops: Workshop[] = [
       'Learn about single qubit gates, two qubit gates, their mathematical representations, and how they can be applied.',
     time: '3-5pm',
     location: 'CDS 701',
+    presenter: 'Yebin Song (Boston University)',
     resources: [],
   },
 ]
