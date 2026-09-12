@@ -15,10 +15,10 @@ export const metadata: Metadata = {
     default: 'BU Quantum',
     template: '%s | BU Quantum',
   },
-  description: 'This is BU Quantum.',
+  description: "We're a community of students at Boston University passionate about quantum computing, from both a theory and computational perspective. We host seminars and workshops for students and faculty alike to learn more about the field and discuss their research.",
   openGraph: {
     title: 'BU Quantum',
-    description: 'This is BU Quantum.',
+    description: "We're a community of students at Boston University passionate about quantum computing, from both a theory and computational perspective. We host seminars and workshops for students and faculty alike to learn more about the field and discuss their research.",
     url: baseUrl,
     siteName: 'BU Quantum',
     locale: 'en_US',

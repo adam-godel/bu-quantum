@@ -28,8 +28,18 @@ const workshops: Workshop[] = [
     time: '3-5pm',
     location: 'CDS 701',
     presenter: 'Yebin Song (Boston University)',
-    resources: [],
+    resources: [{ label: 'Notebook', href: 'https://colab.research.google.com/drive/1BEtW_ilZALCUJILxh1IIkVfV25IJ95LD?usp=sharing'}],
   },
+  /*{
+    date: '2026-09-18',
+    title: 'Seminar: VQE for Quantum Chemistry',
+    description:
+      '',
+    time: '3-5pm',
+    location: 'CDS 701',
+    presenter: 'Artem Arefev (Boston University)',
+    resources: [],
+  },*/
 ]
 
 export default function Schedule() {
