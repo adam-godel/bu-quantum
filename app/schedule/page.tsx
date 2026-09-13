@@ -40,6 +40,16 @@ const workshops: Workshop[] = [
     presenter: 'Artem Arefev (Boston University)',
     resources: [],
   },
+  {
+    date: '2026-09-25',
+    title: 'Workshop: The IBM Quantum Landscape',
+    description:
+      'Get an overview of what IBM Quantum is currently up to, what their latest hardware looks like, and their current research and experimental focuses.',
+    time: '3-5pm',
+    location: 'CDS 701',
+    presenter: 'Chris Wildgoose (IBM)',
+    resources: [],
+  },
 ]
 
 export default function Schedule() {
