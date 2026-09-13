@@ -30,16 +30,16 @@ const workshops: Workshop[] = [
     presenter: 'Yebin Song (Boston University)',
     resources: [{ label: 'Notebook', href: 'https://colab.research.google.com/drive/1BEtW_ilZALCUJILxh1IIkVfV25IJ95LD?usp=sharing'}],
   },
-  /*{
+  {
     date: '2026-09-18',
     title: 'Seminar: VQE for Quantum Chemistry',
     description:
-      '',
+      'Learn about the implementation of the Variational Quantum Eigensolver for processing many-electron molecules. The talk will cover the Hartree-Fock method, second quantization, and the Jordan-Wigner mapping; we will get into the weeds! Some linear algebra and quantum experience is recommended.',
     time: '3-5pm',
     location: 'CDS 701',
     presenter: 'Artem Arefev (Boston University)',
     resources: [],
-  },*/
+  },
 ]
 
 export default function Schedule() {
