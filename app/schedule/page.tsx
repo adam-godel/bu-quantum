@@ -38,7 +38,7 @@ const workshops: Workshop[] = [
     time: '3-5pm',
     location: 'CDS 701',
     presenter: 'Artem Arefev (Boston University)',
-    resources: [],
+    resources: [{ label: 'Slides', href: '/quantum-chemistry-slides.pdf' }],
   },
   {
     date: '2026-09-25',
