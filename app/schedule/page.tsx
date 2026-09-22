@@ -2,7 +2,7 @@ import WorkshopCard, { type Workshop } from '../components/workshop'
 
 export const metadata = {
   title: 'Schedule',
-  description: 'Upcoming BU Quantum workshops, with slides, notes, and resources.',
+  description: 'Upcoming BU Quantum meetings, with slides, notes, and resources.',
 }
 
 // Add a workshop by appending an entry here. `resources` has three states:
@@ -12,7 +12,7 @@ export const metadata = {
 const workshops: Workshop[] = [
   {
     date: '2026-09-04',
-    title: 'Seminar: The Variational Quantum Eigensolver',
+    title: 'The Variational Quantum Eigensolver',
     description:
       'Learn about an important quantum algorithm for optimization, which is largely functional even on the very small-scale, noisy quantum computers that exist today. No prior experience in quantum computing is required!',
     time: '3-5pm',
@@ -22,7 +22,7 @@ const workshops: Workshop[] = [
   },
   {
     date: '2026-09-11',
-    title: 'Workshop: Quantum Computing Basics',
+    title: 'Quantum Computing Basics Workshop',
     description:
       'Learn about single qubit gates, two qubit gates, their mathematical representations, and how they can be applied.',
     time: '3-5pm',
@@ -32,7 +32,7 @@ const workshops: Workshop[] = [
   },
   {
     date: '2026-09-18',
-    title: 'Seminar: VQE for Quantum Chemistry',
+    title: 'VQE for Quantum Chemistry',
     description:
       'Learn about the implementation of the Variational Quantum Eigensolver for processing many-electron molecules. The talk will cover the Hartree-Fock method, second quantization, and the Jordan-Wigner mapping; we will get into the weeds! Some linear algebra and quantum experience is recommended.',
     time: '3-5pm',
@@ -42,7 +42,7 @@ const workshops: Workshop[] = [
   },
   {
     date: '2026-09-25',
-    title: 'Workshop: The IBM Quantum Landscape',
+    title: 'The IBM Quantum Landscape',
     description:
       'Get an overview of what IBM Quantum is currently up to, what their latest hardware looks like, and their current research and experimental focuses.',
     time: '3-5pm',
@@ -58,7 +58,7 @@ export default function Schedule() {
   return (
     <div className="w-full mb-24">
       <p className="eyebrow mb-5">Schedule</p>
-      <h1 className="display mb-5">Come to a meeting</h1>
+      <h1 className="display mb-5">Come to a meeting.</h1>
       <p className="lede mb-12">
         Every meeting we host is listed here. Slides, notes, and any other
         resources for a meeting get posted below once it has taken place.
