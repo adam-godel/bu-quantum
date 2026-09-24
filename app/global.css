@@ -361,8 +361,8 @@ body {
   line-height: 1.5;
 }
 
-/* Workshop entries on /schedule. */
-.workshop {
+/* Meeting entries on /schedule. */
+.meeting {
   display: flex;
   gap: 1.5rem;
   padding: 1.5rem;
@@ -372,11 +372,11 @@ body {
   transition: border-color 0.18s ease;
 }
 
-.workshop:hover {
+.meeting:hover {
   border-color: var(--color-line-strong);
 }
 
-.workshop-date {
+.meeting-date {
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
@@ -389,7 +389,7 @@ body {
   background-color: rgba(193, 39, 45, 0.08);
 }
 
-.workshop-date-month {
+.meeting-date-month {
   font-family: var(--font-family-sans);
   font-size: 0.6875rem;
   font-weight: 500;
@@ -397,18 +397,18 @@ body {
   color: var(--color-crimson-lt);
 }
 
-.workshop-date-day {
+.meeting-date-day {
   font-family: var(--font-family-serif);
   font-size: 1.75rem;
   line-height: 1.1;
   color: var(--color-text);
 }
 
-.workshop-body {
+.meeting-body {
   min-width: 0;
 }
 
-.workshop-title {
+.meeting-title {
   font-family: var(--font-family-serif);
   font-size: 1.375rem;
   font-weight: 400;
@@ -417,19 +417,90 @@ body {
   margin-bottom: 0.5rem;
 }
 
-.workshop-presenter {
+.meeting-presenter {
   font-size: 0.9375rem;
   line-height: 1.65;
   color: var(--color-muted);
   margin-bottom: 0.25rem;
 }
 
-.workshop-presenter strong {
+.meeting-presenter strong {
   font-weight: 600;
   color: var(--color-text);
 }
 
-.workshop-description {
+/* Presenter bio bubble, centred over the name. */
+.presenter {
+  position: relative;
+  display: inline-block;
+  cursor: help;
+}
+
+.presenter > strong {
+  text-decoration: underline dotted var(--color-faint);
+  text-underline-offset: 3px;
+}
+
+.presenter-bio {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 0.625rem);
+  z-index: 10;
+  width: max-content;
+  max-width: min(20rem, calc(100vw - 4rem));
+  padding: 0.625rem 0.875rem;
+  border: 1px solid var(--color-line-strong);
+  border-radius: 6px;
+  background-color: var(--color-surface-2);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--color-text);
+  white-space: normal;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, 4px);
+  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0.18s;
+  pointer-events: none;
+}
+
+/* Triangular tail pointing down at the name: a border-coloured triangle with a
+   fill-coloured one laid over it, 1px higher, so the border traces the tail. */
+.presenter-bio::before,
+.presenter-bio::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  margin-left: -7px;
+  top: 100%;
+  border: 7px solid transparent;
+  border-bottom: 0;
+}
+
+.presenter-bio::before {
+  border-top-color: var(--color-line-strong);
+}
+
+.presenter-bio::after {
+  margin-top: -1px;
+  border-top-color: var(--color-surface-2);
+}
+
+.presenter:hover .presenter-bio,
+.presenter:focus-visible .presenter-bio {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .presenter-bio {
+    transform: translateX(-50%) !important;
+  }
+}
+
+.meeting-description {
   font-size: 0.9375rem;
   line-height: 1.65;
   color: var(--color-muted);
@@ -437,7 +508,7 @@ body {
 }
 
 @media (max-width: 639px) {
-  .workshop {
+  .meeting {
     flex-direction: column;
     gap: 1.25rem;
   }
