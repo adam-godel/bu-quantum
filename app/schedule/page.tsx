@@ -65,7 +65,6 @@ const meetings: Meeting[] = [
       affiliation: 'IBM',
       bio: "Chris Wildgoose is an IBM Quantum Ambassador and technologist with more than 20 years of experience in artificial intelligence, data, and emerging technologies. His career has included leadership roles at IBM, Hewlett Packard, and Deloitte, as well as founding and growing AI and analytics startups. At IBM, Chris works with organizations applying data and AI while collaborating with IBM Research and the broader quantum ecosystem to advance understanding of quantum computing and quantum-centric supercomputing. He is a member of IBM's Financial Services Quantum Guild, engaging with researchers, technologists, and industry practitioners on emerging quantum applications. Chris holds a bachelor's degree in Physics from St. Olaf College and a master's degree in Physics from Boston University. His work focuses on bridging scientific innovation and practical application across AI and quantum computing.",
     },
-    resources: [],
   },
   {
     date: '2026-10-02',
@@ -78,6 +77,19 @@ const meetings: Meeting[] = [
       name: 'Twesh Upadhyaya',
       affiliation: 'University of Maryland',
       bio: 'Twesh is a physics doctoral student advised by Nicole Yunger Halpern. He was a QuICS Lanczos Graduate Fellow from 2021 to 2023.',
+    },
+  },
+  {
+    date: '2026-10-09',
+    title: 'Harnessing Randomness on a Quantum Computer',
+    description:
+      'The goal of this presentation is to delve into the differences between quantum probability, and classical probability. The focus of this presentation will be on how to represent stateless memory such as Markov chains within quantum computing emulations. Start with an introduction of concepts that will be important such as markov chains, and density matrices, describe similarities and differences. Delve into important quantum findings such as Bells inequality, and detailing how classical results cannot constrain quantum results. Density matrices, and how despite the trace being able to be mapped to probabilities what the difference behind this is versus say a markov chain matrix. How randomness of classical bits helps play a role in finding faster solutions, and how quantum advantage can utilize randomness, but also much more to get stronger results.',
+    time: '3-5pm',
+    location: 'CDS 701',
+    presenter: {
+      name: 'Maximus Morris',
+      affiliation: 'Boston University',
+      bio: 'Maximus Morris is a graduate student studying computer science (data-centric computing) with a bachelors in Mathematics and Computer Science.',
     },
     resources: [],
   },
