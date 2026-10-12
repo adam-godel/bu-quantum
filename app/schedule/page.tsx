@@ -91,8 +91,21 @@ const meetings: Meeting[] = [
       affiliation: 'Boston University',
       bio: 'Maximus Morris is a graduate student studying computer science (data-centric computing) with a bachelors in Mathematics and Computer Science.',
     },
-    resources: [],
   },
+  {
+    date: '2026-10-16',
+    title: 'Simulating Many-Body Quantum Systems',
+    description:
+      'Simulating many body quantum systems is a computationally hard problem, especially for larger system sizes. In his 1981 keynote speech, Richard Feynman addressed this problem with the following proposal—to use a controllable quantum system to study a less controllable one, i.e, quantum simulation. The field has demonstrated applications in various areas, eg, condensed matter physics, quantum computing, quantum chemistry, etc. This talk is an introductory review of the basics of Hamiltonian simulation: both time independent and dependent, emphasizing the significance and challenges faced by different methods relevant in the field. I will also discuss the insightful result of Poulin et al. which remarks upon the non physicality of the illusive Hilbert Space.',
+    time: '3-5pm',
+    location: 'CDS 701',
+    presenter: {
+      name: 'Srishti Nautiyal',
+      affiliation: 'Boston University',
+      bio: 'Srishti Nautiyal is a physics PhD student at Boston University.',
+    },
+    resources: [],
+  }
 ]
 
 export default function Schedule() {
