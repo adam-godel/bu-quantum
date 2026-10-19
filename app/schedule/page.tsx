@@ -104,7 +104,7 @@ const meetings: Meeting[] = [
       affiliation: 'Boston University',
       bio: 'Srishti Nautiyal is a physics PhD student at Boston University.',
     },
-    resources: [],
+    resources: [{ label: 'Slides', href: '/quantum-simulation-slides.pdf' }],
   },
   {
     date: '2026-10-23',
