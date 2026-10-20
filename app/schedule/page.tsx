@@ -110,7 +110,7 @@ const meetings: Meeting[] = [
     date: '2026-10-23',
     title: 'Quantum Optimization with QAOA: Breaking Limitations but not Constraints',
     description:
-      "The Quantum Approximate Optimization Algorithm (QAOA) is a hybrid quantum-classical algorithm for solving combinatorial optimization problems that has gained attention in recent years. However, most real-world optimization problems are subject to a set of constraints, which QAOA doesn't enforce by default. This talk covers the basics of QAOA, its generalization QAOA⁺, and how mixing operators can be used to restrict he algorithm's evolution to a feasible subspace.",
+      "The Quantum Approximate Optimization Algorithm (QAOA) is a hybrid quantum-classical algorithm for solving combinatorial optimization problems that has gained attention in recent years. However, most real-world optimization problems are subject to a set of constraints, which QAOA doesn't enforce by default. This talk covers the basics of QAOA, its generalization QAOA⁺, and how mixing operators can be used to restrict the algorithm's evolution to a feasible subspace.",
     time: '3-5pm',
     location: 'CDS 701',
     presenter: {
