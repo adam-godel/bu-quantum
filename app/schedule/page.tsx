@@ -118,6 +118,20 @@ const meetings: Meeting[] = [
       affiliation: 'Boston University',
       bio: 'Brayden Goldstein-Gelb is a computer science PhD student at Boston University, advised by Alexander Poremba.',
     },
+    resources: [{ label: 'Slides', href: '/qaoa-slides.pdf' }],
+  },
+  {
+    date: '2026-10-30',
+    title: 'From Algorithm to Hardware: High-Level Quantum Programming and the Path to Fault Tolerance',
+    description:
+      "Writing quantum algorithms at the gate level does not scale. This talk introduces a higher level of abstraction for quantum software development and examines what it means for the gap between algorithm design and hardware execution. We start with Classiq's functional programming model: describe what a circuit should compute, and let a synthesis engine find an optimized, hardware-targeted implementation. Central to the talk is a sharp distinction between synthesis (true compilation, a genuine change in abstraction level) and transpilation (circuit-to-circuit rewriting), and why that distinction matters for building and optimizing large circuits. The second half includes multi-backend benchmarking across simulators and real hardware, a look at Classiq's fault-tolerant engine (which estimates physical qubit count, code distance, and runtime on a surface-code architecture from a logical circuit). Finally, we will save time for a hand-on demonstration of the new AI coding platform that showcases the ability to easily get started in programming quantum computers in a fully agentic way.",
+    time: '3-5pm',
+    location: 'CDS 701',
+    presenter: {
+      name: 'Amit Bhattacharyya',
+      affiliation: 'Classiq',
+      bio: "Amit is a Quantum Solutions Architect at Classiq with 25+ years of industry experience across financial services, machine learning, and AI. He works to articulate the value of quantum computing and how Classiq is transforming the development of quantum algorithms. After finishing a PhD in astrophysics, he spent 12 years at banks and hedge funds as both a quant and a trader. For the past 15+ years, Amit has worked in data science, machine learning, and AI. He is also an award-winning lecturer in UC Berkeley's top-ranked data science graduate program, where he has taught machine learning and natural language processing for ten years. Amit lives outside New York City and in his free time, he enjoys photography, classical music, and skiing uphill.",
+    },
     resources: [],
   }
 ]
