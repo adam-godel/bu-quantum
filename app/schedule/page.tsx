@@ -132,6 +132,19 @@ const meetings: Meeting[] = [
       affiliation: 'Classiq',
       bio: "Amit is a Quantum Solutions Architect at Classiq with 25+ years of industry experience across financial services, machine learning, and AI. He works to articulate the value of quantum computing and how Classiq is transforming the development of quantum algorithms. After finishing a PhD in astrophysics, he spent 12 years at banks and hedge funds as both a quant and a trader. For the past 15+ years, Amit has worked in data science, machine learning, and AI. He is also an award-winning lecturer in UC Berkeley's top-ranked data science graduate program, where he has taught machine learning and natural language processing for ten years. Amit lives outside New York City and in his free time, he enjoys photography, classical music, and skiing uphill.",
     },
+  },
+  {
+    date: '2026-11-06',
+    title: 'Efficiently Verifiable Quantum Advantage Using Error Correction',
+    description:
+      'A key issue with existing quantum advantage experiments is that their verification requires exponential classical time. In this work, we address this challenge by designing a new proposal—Hidden Code Sampling—with efficient classical verification. We use properties of quantum error correction to build an experiment that is "conditionally peaked": conditioned on a subset of qubits, the distribution on another subset is peaked. We give evidence for the classical intractability of this protocol by showing complexity-theoretic hardness of classical simulation, putting our scheme on par with other quantum advantage schemes. A major hurdle in instantiating the scheme concerns distinguishing between two noise channels, one involving local coherent noise and the other involving local Pauli noise. We identify algebraic properties of the underlying codes that enable an efficient distinguisher and construct an explicit code family satisfying these properties while preserving the hardness guarantees. We provide further evidence for soundness of our verification tests by proving an exponential query lower bound for classical algorithms that pass our verification tests in a black-box model.',
+    time: '3-5pm',
+    location: 'CDS 701',
+    presenter: {
+      name: 'Soumik Ghosh',
+      affiliation: 'MIT / UC Berkeley',
+      bio: "Soumik Ghosh is a postdoctoral researcher at MIT and a visiting scholar at UC Berkeley, hosted by Umesh Vazirani. He received his Ph.D. in Computer Science from the University of Chicago, where he was advised by Bill Fefferman. His research aims to use complexity theory to solve interesting problems in quantum computation and quantum physics.",
+    },
     resources: [],
   }
 ]
