@@ -70,7 +70,7 @@ const meetings: Meeting[] = [
     date: '2026-10-02',
     title: 'Runtime Lower Bounds for Quantum State Transfer with Imperfect Initialization',
     description:
-      'Quantum state transfer, the primitive of transporting an unknown state from one site of a lattice to another, is a crucial step in many quantum information processing tasks. Recent protocols use the intermediate lattice sites as ancillas to achieve fast state transfer. Understanding state transfer\'s fundamental limits in the presence of practical imperfections and developing protocols to overcome these imperfections remain pressing open questions. We initiate the study of state transfer\'s robustness to errors in the initial ancilla state. In the Heisenberg picture, state transfer grows operators supported on the final site such that they no longer commute with all operators on the starting site. We prove that increased robustness necessitates larger Schatten p-norms of the commutators between initial- and final-site operators. This generalizes the previously known cases of infinite p and p=2, which govern complete ancilla-state-dependence and independence; intermediate values of p govern partially ancilla-state-dependent transport. We exhibit saturating protocols establishing the tightness of our bounds. In 1D power-law systems, our commutator bounds combined with existing light cones give exponentially stronger runtime bounds in certain regimes. For thermal ancilla states, we observe a phase transition in state transfer runtimes with temperature. We also introduce new robust state transfer protocols, charting the landscape between complete state-dependence and state-independence.',
+      'Quantum state transfer, the primitive of transporting an unknown state from one site of a lattice to another, is a crucial step in many quantum information processing tasks. Recent protocols use the intermediate lattice sites as ancillas to achieve fast state transfer. Understanding state transfer\'s fundamental limits in the presence of practical imperfections and developing protocols to overcome these imperfections remain pressing open questions. We initiate the study of state transfer\'s robustness to errors in the initial ancilla state. In the Heisenberg picture, state transfer grows operators supported on the final site such that they no longer commute with all operators on the starting site. We prove that increased robustness necessitates larger Schatten $p$-norms of the commutators between initial- and final-site operators. This generalizes the previously known cases of infinite $p$ and $p=2$, which govern complete ancilla-state-dependence and independence; intermediate values of $p$ govern partially ancilla-state-dependent transport. We exhibit saturating protocols establishing the tightness of our bounds. In 1D power-law systems, our commutator bounds combined with existing light cones give exponentially stronger runtime bounds in certain regimes. For thermal ancilla states, we observe a phase transition in state transfer runtimes with temperature. We also introduce new robust state transfer protocols, charting the landscape between complete state-dependence and state-independence.',
     time: '3-5pm',
     location: 'CDS 701',
     presenter: {
@@ -145,7 +145,19 @@ const meetings: Meeting[] = [
       affiliation: 'MIT / UC Berkeley',
       bio: "Soumik Ghosh is a postdoctoral researcher at MIT and a visiting scholar at UC Berkeley, hosted by Umesh Vazirani. He received his Ph.D. in Computer Science from the University of Chicago, where he was advised by Bill Fefferman. His research aims to use complexity theory to solve interesting problems in quantum computation and quantum physics.",
     },
-    resources: [],
+  },
+  {
+    date: '2026-11-13',
+    title: 'Finite-measured Entropy Production Does Not Imply Microscopic Irreversibility',
+    description:
+      String.raw`Coarse-grained measurements provide a lower bound on entropy production, but how much microscopic irreversibility can they conceal? We construct a driven quantum system in which an imperfect counter registers a finite, strictly positive arrow of time while the microscopic entropy production is infinite. The system is a degenerate parametric oscillator below threshold, coupled to a thermal reservoir through repeated interactions with bosonic ancillas. The oscillator sustains a finite, positive heat current into the vacuum bath, where absorption is forbidden and forward and reverse trajectory laws have different supports. A photon counter with finite collection efficiency, gated time bins, and independent dark counts defines a common coarse-graining of the aligned trajectory laws. For fixed observation duration $\mathcal T$ and detector parameters, we prove that the observed relative entropy remains uniformly bounded as the bath temperature $T_b$ vanishes and is strictly positive at vacuum. The hidden contribution obeys $\Sigma_{\mathrm{hid}}(\mathcal T,T_b)=\mathcal T\dot Q_0/(k_BT_b)+O(1)$, where $\dot Q_0>0$ is the stationary vacuum heat current. False positives conceal the support mismatch while preserving measurable time asymmetry. Thus, finite and informative measurements of entropy production can coexist with infinite microscopic irreversibility.`,
+    time: '3-5pm',
+    location: 'CDS 701',
+    presenter: {
+      name: 'Hieu Nguyen',
+      affiliation: 'Boston University',
+      bio: "Hieu Nguyen is a statistics PhD student at Boston University.",
+    },
   }
 ]
 

@@ -1,4 +1,5 @@
 import { Fragment, useId } from 'react'
+import MathText from './math-text'
 
 export type Resource = {
   label: string
@@ -109,7 +110,9 @@ export default function MeetingCard({ meeting }: { meeting: Meeting }) {
             ))}
           </p>
         )}
-        <p className="meeting-description">{meeting.description}</p>
+        <p className="meeting-description">
+          <MathText>{meeting.description}</MathText>
+        </p>
 
         {resources === undefined ? null : resources.length > 0 ? (
           <div className="flex flex-wrap gap-2 mt-5">
