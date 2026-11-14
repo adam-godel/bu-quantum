@@ -158,7 +158,7 @@ const meetings: Meeting[] = [
       affiliation: 'Boston University',
       bio: "Hieu Nguyen is a statistics PhD student at Boston University.",
     },
-    resources: [],
+    resources: [{ label: 'Slides', href: '/infinite-irreversibility-slides.pdf' }],
   }
 ]
 
