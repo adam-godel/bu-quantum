@@ -172,7 +172,7 @@ const meetings: Meeting[] = [
       affiliation: 'Boston University',
       bio: "Alexander Poremba is an Assistant Professor at Boston University, where he shares a joint affiliation with the Department of Computer Science and the Department of Physics. Previously, he was a postdoctoral researcher at MIT hosted by both Vinod Vaikuntanathan and Peter Shor. He received his PhD in Computer Science from Caltech, where he was fortunate to have been advised by Thomas Vidick. His research lies at the intersection of quantum computation, theoretical computer science, cryptography, and physics.",
     },
-    resources: [],
+    resources: [{ label: 'Slides', href: '/pseudorandomness-slides.pdf' }],
   }
 ]
 
